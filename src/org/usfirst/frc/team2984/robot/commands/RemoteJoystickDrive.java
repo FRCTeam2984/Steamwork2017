@@ -19,7 +19,7 @@ public class RemoteJoystickDrive extends Command {
     }
 
     protected void initialize() {
-    	this.driveTrain.move(0, 0, 0);
+//    	this.driveTrain.move(0, 0, 0);
     }
 
     protected void execute() {

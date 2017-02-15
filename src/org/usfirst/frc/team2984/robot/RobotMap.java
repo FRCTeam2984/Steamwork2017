@@ -4,6 +4,8 @@ import org.usfirst.frc.team2984.robot.util.RemoteJoystick;
 
 import com.ctre.CANTalon;
 
+import edu.wpi.first.wpilibj.Spark;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -28,10 +30,14 @@ public class RobotMap {
 	public static  CANTalon backLeftMotor;
 	public static  CANTalon backRightMotor;
 	
+	public static Spark gearGrabberController;
+	
 	public static void init(){
 		frontLeftMotor = new CANTalon(14);
 		frontRightMotor = new CANTalon(4);
 		backLeftMotor = new CANTalon(16);
 		backRightMotor = new CANTalon(1); 
+		
+		gearGrabberController = new Spark(0);
 	}
 }

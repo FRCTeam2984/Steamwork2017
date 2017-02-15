@@ -42,4 +42,8 @@ public class VisionTracker{
 		visionTracker = new VisionTracker();
 	}
 	
+	public double getLeftRightDistance(){
+		return this.tracker.getLeftRightDistance();
+	}
+	
 }

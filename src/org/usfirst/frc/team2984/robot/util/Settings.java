@@ -21,12 +21,12 @@ public class Settings {
 	}
 	
 	private void init(){
-		this.data.put("HueLow", 63);
-		this.data.put("HueHigh", 114);
-		this.data.put("SaturationLow", 119);
-		this.data.put("SaturationHigh", 255);
-		this.data.put("ValueLow", 60);
-		this.data.put("ValueHigh", 255);
+		this.data.put("HueLow", 65);
+		this.data.put("HueHigh", 115);
+		this.data.put("SaturationLow", 57);
+		this.data.put("SaturationHigh", 207);
+		this.data.put("ValueLow", 34);
+		this.data.put("ValueHigh", 179);
 		this.data.put("DriveMotorRate", 12.0);
 	}
 	

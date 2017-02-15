@@ -5,6 +5,7 @@ import org.usfirst.frc.team2984.robot.commands.RemoteJoystickDrive;
 import org.usfirst.frc.team2984.robot.util.Settings;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class MecanumDriveTrain extends Subsystem {
 
@@ -23,7 +24,7 @@ public class MecanumDriveTrain extends Subsystem {
 //		this.setupTalon(this.frontRight);
 //		this.setupTalon(this.backLeft);
 //		this.setupTalon(this.backRight);
-		maxRate = Settings.getInstance().getInt("DriveMotorRate");
+		maxRate = Settings.getInstance().getDouble("DriveMotorRate");
 	}
 	
 	/**
@@ -51,8 +52,8 @@ public class MecanumDriveTrain extends Subsystem {
 	
 	public void move(double x, double y, double rotation){
 		double fl = x + y + rotation;
-		double fr = -x + y + rotation;
-		double bl = -x + y - rotation;
+		double fr = -x + y - rotation;
+		double bl = -x + y + rotation;
 		double br = x + y - rotation;
 
 		double max = Math.max(Math.max(fl, bl), Math.max(fr, br));
@@ -66,6 +67,7 @@ public class MecanumDriveTrain extends Subsystem {
 		RobotMap.frontRightMotor.set(fr);
 		RobotMap.backLeftMotor.set(bl);
 		RobotMap.backRightMotor.set(br);
+		SmartDashboard.putString("WTF?", fl + ", " + fr + ", " + bl + ", " + br );
 	}
 	
 	@Override

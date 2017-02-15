@@ -35,6 +35,7 @@ public class TrackingThread extends Thread {
 	private volatile double offsetAngle;
 	private volatile double robotAngle;
 	private volatile double distance;
+	private volatile double leftRight;
 	CvSource outputStream ;
 	
 	public TrackingThread(){
@@ -108,12 +109,14 @@ public class TrackingThread extends Thread {
 			double angle = angle(Math.abs(this.right.x - this.left.x), averageHight);
 			angle *= (this.left.height > this.right.height) ? -1 : 1;
 			double offsetAngle = robotAngle((this.right.x + this.left.x)/2.0);
+			double leftRight = (((this.right.x + this.left.x)/2.0)-160)/160D;
 			SmartDashboard.putNumber("Distance from board", distance);
-			SmartDashboard.putNumber("Angle of board", angle);
+			SmartDashboard.putNumber("Angle", angle);
 			hasTrack = true;
 			this.distance = distance;
 			this.offsetAngle = angle;
 			this.robotAngle = offsetAngle;
+			this.leftRight = leftRight;
 			SmartDashboard.putBoolean("Track", true);
 
 		} else {
@@ -163,9 +166,17 @@ public class TrackingThread extends Thread {
         Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2HSV);
         inRange(output, minc, maxc, output);
         List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-        Imgproc.blur(output, processingMat, new Size(5, 5));
+        Imgproc.blur(output, processingMat, new Size(3, 3));
         Imgproc.findContours(processingMat, contours, tmp, Imgproc.RETR_TREE,Imgproc.CHAIN_APPROX_SIMPLE);
         outputStream.putFrame(output);
+        int i = 0;
+        while(i < contours.size()){
+        	if(Imgproc.contourArea(contours.get(i)) < 5){
+        		contours.remove(i);
+        		continue;
+        	}
+        	i++;
+        }
         if(contours.size() == 2){
         	Rect rectA = Imgproc.boundingRect(contours.get(0));
             Rect rectB = Imgproc.boundingRect(contours.get(1));
@@ -208,6 +219,10 @@ public class TrackingThread extends Thread {
 	 */
 	public synchronized boolean hasTrack(){
 		return this.hasTrack && this.shouldProcess;
+	}
+	
+	public synchronized double getLeftRightDistance(){
+		return this.leftRight;
 	}
 	
 }
