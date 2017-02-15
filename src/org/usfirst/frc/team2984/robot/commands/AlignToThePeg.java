@@ -21,7 +21,7 @@ public class AlignToThePeg extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.mecanumDriveTrain.move(0, 0, 0);
+//    	Robot.mecanumDriveTrain.move(0, 0, 0);
     	if(this.tracker == null){
     		SmartDashboard.putString("Wrong", "Wrong");
         	this.tracker = VisionTracker.getInstance();
@@ -30,15 +30,22 @@ public class AlignToThePeg extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+//		Robot.mecanumDriveTrain.move(0, 1, 0);
+
     	if(this.tracker.hasTrack()){
     		double dist = this.tracker.getDistance();
-    		double offsetAngle = this.tracker.getAngle();
-    		double robotAngle = this.tracker.robotAngle();
-    		double rotation = Math.min(Math.max(-robotAngle, -1), 1);
-    		double forward = (dist > 10) ? 0.3 : 0;
-    		double right = (offsetAngle > 0.2) ? 0.2 : ((offsetAngle < -0.2) ? -0.2 : 0);
-    		Robot.mecanumDriveTrain.move(forward, right, rotation);
+    		double leftRight = this.tracker.getLeftRightDistance();
+//    		double angle = this.tracker.getAngle();
+//    		angle = (!Double.isNaN(angle) && Math.abs(angle) > 0.45) ? -angle/2 : 0;
+    		double forward = (dist > 40) ? 0.45 : 0;
+    		double right =(Math.abs(leftRight) > 0.1) ? leftRight*2.5 : 0;
+    		SmartDashboard.putNumber("Distance?", forward);
+    		SmartDashboard.putNumber("right", right);
+
+    		Robot.mecanumDriveTrain.move(right, forward, 0);
     	} else {
+    		SmartDashboard.putNumber("Drive?", -1);
+
     		Robot.mecanumDriveTrain.move(0, 0, 0);
     	}
     }

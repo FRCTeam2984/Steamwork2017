@@ -1,9 +1,11 @@
 
 package org.usfirst.frc.team2984.robot;
 
+import org.usfirst.frc.team2984.robot.subsystems.GearGrabber;
 import org.usfirst.frc.team2984.robot.subsystems.MecanumDriveTrain;
 import org.usfirst.frc.team2984.robot.util.VisionTracker;
 
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -18,6 +20,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Robot extends IterativeRobot {
 
 	public static final MecanumDriveTrain mecanumDriveTrain = new MecanumDriveTrain();
+	public static final GearGrabber gearGrabber = new GearGrabber();
 //	public static final Test mecanumDriveTrain = new Test();
 	public static OI oi;
 
@@ -35,8 +38,8 @@ public class Robot extends IterativeRobot {
 		VisionTracker.init();
 		oi = new OI();
 		RobotMap.init();
-//		DigitalOutput output = new DigitalOutput(2);
-//		output.set(true);
+		DigitalOutput output = new DigitalOutput(2);
+		output.set(true);
 	}
 
 	/**

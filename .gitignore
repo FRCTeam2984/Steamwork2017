@@ -45,3 +45,5 @@ dist/
 build.properties
 build.xml
 sysProps.xml
+.classpath
+.project
