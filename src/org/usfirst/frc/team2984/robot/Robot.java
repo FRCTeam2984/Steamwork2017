@@ -3,6 +3,7 @@ package org.usfirst.frc.team2984.robot;
 
 import org.usfirst.frc.team2984.robot.subsystems.GearGrabber;
 import org.usfirst.frc.team2984.robot.subsystems.MecanumDriveTrain;
+import org.usfirst.frc.team2984.robot.subsystems.Winch;
 import org.usfirst.frc.team2984.robot.util.VisionTracker;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
@@ -21,7 +22,7 @@ public class Robot extends IterativeRobot {
 
 	public static final MecanumDriveTrain mecanumDriveTrain = new MecanumDriveTrain();
 	public static final GearGrabber gearGrabber = new GearGrabber();
-//	public static final Test mecanumDriveTrain = new Test();
+	public static final Winch winch = new Winch();
 	public static OI oi;
 
 
