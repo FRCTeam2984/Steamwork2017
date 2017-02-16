@@ -2,6 +2,8 @@ package org.usfirst.frc.team2984.field;
 
 import static org.junit.Assert.*;
 
+import java.awt.geom.Point2D;
+
 import org.junit.Test;
 import org.usfirst.frc.team2984.robot.Camera;
 import org.usfirst.frc.team2984.robot.util.Dimension;
@@ -14,8 +16,36 @@ public class VisionTargetTest {
 	private Camera camera = new Camera(resolution, fieldOfView);
 	
 	@Test
-	public void testConstructorConvertsFourPoints() {
-		// TODO
+	public void testPointsConstructorSetsCenter() {
+		Point2D topLeft = new Point2D.Double(-15, 10);
+		Point2D topRight = new Point2D.Double(5, 10);
+		Point2D bottomLeft = new Point2D.Double(-15, -10);
+		Point2D bottomRight = new Point2D.Double(5, -10);
+		VisionTarget target = new VisionTarget(topLeft, topRight, bottomLeft, bottomRight);
+		
+		assertEquals(-5.0, target.getCenter(), 0.0001);
+	}
+	
+	@Test
+	public void testPointConstructorSetsWidth() {
+		Point2D topLeft = new Point2D.Double(-15, 10);
+		Point2D topRight = new Point2D.Double(5, 10);
+		Point2D bottomLeft = new Point2D.Double(-15, -10);
+		Point2D bottomRight = new Point2D.Double(5, -10);
+		VisionTarget target = new VisionTarget(topLeft, topRight, bottomLeft, bottomRight);
+		
+		assertEquals(20d, target.getWidth(), 0.0001);
+	}
+	
+	@Test
+	public void testPointConstructorSetsHeight() {
+		Point2D topLeft = new Point2D.Double(-15, 10);
+		Point2D topRight = new Point2D.Double(5, 10);
+		Point2D bottomLeft = new Point2D.Double(-15, -10);
+		Point2D bottomRight = new Point2D.Double(5, -10);
+		VisionTarget target = new VisionTarget(topLeft, topRight, bottomLeft, bottomRight);
+		
+		assertEquals(20d, target.getHeight(), 0.0001);
 	}
 	
 	@Test

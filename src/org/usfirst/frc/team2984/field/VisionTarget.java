@@ -1,17 +1,26 @@
 package org.usfirst.frc.team2984.field;
 
+import java.awt.geom.Point2D;
+
 import org.usfirst.frc.team2984.robot.Camera;
 import org.usfirst.frc.team2984.robot.util.Dimension;
 
+/**
+ * A rectangular vision target, representing either an angled or head-on orientation. Use
+ * this class to determine distance and internal/external angles to a physical target.
+ * 
+ * @author rich
+ */
 public class VisionTarget {
 	private double offset;
 	private double width;
 	private double height;
 	
 	/**
-	 * A rectangular vision target. Constructor parameters are measured in pixels.
+	 * A rectangular vision target, representing either an angled or head-on orientation.
+	 * Units are pixels.
 	 * 
-	 * @param offset may be positive, negative, or zero
+	 * @param offset distance from horizontal center; may be positive, negative, or zero
 	 * @param width positive value indicates left side larger than right, negative
 	 * value indicates right side larger than left
 	 * @param height positive value only
@@ -20,6 +29,25 @@ public class VisionTarget {
 		this.offset = offset;
 		this.width = width;
 		this.height = height;
+	}
+	
+	/**
+	 * Points use Cartesian coordinate system.
+	 * 
+	 * @param topLeft
+	 * @param topRight
+	 * @param bottomLeft
+	 * @param bottomRight
+	 */
+	public VisionTarget(Point2D topLeft, Point2D topRight, Point2D bottomLeft, Point2D bottomRight) {
+		double averageLeft = (topLeft.getX() + bottomLeft.getX()) / 2;
+		double averageRight = (topRight.getX() + bottomRight.getX()) / 2;
+		double averageTop = (topLeft.getY() + topRight.getY()) / 2;
+		double averageBottom = (bottomLeft.getY() + bottomRight.getY()) / 2;
+		
+		this.offset = averageLeft + ((averageRight - averageLeft) / 2);
+		this.width = averageRight - averageLeft;
+		this.height = averageTop - averageBottom;
 	}
 	
 	/**
@@ -65,7 +93,28 @@ public class VisionTarget {
 	}
 	
 	/**
-	 *
+	 * @return center of this VisionTarget, in pixels
+	 */
+	public double getCenter() {
+		return this.offset;
+	}
+	
+	/**
+	 * 
+	 * @return width of this VisionTarget, in pixels
+	 */
+	public double getWidth() {
+		return this.width;
+	}
+	
+	/**
+	 * @return height of this VisionTarget, in pixels
+	 */
+	public double getHeight() {
+		return this.height;
+	}
+	
+	/**
 	 * @return vertical field of view, in inches
 	 */
 	private double getVerticalFieldOfView(Camera camera, Dimension objectSize) {
