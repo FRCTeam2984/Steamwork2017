@@ -45,5 +45,8 @@ dist/
 build.properties
 build.xml
 sysProps.xml
+
+# Eclipse Files #
+#################
 .classpath
 .project
