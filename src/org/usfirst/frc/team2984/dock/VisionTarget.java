@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2984.field;
+package org.usfirst.frc.team2984.dock;
 
 import java.awt.geom.Point2D;
 
@@ -8,8 +8,6 @@ import org.usfirst.frc.team2984.robot.util.Dimension;
 /**
  * A rectangular vision target, representing either an angled or head-on orientation. Use
  * this class to determine distance and internal/external angles to a physical target.
- * 
- * @author rich
  */
 public class VisionTarget {
 	private double offset;
