@@ -30,7 +30,6 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		VisionTracker.init();
 		oi = new OI();
-//		RobotMap.init();
 		DigitalOutput output = new DigitalOutput(2);
 		output.set(true);
 	}
