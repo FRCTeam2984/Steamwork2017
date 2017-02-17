@@ -39,7 +39,7 @@ public class DriveTrainTest {
 	
 	@Test
 	public void testMoveDrivesFrontRightMotorGivenPostiiveX() {
-		drive.move(1,  0,  0);
+		drive.move(1, 0,  0);
 		verify(frontRight).set(-1.0);
 	}
 	
@@ -51,7 +51,7 @@ public class DriveTrainTest {
 	
 	@Test
 	public void testMoveDrivesBackRightMotorGivenPositiveX() {
-		drive.move(1,  0, 0);
+		drive.move(1, 0, 0);
 		verify(backRight).set(1.0);
 	}
 	
@@ -63,7 +63,7 @@ public class DriveTrainTest {
 	
 	@Test
 	public void testMoveDrivesFrontRightMotorGivenNegativeX() {
-		drive.move(-1,  0,  0);
+		drive.move(-1, 0,  0);
 		verify(frontRight).set(1.0);
 	}
 	
@@ -87,7 +87,7 @@ public class DriveTrainTest {
 	
 	@Test
 	public void testMoveDrivesFrontRightMotorGivenPositiveY() {
-		drive.move(0,  1, 0);
+		drive.move(0, 1, 0);
 		verify(frontRight).set(1.0);
 	}
 	
@@ -125,5 +125,53 @@ public class DriveTrainTest {
 	public void testMoveDrivesBackRightMotorGivenNegativeY() {
 		drive.move(0, -1, 0);
 		verify(backRight).set(-1.0);
+	}
+	
+	@Test
+	public void testMoveDrivesFrontLeftMotorGivenPositiveRotation() {
+		drive.move(0, 0, 1);
+		verify(frontLeft).set(1.0);
+	}
+	
+	@Test
+	public void testMoveDrivesFrontRightMotorGivenPositiveRotation() {
+		drive.move(0, 0, 1);
+		verify(frontRight).set(-1.0);
+	}
+	
+	@Test
+	public void testMoveDrivesBackLeftMotorGivenPositiveRotation() {
+		drive.move(0, 0, 1);
+		verify(backLeft).set(1.0);
+	}
+	
+	@Test
+	public void testMoveDrivesBackRightMotorGivenPositiveRotation() {
+		drive.move(0, 0, 1);
+		verify(backRight).set(-1.0);
+	}
+	
+	@Test
+	public void testMoveDrivesFrontLeftMotorGivenNegativeRotation() {
+		drive.move(0, 0, -1);
+		verify(frontLeft).set(-1);
+	}
+	
+	@Test
+	public void testMoveDrivesFrontRightMotorGivenNegativeRotation() {
+		drive.move(0, 0, -1);
+		verify(frontRight).set(1);
+	}
+	
+	@Test
+	public void testMoveDrivesBackLeftMotorGivenNegativeRotation() {
+		drive.move(0, 0, -1);
+		verify(backLeft).set(-1);
+	}
+	
+	@Test
+	public void testMoveDrivesBackRightMotorGivenNegativeRotation() {
+		drive.move(0, 0, -1);
+		verify(backRight).set(1);
 	}
 }
