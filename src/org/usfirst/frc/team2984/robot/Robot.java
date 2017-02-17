@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Robot extends IterativeRobot {
 
 	public static final MecanumDriveTrain mecanumDriveTrain = new MecanumDriveTrain();
-	public static final GearGrabber gearGrabber = new GearGrabber();
+	public static final GearGrabber gearGrabber = new GearGrabber(RobotMap.gearGrabberController);
 	public static final Winch winch = new Winch();
 	public static OI oi;
 

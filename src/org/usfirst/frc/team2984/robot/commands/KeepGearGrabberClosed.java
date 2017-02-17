@@ -16,7 +16,7 @@ public class KeepGearGrabberClosed extends Command {
 	@Override
 	protected void execute() {
 		SmartDashboard.putBoolean("Maybe?", true);
-		Robot.gearGrabber.keepClosed();
+		Robot.gearGrabber.clench();
 	}
 
 

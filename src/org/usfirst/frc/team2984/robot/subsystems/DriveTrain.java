@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2984.robot.subsystems;
 
+import org.usfirst.frc.team2984.robot.commands.RemoteJoystickDrive;
 import org.usfirst.frc.team2984.robot.util.Settings;
 
 import com.ctre.CANTalon;
@@ -58,7 +59,6 @@ public class DriveTrain extends Subsystem {
 	
 	@Override
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-
+		setDefaultCommand(new RemoteJoystickDrive());
 	}
 }
