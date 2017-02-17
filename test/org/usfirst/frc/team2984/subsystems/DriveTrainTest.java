@@ -99,7 +99,31 @@ public class DriveTrainTest {
 	
 	@Test
 	public void testMoveDrivesBackRightMotorGivenPositiveY() {
-		drive.move(0,  1, 0);
+		drive.move(0, 1, 0);
 		verify(backRight).set(1.0);
+	}
+	
+	@Test
+	public void testMoveDrivesFrontLeftMotorGivenNegativeY() {
+		drive.move(0, -1,  0);
+		verify(frontLeft).set(-1.0);
+	}
+	
+	@Test
+	public void testMoveDrivesFrontRightMotorGivenNegativeY() {
+		drive.move(0, -1, 0);
+		verify(frontRight).set(-1.0);
+	}
+	
+	@Test
+	public void testMoveDrivesBackLeftMotorGivenNegativeY() {
+		drive.move(0, -1, 0);
+		verify(backLeft).set(-1.0);
+	}
+	
+	@Test
+	public void testMoveDrivesBackRightMotorGivenNegativeY() {
+		drive.move(0, -1, 0);
+		verify(backRight).set(-1.0);
 	}
 }
