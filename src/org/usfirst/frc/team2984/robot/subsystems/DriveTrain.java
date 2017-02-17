@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2984.robot.subsystems;
 
+import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.commands.RemoteJoystickDrive;
 import org.usfirst.frc.team2984.robot.util.Settings;
 
@@ -8,11 +9,21 @@ import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DriveTrain extends Subsystem {
+	private static DriveTrain instance;
+	
 	private double speed = Settings.getInstance().getDouble("DriveMotorRate");
 	private CANTalon frontLeft;
 	private CANTalon frontRight;
 	private CANTalon backLeft;
 	private CANTalon backRight;
+	
+	public static DriveTrain getInstance() {
+		if (instance == null) {
+			instance = new DriveTrain(RobotMap.frontLeftMotor, RobotMap.frontRightMotor, RobotMap.backLeftMotor, RobotMap.backRightMotor);
+		}
+		
+		return instance;
+	}
 	
 	/**
 	 * @param frontLeft

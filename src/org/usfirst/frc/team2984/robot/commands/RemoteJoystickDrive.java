@@ -1,8 +1,7 @@
 package org.usfirst.frc.team2984.robot.commands;
 
-import org.usfirst.frc.team2984.robot.Robot;
 import org.usfirst.frc.team2984.robot.RobotMap;
-import org.usfirst.frc.team2984.robot.subsystems.MecanumDriveTrain;
+import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -11,11 +10,12 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class RemoteJoystickDrive extends Command {
 
-	private MecanumDriveTrain driveTrain;
+	private DriveTrain driveTrain;
 	
     public RemoteJoystickDrive() {
-    	requires(Robot.mecanumDriveTrain);
-    	this.driveTrain = Robot.mecanumDriveTrain;
+    	driveTrain = DriveTrain.getInstance();
+    	
+    	requires(driveTrain);
     }
 
     protected void initialize() {
@@ -23,7 +23,7 @@ public class RemoteJoystickDrive extends Command {
     }
 
     protected void execute() {
-    	this.driveTrain.move(RobotMap.remoteJoystick.getX(),
+    	driveTrain.move(RobotMap.remoteJoystick.getX(),
     			RobotMap.remoteJoystick.getY(), RobotMap.remoteJoystick.getTwist());
     }
 
