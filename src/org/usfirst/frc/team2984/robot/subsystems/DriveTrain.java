@@ -12,6 +12,9 @@ public class DriveTrain extends Subsystem {
 	private CANTalon backRight;
 	
 	/**
+	 * For motor output specifications, see:
+	 * 
+	 * https://www.researchgate.net/publication/268326364_A_Design_Of_Omni-Directional_For_Mobile_Robot
 	 * 
 	 * @param frontLeft
 	 * @param frontRight
