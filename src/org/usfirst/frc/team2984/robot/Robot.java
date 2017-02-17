@@ -1,7 +1,6 @@
 
 package org.usfirst.frc.team2984.robot;
 
-import org.usfirst.frc.team2984.robot.subsystems.Winch;
 import org.usfirst.frc.team2984.robot.util.VisionTracker;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
@@ -17,13 +16,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  * directory.
  */
 public class Robot extends IterativeRobot {
-
-//	public static final MecanumDriveTrain mecanumDriveTrain = new MecanumDriveTrain();
-//	public static final DriveTrain driveTrain = new DriveTrain(RobotMap.frontLeftMotor, RobotMap.frontRightMotor, RobotMap.backLeftMotor, RobotMap.backRightMotor);
-//	public static final GearGrabber gearGrabber = new GearGrabber(RobotMap.gearGrabberController);
-	public static final Winch winch = new Winch();
 	public static OI oi;
-
 
 	public Robot(){
 		
@@ -37,7 +30,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		VisionTracker.init();
 		oi = new OI();
-		RobotMap.init();
+//		RobotMap.init();
 		DigitalOutput output = new DigitalOutput(2);
 		output.set(true);
 	}

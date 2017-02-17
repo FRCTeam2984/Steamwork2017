@@ -14,7 +14,8 @@ public class GearGrabber extends Subsystem {
 	
 	public static GearGrabber getInstance() {
 		if (instance == null) {
-			instance = new GearGrabber(RobotMap.gearGrabberController);
+			CANTalon talon = new CANTalon(RobotMap.GEAR_GRABBER_MOTOR_ID);
+			instance = new GearGrabber(talon);
 		}
 		
 		return instance;

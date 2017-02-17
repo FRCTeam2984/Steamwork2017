@@ -19,7 +19,11 @@ public class DriveTrain extends Subsystem {
 	
 	public static DriveTrain getInstance() {
 		if (instance == null) {
-			instance = new DriveTrain(RobotMap.frontLeftMotor, RobotMap.frontRightMotor, RobotMap.backLeftMotor, RobotMap.backRightMotor);
+			CANTalon frontLeft = new CANTalon(RobotMap.FRONT_LEFT_MOTOR_ID);
+			CANTalon frontRight = new CANTalon(RobotMap.FRONT_RIGHT_MOTOR_ID);
+			CANTalon rearLeft = new CANTalon(RobotMap.REAR_LEFT_MOTOR_ID);
+			CANTalon rearRight = new CANTalon(RobotMap.REAR_RIGHT_MOTOR_ID);
+			instance = new DriveTrain(frontLeft, frontRight, rearLeft, rearRight);
 		}
 		
 		return instance;
