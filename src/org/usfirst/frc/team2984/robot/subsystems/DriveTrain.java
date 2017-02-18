@@ -1,7 +1,10 @@
 package org.usfirst.frc.team2984.robot.subsystems;
 
+import org.usfirst.frc.team2984.dock.VisionTarget;
+import org.usfirst.frc.team2984.robot.Camera;
 import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.commands.RemoteJoystickDrive;
+import org.usfirst.frc.team2984.robot.util.Dimension;
 import org.usfirst.frc.team2984.robot.util.Settings;
 
 import com.ctre.CANTalon;
@@ -70,6 +73,11 @@ public class DriveTrain extends Subsystem {
 		this.frontRight.set(fr);
 		this.backLeft.set(bl);
 		this.backRight.set(br);
+	}
+	
+	public void dock(VisionTarget target, Camera camera, Dimension targetSize) {
+		// TODO: stop cheating!
+		this.frontRight.set(1);
 	}
 	
 	@Override
