@@ -82,18 +82,6 @@ public class DriveTrain extends Subsystem {
 		this.backLeft.set(bl * this.speed);
 	}
 	
-	public void dock(VisionTarget target, Camera camera, Dimension targetSize) {
-		double distance = target.getDistance(camera, targetSize);
-		double externalRotation = target.getExternalRotation(camera, targetSize);
-		double internalRotation = target.getInternalRotation(camera, targetSize);
-		
-		double x = 0;
-		double y = (distance > 24) ? 1 : 0;
-		double rotation = -externalRotation;
-		
-//		this.move(x, y, rotation);
-	}
-	
 	@Override
 	protected void initDefaultCommand() {
 		setDefaultCommand(new RemoteJoystickDrive());
