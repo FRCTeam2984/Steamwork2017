@@ -1,6 +1,5 @@
 package org.usfirst.frc.team2984.robot.commands;
 
-import org.usfirst.frc.team2984.robot.Robot;
 import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2984.robot.util.VisionTracker;
 

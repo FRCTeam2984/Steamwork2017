@@ -5,10 +5,10 @@ import org.usfirst.frc.team2984.robot.subsystems.GearGrabber;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class KeepGearGrabberClosed extends Command {
+public class ClenchGearGrabber extends Command {
 	private GearGrabber grabber = GearGrabber.getInstance();
 	
-	public KeepGearGrabberClosed(){
+	public ClenchGearGrabber(){
 		requires(grabber);
 	}
 	

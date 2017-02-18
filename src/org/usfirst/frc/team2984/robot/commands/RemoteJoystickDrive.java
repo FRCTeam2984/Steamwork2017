@@ -24,8 +24,7 @@ public class RemoteJoystickDrive extends Command {
     }
 
     protected void execute() {
-    	driveTrain.move(joystick.getX(),
-    			joystick.getY(), joystick.getTwist());
+    	driveTrain.move(joystick.getX(), joystick.getY(), joystick.getTwist());
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -1,7 +1,7 @@
 package org.usfirst.frc.team2984.robot.subsystems;
 
 import org.usfirst.frc.team2984.robot.RobotMap;
-import org.usfirst.frc.team2984.robot.commands.KeepGearGrabberClosed;
+import org.usfirst.frc.team2984.robot.commands.ClenchGearGrabber;
 
 import com.ctre.CANTalon;
 
@@ -39,6 +39,6 @@ public class GearGrabber extends Subsystem {
 
 	@Override
 	protected void initDefaultCommand() {
-		setDefaultCommand(new KeepGearGrabberClosed());
+		setDefaultCommand(new ClenchGearGrabber());
 	}
 }
