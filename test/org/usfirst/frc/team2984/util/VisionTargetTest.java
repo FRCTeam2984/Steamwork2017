@@ -127,4 +127,12 @@ public class VisionTargetTest {
 		
 		assertEquals(expected, target.getMotion(target, camera, targetSize));
 	}
+	
+	@Test
+	public void getMotionReturnsStrafeRightGivenExternalRotation() {
+		VisionTarget target = new VisionTarget(1, 50, 102.5);
+		Motion expected = new Motion(1, 1, 0);
+		
+		assertEquals(expected, target.getMotion(target, camera, targetSize));
+	}
 }

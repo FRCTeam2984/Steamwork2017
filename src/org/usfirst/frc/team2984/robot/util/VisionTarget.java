@@ -128,12 +128,10 @@ public class VisionTarget {
 		double externalRotation = target.getExternalRotation(camera, targetSize);
 		double internalRotation = target.getInternalRotation(camera, targetSize);
 		
-		double x = 0;
+		double x = Math.abs(internalRotation) > 0 ? 1 : 0;
 		double y = (distance > 24) ? 1 : 0;
 		double rotation = -externalRotation;
 
 		return new Motion(x, y, rotation);
-		
-//		this.move(x, y, rotation);
 	}
 }
