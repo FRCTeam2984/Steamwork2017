@@ -1,16 +1,31 @@
 package org.usfirst.frc.team2984.robot.subsystems;
 
+import java.util.stream.DoubleStream;
+
 import org.usfirst.frc.team2984.dock.VisionTarget;
 import org.usfirst.frc.team2984.robot.Camera;
 import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.commands.RemoteJoystickDrive;
 import org.usfirst.frc.team2984.robot.util.Dimension;
+import org.usfirst.frc.team2984.robot.util.Motion;
 import org.usfirst.frc.team2984.robot.util.Settings;
 
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+/**
+ * Wheel orientation:
+ * 
+ *  grabber
+ *  
+ * \\\   ///
+ * 
+ * 
+ * ///   \\\
+ *
+ *   winch
+ */
 public class DriveTrain extends Subsystem {
 	private static DriveTrain instance;
 	
@@ -47,41 +62,32 @@ public class DriveTrain extends Subsystem {
 		this.backRight = backRight;
 	}
 	
-	/**
-	 * Values are interpreted in terms of maximum motor drive rate.
-	 * 
-	 * @param x
-	 * @param y
-	 * @param rotation
-	 * @see <a href="https://www.researchgate.net/publication/268326364_A_Design_Of_Omni-Directional_For_Mobile_Robot">A Design Of Omni-Directional For Mobile Robot</a>
-	 */
-	public void move(double x, double y, double rotation){
-		double fl = x + y + rotation;
-		double fr = -x + y - rotation;
-		double bl = -x + y + rotation;
-		double br = x + y - rotation;
-		double max = Math.max(Math.max(fl, bl), Math.max(fr, br));
+	public void move(Motion motion) {
+		double fl = motion.getX() + motion.getY() + motion.getRotation();
+		double fr = -motion.getX() + motion.getY() - motion.getRotation();
+		double bl = -motion.getX() + motion.getY() + motion.getRotation();
+		double br = motion.getX() + motion.getY() - motion.getRotation();
+		double max = getMaximumValue(fl, fr, bl, br);
 		
-		if (max > 1){
-			fl *= this.speed / max;
-			fr *= this.speed / max;
-			bl *= this.speed / max;
-			br *= this.speed / max;	
+		if (max > 1) {
+			fl = fl / max;
+			fr = fr / max;
+			bl = bl / max;
+			br = br / max;
 		}
 		
-		this.frontLeft.set(fl);
-		this.frontRight.set(fr);
-		this.backLeft.set(bl);
-		this.backRight.set(br);
-	}
-	
-	public void dock(VisionTarget target, Camera camera, Dimension targetSize) {
-		// TODO: stop cheating!
-		this.frontRight.set(1);
+		this.frontLeft.set(fl * this.speed);
+		this.frontRight.set(fr * this.speed);
+		this.backRight.set(br * this.speed);
+		this.backLeft.set(bl * this.speed);
 	}
 	
 	@Override
 	protected void initDefaultCommand() {
 		setDefaultCommand(new RemoteJoystickDrive());
+	}
+	
+	private double getMaximumValue(double first, double second, double third, double fourth) {
+		return Math.max(Math.max(first, second), Math.max(third, fourth));
 	}
 }

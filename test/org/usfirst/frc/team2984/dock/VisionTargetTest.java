@@ -91,6 +91,14 @@ public class VisionTargetTest {
 		assertEquals(0.2003, target.getExternalRotation(camera, targetSize), 0.0001);
 	}
 	
+//	@Test
+//	public void testUnknownError() {
+//		// TODO: it should throw in this situation
+//		VisionTarget target = new VisionTarget(0, -40, 61.8642);
+//		
+//		assertEquals(1, target.getExternalRotation(camera, targetSize), 0.0001);
+//	}
+	
 	@Test
 	public void testGetExternalRotationREturnsValueGivenSmallNegativeCompression() {
 		VisionTarget target = new VisionTarget(0, -49, 102.5);

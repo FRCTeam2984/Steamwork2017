@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2984.robot.commands;
 
 import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2984.robot.util.Motion;
 import org.usfirst.frc.team2984.robot.util.VisionTracker;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -46,11 +47,11 @@ public class AlignToThePeg extends Command {
     		SmartDashboard.putNumber("Distance?", forward);
     		SmartDashboard.putNumber("right", right);
 
-    		driveTrain.move(right, forward, 0);
+    		driveTrain.move(new Motion(right, forward, 0));
     	} else {
     		SmartDashboard.putNumber("Drive?", -1);
 
-    		driveTrain.move(0, 0, 0);
+    		driveTrain.move(new Motion(0, 0, 0));
     	}
     }
 
