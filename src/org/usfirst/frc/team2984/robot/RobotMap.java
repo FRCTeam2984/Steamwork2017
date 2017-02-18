@@ -28,6 +28,9 @@ public class RobotMap {
 	public static  CANTalon backLeftMotor;
 	public static  CANTalon backRightMotor;
 	
+	public static int leftDistanceSensorPort;
+	public static int rightDistanceSensorPort;
+	
 	public static CANTalon gearGrabberController;
 	
 	public static CANTalon winchMotor;

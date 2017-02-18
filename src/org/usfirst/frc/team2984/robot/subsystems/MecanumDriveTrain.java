@@ -4,6 +4,10 @@ import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.commands.RemoteJoystickDrive;
 import org.usfirst.frc.team2984.robot.util.Settings;
 
+import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.TalonControlMode;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -31,24 +35,24 @@ public class MecanumDriveTrain extends Subsystem {
 	 * sets up the Talon to be used during driving
 	 * @param talon the Talon to configure
 	 */
-//	private void setupTalon(CANTalon talon){
-//		//Setup Sensor
-//		talon.setFeedbackDevice(FeedbackDevice.QuadEncoder); //CRT Mag Encoder Relative if 1 turn
-//		talon.reverseSensor(false);
-//		talon.configEncoderCodesPerRev(256); //number of revs per turn
-//		
-//		//Limit the max current, this case to [+12, -12]
-//		talon.configNominalOutputVoltage(+0.0f, -0.0f);
-//        talon.configPeakOutputVoltage(+12.0f, -12.0f);
-//		
-//        //Set up the PID values
-//        talon.setProfile(0);
-//        talon.setF(0.1097);
-//        talon.setP(0.22);
-//        talon.setI(0); 
-//        talon.setD(0);
-//        talon.changeControlMode(TalonControlMode.Speed);
-//	}
+	private void setupTalon(CANTalon talon){
+		//Setup Sensor
+		talon.setFeedbackDevice(FeedbackDevice.QuadEncoder); //CRT Mag Encoder Relative if 1 turn
+		talon.reverseSensor(false);
+		talon.configEncoderCodesPerRev(1000); //number of revs per turn
+		
+		//Limit the max current, this case to [+12, -12]
+		talon.configNominalOutputVoltage(+0.0f, -0.0f);
+        talon.configPeakOutputVoltage(+12.0f, -12.0f);
+		
+        //Set up the PID values
+        talon.setProfile(0);
+        talon.setF(0.1097);
+        talon.setP(0.22);
+        talon.setI(0); 
+        talon.setD(0);
+        talon.changeControlMode(TalonControlMode.Speed);
+	}
 	
 	public void move(double x, double y, double rotation){
 		double fl = x + y + rotation;
