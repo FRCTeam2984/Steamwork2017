@@ -116,4 +116,24 @@ public class DriveTrain extends Subsystem {
         talon.setD(0);
         talon.changeControlMode(TalonControlMode.Speed);
 	}
+	
+	// from Google Drive
+//	private static void configureTalon(CANTalon talon, boolean reverse){
+//		//Setup Sensor
+//		talon.setFeedbackDevice(FeedbackDevice.QuadEncoder); //CRT Mag Encoder Relative if 1 turn
+//		talon.reverseSensor(reverse);
+//		talon.configEncoderCodesPerRev(1000); //number of revs per turn, 1000
+//		
+//		//Limit the max current, this case to [+12, -12]
+//		talon.configNominalOutputVoltage(+0.0f, -0.0f);
+//        talon.configPeakOutputVoltage(+12.0f, -12.0f);
+//		
+//        //Set up the PID values
+//        talon.setProfile(0);
+//        talon.setF(0.1097); // 0.1597
+//        talon.setP(0.12); // 0.42
+//        talon.setI(0); 
+//        talon.setD(0);
+//        talon.changeControlMode(TalonControlMode.Speed);
+//	}
 }
