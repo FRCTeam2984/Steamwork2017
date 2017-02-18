@@ -1,14 +1,9 @@
 package org.usfirst.frc.team2984.robot.subsystems;
 
-import java.util.stream.DoubleStream;
-
-import org.usfirst.frc.team2984.robot.Camera;
 import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.commands.RemoteJoystickDrive;
-import org.usfirst.frc.team2984.robot.util.Dimension;
 import org.usfirst.frc.team2984.robot.util.Motion;
 import org.usfirst.frc.team2984.robot.util.Settings;
-import org.usfirst.frc.team2984.robot.util.VisionTarget;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
