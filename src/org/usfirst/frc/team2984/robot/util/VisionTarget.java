@@ -1,9 +1,8 @@
-package org.usfirst.frc.team2984.dock;
+package org.usfirst.frc.team2984.robot.util;
 
 import java.awt.geom.Point2D;
 
 import org.usfirst.frc.team2984.robot.Camera;
-import org.usfirst.frc.team2984.robot.util.Dimension;
 
 /**
  * A rectangular vision target, representing either an angled or head-on orientation. Use
