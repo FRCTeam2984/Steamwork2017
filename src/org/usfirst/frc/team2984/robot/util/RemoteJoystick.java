@@ -22,23 +22,33 @@ public class RemoteJoystick {
 		this.table = table;
 	}
 	
-	public double getX() {
+	public Motion getMotion() {
 		testConnection();
 		
-		return table.getNumber("axis2", 0);
-	}
-
-	public double getY() {
-		testConnection();
+		double x = table.getNumber("axis2", 0);
+		double y = table.getNumber("axis1", 0);
+		double rotation = table.getNumber("yaw", 0);
 		
-		return table.getNumber("axis1", 0);
+		return new Motion(x, y, rotation);
 	}
-
-	public double getTwist() {
-		testConnection();
-		
-		return table.getNumber("yaw", 0);
-	}
+//	
+//	public double getX() {
+//		testConnection();
+//		
+//		return table.getNumber("axis2", 0);
+//	}
+//
+//	public double getY() {
+//		testConnection();
+//		
+//		return table.getNumber("axis1", 0);
+//	}
+//
+//	public double getTwist() {
+//		testConnection();
+//		
+//		return table.getNumber("yaw", 0);
+//	}
 
 	private void testConnection() {
 		if (!table.isConnected()) {
