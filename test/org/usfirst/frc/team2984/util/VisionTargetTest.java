@@ -1,13 +1,13 @@
-package org.usfirst.frc.team2984.dock;
+package org.usfirst.frc.team2984.util;
 
 import static org.junit.Assert.*;
 
 import java.awt.geom.Point2D;
 
 import org.junit.Test;
-import org.usfirst.frc.team2984.dock.VisionTarget;
 import org.usfirst.frc.team2984.robot.Camera;
 import org.usfirst.frc.team2984.robot.util.Dimension;
+import org.usfirst.frc.team2984.robot.util.VisionTarget;
 
 public class VisionTargetTest {
 	// from manual
