@@ -107,7 +107,7 @@ public class DriveTrain extends Subsystem {
 		//Setup Sensor
 		talon.setFeedbackDevice(FeedbackDevice.QuadEncoder); //CRT Mag Encoder Relative if 1 turn
 		talon.reverseSensor(false);
-		talon.configEncoderCodesPerRev(256); //number of revs per turn
+		talon.configEncoderCodesPerRev(1000); //number of revs per turn, 1000
 		
 		//Limit the max current, this case to [+12, -12]
 		talon.configNominalOutputVoltage(+0.0f, -0.0f);
@@ -115,8 +115,8 @@ public class DriveTrain extends Subsystem {
 		
         //Set up the PID values
         talon.setProfile(0);
-        talon.setF(0.1097);
-        talon.setP(0.22);
+        talon.setF(0.1597); // 0.1597
+        talon.setP(0.42); // 0.42
         talon.setI(0); 
         talon.setD(0);
         talon.changeControlMode(TalonControlMode.Speed);
