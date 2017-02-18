@@ -71,7 +71,6 @@ public class MecanumDriveTrain extends Subsystem {
 		RobotMap.frontRightMotor.set(fr);
 		RobotMap.backLeftMotor.set(bl);
 		RobotMap.backRightMotor.set(br);
-		SmartDashboard.putString("WTF?", fl + ", " + fr + ", " + bl + ", " + br );
 	}
 	
 	@Override

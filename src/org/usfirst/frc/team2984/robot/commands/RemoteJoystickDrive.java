@@ -1,8 +1,7 @@
 package org.usfirst.frc.team2984.robot.commands;
 
-import org.usfirst.frc.team2984.robot.Robot;
-import org.usfirst.frc.team2984.robot.RobotMap;
-import org.usfirst.frc.team2984.robot.subsystems.MecanumDriveTrain;
+import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2984.robot.util.RemoteJoystick;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -10,21 +9,22 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class RemoteJoystickDrive extends Command {
-
-	private MecanumDriveTrain driveTrain;
+	private DriveTrain driveTrain;
+	private RemoteJoystick joystick;
 	
     public RemoteJoystickDrive() {
-    	requires(Robot.mecanumDriveTrain);
-    	this.driveTrain = Robot.mecanumDriveTrain;
+    	driveTrain = DriveTrain.getInstance();
+    	joystick = RemoteJoystick.getInstance();
+    	
+    	requires(driveTrain);
     }
 
     protected void initialize() {
-//    	this.driveTrain.move(0, 0, 0);
+    	
     }
 
     protected void execute() {
-    	this.driveTrain.move(RobotMap.remoteJoystick.getX(),
-    			RobotMap.remoteJoystick.getY(), RobotMap.remoteJoystick.getTwist());
+    	driveTrain.move(joystick.getX(), joystick.getY(), joystick.getTwist());
     }
 
     // Make this return true when this Command no longer needs to run execute()

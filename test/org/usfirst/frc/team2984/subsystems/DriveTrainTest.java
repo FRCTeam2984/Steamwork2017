@@ -6,8 +6,11 @@ import edu.wpi.first.wpilibj.HLUsageReporting;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.usfirst.frc.team2984.dock.VisionTarget;
+import org.usfirst.frc.team2984.robot.Camera;
 //import org.mockito.InOrder;
 import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2984.robot.util.Dimension;
 import org.usfirst.frc.team2984.util.DummyReporter;
 
 import com.ctre.CANTalon;
@@ -18,6 +21,10 @@ public class DriveTrainTest {
 	private CANTalon frontRight;
 	private CANTalon backLeft;
 	private CANTalon backRight;
+	private Dimension targetSize = new Dimension(5, 10.25);
+	private Dimension resolution = new Dimension(1000, 500);
+	private Dimension fieldOfView = new Dimension(55, 45);
+	private Camera camera = new Camera(resolution, fieldOfView);
 	
 	@Before
 	public void before() {
@@ -173,5 +180,13 @@ public class DriveTrainTest {
 	public void testMoveDrivesBackRightMotorGivenNegativeRotation() {
 		drive.move(0, 0, -1);
 		verify(backRight).set(1);
+	}
+	
+	@Test
+	public void dockDrivesFrontRightMotorGivenHeadOn() {
+		VisionTarget target = new VisionTarget(0, 50, 61.8642);
+		
+		drive.dock(target, camera, targetSize);
+		verify(frontRight).set(1);
 	}
 }

@@ -1,27 +1,25 @@
 package org.usfirst.frc.team2984.robot.commands;
 
-import org.usfirst.frc.team2984.robot.Robot;
+import org.usfirst.frc.team2984.robot.subsystems.GearGrabber;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class CloseGearGrabber extends Command {
+	private GearGrabber grabber;
 
 	public CloseGearGrabber(){
-		requires(Robot.gearGrabber);
+		grabber = GearGrabber.getInstance();
+		
+		requires(grabber);
 	}
-	
-	
 	
 	@Override
 	protected void execute() {
-		Robot.gearGrabber.close();
+		grabber.close();
 	}
-
-
 
 	@Override
 	protected boolean isFinished() {
 		return false;
 	}
-
 }
