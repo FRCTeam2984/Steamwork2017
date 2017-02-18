@@ -46,4 +46,9 @@ public class Motion {
 	public int hashCode() {
 		return (int) this.x + (int) this.y + (int) this.rotation;
 	}
+
+	@Override
+	public String toString() {
+		return "(" + this.x + "," + this.y + "," + this.rotation + ")";
+	}
 }

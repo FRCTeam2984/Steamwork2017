@@ -81,10 +81,15 @@ public class VisionTarget {
 	 * @param camera
 	 * @param physicalTargetSize the dimensions of the physical vision target, in inches
 	 * @return the external rotation of the camera, in radians
+	 * @throws RuntimeException if width exceeds expected width
 	 */
 	public double getExternalRotation(Camera camera, Dimension physicalTargetSize) {
 		double expectedWidth = this.height * (physicalTargetSize.width / physicalTargetSize.height);
 		double cosine = this.width / expectedWidth;
+		
+		if (Math.abs(cosine) > 1) {
+			throw new RuntimeException("Target width exceeds expected width.");
+		}
 		
 		return Math.acos(cosine);
 	}
@@ -116,5 +121,19 @@ public class VisionTarget {
 	 */
 	private double getVerticalFieldOfView(Camera camera, Dimension objectSize) {
 		return camera.resolution.height * objectSize.height / this.height;
+	}
+	
+	public Motion getMotion(VisionTarget target, Camera camera, Dimension targetSize) {
+		double distance = target.getDistance(camera, targetSize);
+		double externalRotation = target.getExternalRotation(camera, targetSize);
+		double internalRotation = target.getInternalRotation(camera, targetSize);
+		
+		double x = 0;
+		double y = (distance > 24) ? 1 : 0;
+		double rotation = -externalRotation;
+
+		return new Motion(x, y, rotation);
+		
+//		this.move(x, y, rotation);
 	}
 }
