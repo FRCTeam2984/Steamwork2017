@@ -28,6 +28,8 @@ public class Settings {
 		this.data.put("ValueLow", 34);
 		this.data.put("ValueHigh", 179);
 		this.data.put("DriveMotorRate", 12.0);
+		this.data.put("SensorVtoInCalibration", 1D);
+		this.data.put("SensorWidth", 1D);
 	}
 	
 	public boolean getBoolean(String key){

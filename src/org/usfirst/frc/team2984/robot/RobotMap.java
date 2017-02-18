@@ -13,4 +13,6 @@ public class RobotMap {
 	public static int REAR_RIGHT_MOTOR_ID = 1;
 	public static int GEAR_GRABBER_MOTOR_ID = 0; // TODO: set real ID
 	public static int WINCH_MOTOR_ID = 2; // TODO: set real ID
+	public static int leftDistanceSensorPort;
+	public static int rightDistanceSensorPort;
 }
