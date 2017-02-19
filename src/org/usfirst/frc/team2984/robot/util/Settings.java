@@ -27,7 +27,9 @@ public class Settings {
 		this.data.put("SaturationHigh", 207);
 		this.data.put("ValueLow", 34);
 		this.data.put("ValueHigh", 179);
-		this.data.put("DriveMotorRate", 12.0);
+		this.data.put("DriveTrainMaxSpeed", 1000.0);
+		this.data.put("DriveTrainMaxVoltage", 12.0);
+		this.data.put("DriveTrainTickToInch", 0.001 /*TODO: FIND THIS*/);
 		this.data.put("SensorVtoInCalibration", 1D);
 		this.data.put("SensorWidth", 1D);
 	}
