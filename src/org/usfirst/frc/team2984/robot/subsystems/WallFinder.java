@@ -27,7 +27,7 @@ public class WallFinder extends Subsystem {
 		}
 		DistanceSensor left = new DistanceSensor(RobotMap.leftDistanceSensorPort);
 		DistanceSensor right = new DistanceSensor(RobotMap.rightDistanceSensorPort);
-		wallFinder = new WallFinder(left, right, Settings.getInstance().getDouble("SensorWidth"));
+		wallFinder = new WallFinder(left, right, RobotMap.SENSOR_WIDTH);
 		return wallFinder;
 	}
 	

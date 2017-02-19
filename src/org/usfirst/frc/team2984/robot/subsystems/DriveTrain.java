@@ -26,8 +26,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class DriveTrain extends Subsystem {
 	private static DriveTrain instance;
 	
-	private double speed = Settings.getInstance().getDouble("DriveTrainMaxSpeed");
-	private double ticksPerInch = Settings.getInstance().getDouble("DriveTrainTickToInch");
+	private double speed = RobotMap.DRIVE_TRAIN_MAX_SPEED;
+	private double ticksPerInch = RobotMap.DRIVE_TRAIN_TICK_TO_INCH;
+//	private double ticksPerInch = Settings.getInstance().getDouble("DriveTrainTickToInch");
 	private CANTalon frontLeft;
 	private CANTalon frontRight;
 	private CANTalon backLeft;
@@ -145,11 +146,15 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	private void configureTalonsSpeed(){
-		Settings settings = Settings.getInstance();
-		double f = settings.getDouble("SpeedF");
-		double p = settings.getDouble("SpeedP");
-		double i = settings.getDouble("SpeedI");
-		double d = settings.getDouble("SpeedD");
+//		Settings settings = Settings.getInstance();
+//		double f = settings.getDouble("SpeedF");
+		double f = RobotMap.SPEED_F;
+//		double p = settings.getDouble("SpeedP");
+		double p = RobotMap.SPEED_P;
+//		double i = settings.getDouble("SpeedI");
+		double i = RobotMap.SPEED_I;
+//		double d = settings.getDouble("SpeedD");
+		double d = RobotMap.SPEED_D;
 		updatePID(0.12, 0.12, i, d);
 		this.frontLeft.changeControlMode(TalonControlMode.Speed);
 		this.frontRight.changeControlMode(TalonControlMode.Speed);
@@ -173,11 +178,15 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	private void configureTalonsDistance(){
-		Settings settings = Settings.getInstance();
-		double f = settings.getDouble("DistanceF");
-		double p = settings.getDouble("DistanceP");
-		double i = settings.getDouble("DistanceI");
-		double d = settings.getDouble("DistanceD");
+//		Settings settings = Settings.getInstance();
+//		double f = settings.getDouble("DistanceF");
+		double f = RobotMap.DISTANCE_F;
+//		double p = settings.getDouble("DistanceP");
+		double p = RobotMap.DISTANCE_P;
+//		double i = settings.getDouble("DistanceI");
+		double i = RobotMap.DISTANCE_I;
+//		double d = settings.getDouble("DistanceD");
+		double d = RobotMap.DISTANCE_D;
 		updatePID(f, p, i, d);
 		this.frontLeft.changeControlMode(TalonControlMode.Position);
 		this.frontRight.changeControlMode(TalonControlMode.Position);

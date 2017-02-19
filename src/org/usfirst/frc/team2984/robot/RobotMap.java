@@ -7,13 +7,34 @@ package org.usfirst.frc.team2984.robot;
  * floating around.
  */
 public class RobotMap {
-	public static int FRONT_LEFT_MOTOR_ID = 14;
-	public static int FRONT_RIGHT_MOTOR_ID = 4;
-	public static int REAR_LEFT_MOTOR_ID = 16;
-	public static int REAR_RIGHT_MOTOR_ID = 1;
-	public static int GEAR_GRABBER_MOTOR_ID = 30; // TODO: set real ID
-	public static int WINCH_MOTOR_ID = 20; // TODO: set real ID
-	public static int leftDistanceSensorPort;
-	public static int rightDistanceSensorPort;
-	public static double DOCKING_DISTANCE_THRESHOLD = 24D; // in inches
+	public static final int FRONT_LEFT_MOTOR_ID = 14;
+	public static final int FRONT_RIGHT_MOTOR_ID = 4;
+	public static final int REAR_LEFT_MOTOR_ID = 16;
+	public static final int REAR_RIGHT_MOTOR_ID = 1;
+	public static final int GEAR_GRABBER_MOTOR_ID = 30; // TODO: set real ID
+	public static final int WINCH_MOTOR_ID = 20; // TODO: set real ID
+	public static int leftDistanceSensorPort; // TODO: set value
+	public static int rightDistanceSensorPort; // TODO: set value
+	public static final double DOCKING_DISTANCE_THRESHOLD = 24D; // in inches
+	public static final double DRIVE_TRAIN_MAX_SPEED = 1000.0;
+	public static final double SENSOR_WIDTH = 1D;
+	public static final double DRIVE_TRAIN_TICK_TO_INCH = 0.001;
+	public static final double SENSOR_V_TO_IN_CALIBRATION = 1D;
+	
+	public static final int HUE_LOW = 65;
+	public static final int SATURATION_LOW = 57;
+	public static final int VALUE_LOW = 34;
+	public static final int HUE_HIGH = 115;
+	public static final int SATURATION_HIGH = 207;
+	public static final int VALUE_HIGH = 179;
+	
+	public static final double SPEED_F = 0.12;
+	public static final double SPEED_P = 0.12;
+	public static final double SPEED_I = 0.0;
+	public static final double SPEED_D = 0.0;
+	
+	public static final double DISTANCE_F = 0.12;
+	public static final double DISTANCE_P = 0.12;
+	public static final double DISTANCE_I = 0.0;
+	public static final double DISTANCE_D = 0.0;
 }

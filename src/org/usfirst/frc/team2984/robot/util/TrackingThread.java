@@ -11,6 +11,7 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+import org.usfirst.frc.team2984.robot.RobotMap;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
@@ -39,11 +40,13 @@ public class TrackingThread extends Thread {
 	CvSource outputStream ;
 	
 	public TrackingThread(){
-		Settings settings = Settings.getInstance();
-		minc = new Scalar(settings.getInt("HueLow"),
-				settings.getInt("SaturationLow"), settings.getInt("ValueLow"));
-		maxc = new Scalar(settings.getInt("HueHigh"),
-				settings.getInt("SaturationHigh"), settings.getInt("ValueHigh"));
+//		Settings settings = Settings.getInstance();
+		minc = new Scalar(RobotMap.HUE_LOW, RobotMap.SATURATION_LOW, RobotMap.VALUE_LOW);
+//		minc = new Scalar(settings.getInt("HueLow"),
+//				settings.getInt("SaturationLow"), settings.getInt("ValueLow"));
+		maxc = new Scalar(RobotMap.HUE_HIGH, RobotMap.SATURATION_HIGH, RobotMap.VALUE_HIGH);
+//		maxc = new Scalar(settings.getInt("HueHigh"),
+//				settings.getInt("SaturationHigh"), settings.getInt("ValueHigh"));
 //		minc = new Scalar(40, 0, 0);
 //		maxc = new Scalar(120, 255, 255);
 		this.shouldProcess = true;

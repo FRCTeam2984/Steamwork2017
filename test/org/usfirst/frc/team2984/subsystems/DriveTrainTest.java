@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.HLUsageReporting;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2984.robot.util.Motion;
 import org.usfirst.frc.team2984.robot.util.Settings;
@@ -19,7 +20,8 @@ public class DriveTrainTest {
 	private CANTalon frontRight;
 	private CANTalon backLeft;
 	private CANTalon backRight;
-	private double speed = Settings.getInstance().getDouble("DriveMotorRate");
+//	private double speed = Settings.getInstance().getDouble("DriveTrainMaxSpeed");
+	private double speed = RobotMap.DRIVE_TRAIN_MAX_SPEED;
 	
 	@Before
 	public void before() {
