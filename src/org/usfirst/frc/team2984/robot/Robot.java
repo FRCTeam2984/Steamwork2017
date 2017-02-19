@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team2984.robot;
 
+import org.usfirst.frc.team2984.robot.commands.TestAutoCommand;
 import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2984.robot.subsystems.GearGrabber;
 import org.usfirst.frc.team2984.robot.subsystems.Winch;
@@ -67,6 +68,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		new TestAutoCommand().start();
 	}
 
 	/**

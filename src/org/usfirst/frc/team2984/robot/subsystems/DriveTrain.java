@@ -10,6 +10,7 @@ import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Wheel orientation:
@@ -107,6 +108,7 @@ public class DriveTrain extends Subsystem {
 		this.frontRight.set(fr);
 		this.backRight.set(br);
 		this.backLeft.set(bl);
+		SmartDashboard.putString("WTF", this.frontLeft.getEncPosition() + "," + this.frontRight.getEncPosition() + "," + this.backLeft.getEncPosition() + "," + this.backRight.getEncPosition());
 	}
 	
 	public void resetOrigin(){
@@ -118,21 +120,21 @@ public class DriveTrain extends Subsystem {
 	
 	public boolean isThere(double x, double y, double epsilon){
 		int fl = this.frontLeft.getEncPosition();
-		int fr = this.frontLeft.getEncPosition();
+		int fr = -this.frontLeft.getEncPosition();
 		int bl = this.frontLeft.getEncPosition();
-		int br = this.frontLeft.getEncPosition();
+		int br = -this.frontLeft.getEncPosition();
 		double xTicks = x*this.ticksPerInch;
 		double yTicks = y*this.ticksPerInch;
 		fl -= xTicks + yTicks;
 		fr -= -xTicks + yTicks;
 		bl -= -xTicks + yTicks;
 		br -= xTicks + yTicks;
-		fl = Math.abs(fl);
-		fr = Math.abs(fr);
-		bl = Math.abs(bl);
-		br = Math.abs(br);
+//		fl = Math.abs(fl);
+//		fr = Math.abs(fr);
+//		bl = Math.abs(bl);
+//		br = Math.abs(br);
 		int max = Math.max(Math.max(fl, fr), Math.max(bl, br));
-		return max < epsilon;
+		return max > -epsilon;
 	}
 	
 	@Override
@@ -145,6 +147,8 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	private void configureTalonsSpeed(){
+		SmartDashboard.putString("WMode", "SPEED");
+
 		Settings settings = Settings.getInstance();
 		double f = settings.getDouble("SpeedF");
 		double p = settings.getDouble("SpeedP");
@@ -173,12 +177,14 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	private void configureTalonsDistance(){
+		
 		Settings settings = Settings.getInstance();
 		double f = settings.getDouble("DistanceF");
 		double p = settings.getDouble("DistanceP");
 		double i = settings.getDouble("DistanceI");
 		double d = settings.getDouble("DistanceD");
 		updatePID(f, p, i, d);
+		SmartDashboard.putString("WMode", "DIST" + p + "," + f);
 		this.frontLeft.changeControlMode(TalonControlMode.Position);
 		this.frontRight.changeControlMode(TalonControlMode.Position);
 		this.backLeft.changeControlMode(TalonControlMode.Position);

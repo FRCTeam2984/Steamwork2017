@@ -29,7 +29,7 @@ public class Settings {
 		this.data.put("ValueHigh", 179);
 		this.data.put("DriveTrainMaxSpeed", 1000.0);
 		this.data.put("DriveTrainMaxVoltage", 12.0);
-		this.data.put("DriveTrainTickToInch", 0.001 /*TODO: FIND THIS*/);
+		this.data.put("DriveTrainTickToInch", 1215.0 /*TODO: FIND THIS*/);
 		this.data.put("SensorVtoInCalibration", 1D);
 		this.data.put("SensorWidth", 1D);
 		this.data.put("DockingDistanceThreshold", 24D); // 24 inches
@@ -39,8 +39,8 @@ public class Settings {
 		this.data.put("SpeedI", 0.0);
 		this.data.put("SpeedD", 0.0);
 		
-		this.data.put("DistanceF", 0.12);
-		this.data.put("DistanceP", 0.12);
+		this.data.put("DistanceF", 0.000032);
+		this.data.put("DistanceP", 0.000032);
 		this.data.put("DistanceI", 0.0);
 		this.data.put("DistanceD", 0.0);
 	}

@@ -3,6 +3,7 @@ package org.usfirst.frc.team2984.robot.commands;
 import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -39,11 +40,12 @@ public class DriveDistance extends Command {
         	this.reset = false;
     	}
     	this.driveTrain.moveDistance(this.distanceRight, this.distanceForward);
+    	SmartDashboard.putBoolean("WHasFinished?", this.driveTrain.isThere(distanceRight, distanceForward, 1000));
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return this.driveTrain.isThere(distanceRight, distanceForward, 100);
+        return this.driveTrain.isThere(distanceRight, distanceForward, 1000);
     }
 
     // Called once after isFinished returns true

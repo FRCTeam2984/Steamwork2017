@@ -6,18 +6,27 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class OpenGearGrabber extends Command {
 	private GearGrabber grabber = GearGrabber.getInstance();
-	
+	private long time;
+	private boolean reset = true;
 	public OpenGearGrabber(){
 		requires(grabber);
 	}
 	
 	@Override
 	protected void execute() {
+		if(this.reset){
+			time = System.currentTimeMillis();
+			this.reset = false;
+		}
 		grabber.open();
+	}
+	
+	protected void end(){
+		this.reset = true;
 	}
 	
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return !reset && System.currentTimeMillis() - time > 1;
 	}
 }

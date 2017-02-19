@@ -29,10 +29,10 @@ public class UpdatePIDsForDriveTrain extends InstantCommand {
     	}
     	DriveTrain.State state = driveTrain.getState();
     	if(state.equals(DriveTrain.State.DISTANCE_CONTROL)){
-    		driveTrain.updatePID(pIDValues[4], pIDValues[5], pIDValues[6], pIDValues[7]);
+    		driveTrain.updatePID(pIDValues[4]/1000, pIDValues[5]/1000, pIDValues[6]/1000, pIDValues[7]/1000);
     	}
     	if(state.equals(DriveTrain.State.SPEED_CONTROL)){
-    		driveTrain.updatePID(pIDValues[0], pIDValues[1], pIDValues[2], pIDValues[3]);
+    		driveTrain.updatePID(pIDValues[0]/1000, pIDValues[1]/1000, pIDValues[2]/1000, pIDValues[3]/1000);
     	}
     }
 
