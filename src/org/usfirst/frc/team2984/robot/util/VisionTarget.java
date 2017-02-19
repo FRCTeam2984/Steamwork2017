@@ -61,13 +61,13 @@ public class VisionTarget {
 	}
 	
 	/**
-	 * Returns the apparent rotation of the camera about the target, in radians.
+	 * Returns the apparent rotation of the camera, in radians.
 	 * 
 	 * @param camera
 	 * @param physicalTargetSize the dimensions of the physical target, in inches
 	 * @return the apparent rotation of the camera about the target, in radians
 	 */
-	public double getInternalRotation(Camera camera, Dimension physicalTargetSize) {
+	public double getExternalRotation(Camera camera, Dimension physicalTargetSize) {
 		double distance = this.getDistance(camera,  physicalTargetSize);
 		
 		return Math.asin(this.offset / distance);
@@ -83,7 +83,7 @@ public class VisionTarget {
 	 * @return the external rotation of the camera, in radians
 	 * @throws RuntimeException if width exceeds expected width
 	 */
-	public double getExternalRotation(Camera camera, Dimension physicalTargetSize) {
+	public double getInternalRotation(Camera camera, Dimension physicalTargetSize) {
 		double expectedWidth = this.height * (physicalTargetSize.width / physicalTargetSize.height);
 		double cosine = this.width / expectedWidth;
 		
@@ -125,8 +125,8 @@ public class VisionTarget {
 	
 	public Motion getMotion(VisionTarget target, Camera camera, Dimension targetSize) {
 		double distance = target.getDistance(camera, targetSize);
-		double externalRotation = target.getExternalRotation(camera, targetSize);
-		double internalRotation = target.getInternalRotation(camera, targetSize);
+		double externalRotation = target.getInternalRotation(camera, targetSize);
+		double internalRotation = target.getExternalRotation(camera, targetSize);
 		
 		double x = Math.abs(internalRotation) > 0 ? 1 : 0;
 		double y = (distance > 24) ? 1 : 0;

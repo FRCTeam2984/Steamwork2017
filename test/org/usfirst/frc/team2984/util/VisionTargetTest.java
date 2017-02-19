@@ -58,70 +58,70 @@ public class VisionTargetTest {
 	}
 	
 	@Test
-	public void testGetInternalRotationReturnsZeroGivenNoOffset() {
+	public void testGetExternalRotationReturnsZeroGivenNoOffset() {
 		VisionTarget target = new VisionTarget(0, 50, 61.8642);
-		
-		assertEquals(0d, target.getInternalRotation(camera, targetSize), 0.0001);
-	}
-	
-	@Test
-	public void testGetInternalRotationReturnsDegreesGivenPositiveOffset() {
-		VisionTarget target = new VisionTarget(38.2683, 50, 61.8642);
-		
-		assertEquals(Math.PI / 8, target.getInternalRotation(camera, targetSize), 0.0001);
-	}
-	
-	@Test
-	public void testGetInternalRotationReturnsDegreesGivenNegativeOffset() {
-		VisionTarget target = new VisionTarget(-38.2683, 50, 61.8642);
-		
-		assertEquals(-Math.PI / 8, target.getInternalRotation(camera, targetSize), 0.0001);
-	}
-	
-	@Test
-	public void testGetExternalRotationReturnsZeroGivenNoCompression() {
-		VisionTarget target = new VisionTarget(0, 50, 102.5);
 		
 		assertEquals(0d, target.getExternalRotation(camera, targetSize), 0.0001);
 	}
 	
 	@Test
-	public void testGetExternalRotationReturnsValueGivenSmallPositiveCompression() {
+	public void testGetExternalRotationReturnsDegreesGivenPositiveOffset() {
+		VisionTarget target = new VisionTarget(38.2683, 50, 61.8642);
+		
+		assertEquals(Math.PI / 8, target.getExternalRotation(camera, targetSize), 0.0001);
+	}
+	
+	@Test
+	public void testGetExternalRotationReturnsDegreesGivenNegativeOffset() {
+		VisionTarget target = new VisionTarget(-38.2683, 50, 61.8642);
+		
+		assertEquals(-Math.PI / 8, target.getExternalRotation(camera, targetSize), 0.0001);
+	}
+	
+	@Test
+	public void testGetInternalRotationReturnsZeroGivenNoCompression() {
+		VisionTarget target = new VisionTarget(0, 50, 102.5);
+		
+		assertEquals(0d, target.getInternalRotation(camera, targetSize), 0.0001);
+	}
+	
+	@Test
+	public void testGetInternalRotationReturnsValueGivenSmallPositiveCompression() {
 		VisionTarget target = new VisionTarget(0, 49, 102.5);
 		
-		assertEquals(0.2003, target.getExternalRotation(camera, targetSize), 0.0001);
+		assertEquals(0.2003, target.getInternalRotation(camera, targetSize), 0.0001);
 	}
 	
 	@Test(expected=RuntimeException.class)
-	public void getExternalRotationThrowsGivenImpossibleApparentWidth() {
+	public void getInternalRotationThrowsGivenImpossibleApparentWidth() {
 		VisionTarget target = new VisionTarget(0, -40, 61.8642);
 		
-		target.getExternalRotation(camera, targetSize);
+		target.getInternalRotation(camera, targetSize);
 	}
 	
 	@Test
-	public void testGetExternalRotationReturnsValueGivenSmallNegativeCompression() {
+	public void testGetInternalRotationReturnsValueGivenSmallNegativeCompression() {
 		VisionTarget target = new VisionTarget(0, -49, 102.5);
 		
-		assertEquals(Math.PI - 0.2003, target.getExternalRotation(camera, targetSize), 0.0001);
+		assertEquals(Math.PI - 0.2003, target.getInternalRotation(camera, targetSize), 0.0001);
 	}
 	
 	@Test
-	public void testGetExternalRotationReturns45DegreesGivenScaledWidth() {
+	public void testGetInternalRotationReturns45DegreesGivenScaledWidth() {
 		VisionTarget target = new VisionTarget(0, 50*Math.cos(Math.PI/4), 102.5);
 		
-		assertEquals(Math.PI / 4, target.getExternalRotation(camera, targetSize), 0.0001);
+		assertEquals(Math.PI / 4, target.getInternalRotation(camera, targetSize), 0.0001);
 	}
 	
 	@Test
-	public void testGetExternalRotationReturnsMinus45DegreesGivenNegativeScaledWidth() {
+	public void testGetInternalRotationReturnsMinus45DegreesGivenNegativeScaledWidth() {
 		VisionTarget target = new VisionTarget(0, -50*Math.cos(Math.PI/4), 102.5);
 		
-		assertEquals(3*Math.PI / 4, target.getExternalRotation(camera, targetSize), 0.0001);
+		assertEquals(3*Math.PI / 4, target.getInternalRotation(camera, targetSize), 0.0001);
 	}
 	
 	@Test
-	public void getMotionReturnsForwardGivenHeadOn() {
+	public void getMotionReturnsForwardGivenNoInternalOrExternalAngle() {
 		VisionTarget target = new VisionTarget(0, 50, 102.5);
 		Motion expected = new Motion(0, 1, 0);
 		
