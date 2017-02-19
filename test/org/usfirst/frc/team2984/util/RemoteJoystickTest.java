@@ -35,4 +35,28 @@ public class RemoteJoystickTest {
 		
 		assertEquals(expected, joystick.getMotion());
 	}
+	
+	@Test
+	public void getPIDValuesReturnsPIDValuesGivenConnected() {
+		double[] expected = new double[]{1.1,2.2,3.3,4.4,5.5,6,7.7,8.0};
+		
+		when(table.isConnected()).thenReturn(true);
+		when(table.getString("Encoder Locations", "")).thenReturn("1.1,2.2,3.3,4.4,5.5,6,7.7,8.0,");
+		
+		double[] actual = joystick.getPIDValues();
+		
+		assertEquals(expected.length, actual.length);
+		for(int i = 0; i<8; i++){
+			assertEquals(expected[i], actual[i], 0.001);
+
+		}
+	}
+	
+	@Test
+	public void getPIDValuesReturnsNullGivenTooFewArguments() {
+		when(table.isConnected()).thenReturn(true);
+		when(table.getString("Encoder Locations", "")).thenReturn("1.1,3.3,4.4,5.5,6,7.7,8.0");
+		
+		assertNull(joystick.getPIDValues());
+	}
 }

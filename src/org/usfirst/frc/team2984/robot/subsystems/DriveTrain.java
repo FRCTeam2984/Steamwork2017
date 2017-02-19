@@ -146,20 +146,17 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	private void configureTalonsSpeed(){
-		this.configureTalonSpeed(this.frontLeft, false);
-		this.configureTalonSpeed(this.frontRight, true);
-		this.configureTalonSpeed(this.backLeft, false);
-		this.configureTalonSpeed(this.backRight, true);
-	}
-	
-	/**
-	 * Configures the talon for use in speed mode
-	 * @param talon the talon to configure
-	 * @param reversed whether or not to reverse the sensor
-	 */
-	private void configureTalonSpeed(CANTalon talon, boolean reversed){
-		this.setupEncoderAndPID(talon, reversed);
-        talon.changeControlMode(TalonControlMode.Speed);
+		Settings settings = Settings.getInstance();
+		double f = settings.getDouble("SpeedF");
+		double p = settings.getDouble("SpeedP");
+		double i = settings.getDouble("SpeedI");
+		double d = settings.getDouble("SpeedD");
+		updatePID(f, p, i, d);
+		this.frontLeft.changeControlMode(TalonControlMode.Speed);
+		this.frontRight.changeControlMode(TalonControlMode.Speed);
+		this.backLeft.changeControlMode(TalonControlMode.Speed);
+		this.backRight.changeControlMode(TalonControlMode.Speed);
+
 	}
 	
 	private void configureTalonsVoltage(){
@@ -177,18 +174,19 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	private void configureTalonsDistance(){
-		this.configureTalonDistance(this.frontLeft, false);
-		this.configureTalonDistance(this.frontRight, true);
-		this.configureTalonDistance(this.backLeft, false);
-		this.configureTalonDistance(this.backRight, true);
+		Settings settings = Settings.getInstance();
+		double f = settings.getDouble("DistanceF");
+		double p = settings.getDouble("DistanceP");
+		double i = settings.getDouble("DistanceI");
+		double d = settings.getDouble("DistanceD");
+		updatePID(f, p, i, d);
+		this.frontLeft.changeControlMode(TalonControlMode.Position);
+		this.frontRight.changeControlMode(TalonControlMode.Position);
+		this.backLeft.changeControlMode(TalonControlMode.Position);
+		this.backRight.changeControlMode(TalonControlMode.Position);
 	}
 	
-	private void configureTalonDistance(CANTalon talon, boolean reversed){
-		this.setupEncoderAndPID(talon, reversed);
-        talon.changeControlMode(TalonControlMode.Position);
-	}
-	
-	private void setupEncoderAndPID(CANTalon talon, boolean reversed){
+	private void setupEncoderAndPID(CANTalon talon, boolean reversed, double f, double p, double i, double d){
 		//Setup Sensor
 		talon.setFeedbackDevice(FeedbackDevice.QuadEncoder); //CRT Mag Encoder Relative if 1 turn
 		talon.reverseSensor(reversed);
@@ -200,10 +198,10 @@ public class DriveTrain extends Subsystem {
 		
         //Set up the PID values
         talon.setProfile(0);
-        talon.setF(0.1597); // 0.1597
-        talon.setP(0.42); // 0.42
-        talon.setI(0); 
-        talon.setD(0);
+        talon.setF(f); // 0.1597
+        talon.setP(p); // 0.42
+        talon.setI(i); 
+        talon.setD(d);
 	}
 	
 	public void switchState(State state){
@@ -221,6 +219,17 @@ public class DriveTrain extends Subsystem {
 				this.configureTalonsDistance();
 		}
 		this.driveState = state;
+	}
+	
+	public void updatePID(double f, double p, double i, double d){
+		this.setupEncoderAndPID(this.frontLeft, false, f, p, i, d);
+		this.setupEncoderAndPID(this.frontRight, true, f, p, i, d);
+		this.setupEncoderAndPID(this.backLeft, false, f, p, i, d);
+		this.setupEncoderAndPID(this.backRight, true, f, p, i, d);
+	}
+	
+	public State getState(){
+		return this.driveState;
 	}
 	
 	// from Google Drive

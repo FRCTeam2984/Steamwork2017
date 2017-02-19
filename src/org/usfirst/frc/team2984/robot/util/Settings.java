@@ -35,6 +35,10 @@ public class Settings {
 		this.data.put("DockingDistanceThreshold", 24D); // 24 inches
 	}
 	
+	public void update(String setting, Object value){
+		this.data.put(setting, value);
+	}
+	
 	public boolean getBoolean(String key){
 		if(this.data.containsKey(key)){
 			if(this.data.get(key).getClass().equals(Boolean.class))

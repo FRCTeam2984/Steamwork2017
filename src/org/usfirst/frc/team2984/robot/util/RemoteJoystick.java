@@ -31,6 +31,21 @@ public class RemoteJoystick {
 		
 		return new Motion(x, y, rotation);
 	}
+	
+	public double[] getPIDValues() {
+		testConnection();
+		
+		String pIDValues = table.getString("Encoder Locations", "");
+		String[] individuals = pIDValues.split(",");
+		double[] doubleValues = new double[8];
+		if(individuals.length < 8){
+			return null;
+		}
+		for(int i = 0; i<8; i++){
+			doubleValues[i] = Double.parseDouble(individuals[i]);
+		}
+		return doubleValues;
+	}
 //	
 //	public double getX() {
 //		testConnection();

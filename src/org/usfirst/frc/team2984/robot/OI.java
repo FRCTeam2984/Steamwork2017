@@ -1,8 +1,6 @@
 package org.usfirst.frc.team2984.robot;
 
-import org.usfirst.frc.team2984.robot.commands.AlignToThePeg;
-import org.usfirst.frc.team2984.robot.commands.CloseGearGrabber;
-import org.usfirst.frc.team2984.robot.commands.OpenGearGrabber;
+import org.usfirst.frc.team2984.robot.commands.UpdatePIDsForDriveTrain;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -46,16 +44,12 @@ public class OI {
 	/**
 	 * the button that will make the robot drive forward for one second
 	 */
-	Button suckIn = new JoystickButton(stick, 2);
-	Button close = new JoystickButton(stick, 3);
-	Button open = new JoystickButton(stick, 4);
+	Button updatePID = new JoystickButton(stick, 1);
     
 	/**
 	 * initializes the behaviors for each input
 	 */
 	public OI(){
-		suckIn.whileHeld(new AlignToThePeg());
-		close.whileHeld(new CloseGearGrabber());
-		open.whileHeld(new OpenGearGrabber());
+		updatePID.whenPressed(new UpdatePIDsForDriveTrain());
 	}
 }
