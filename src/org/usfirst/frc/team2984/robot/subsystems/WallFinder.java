@@ -2,7 +2,6 @@ package org.usfirst.frc.team2984.robot.subsystems;
 
 import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.util.DistanceSensor;
-import org.usfirst.frc.team2984.robot.util.Settings;
 import org.usfirst.frc.team2984.robot.util.Wall;
 
 import edu.wpi.first.wpilibj.command.Subsystem;

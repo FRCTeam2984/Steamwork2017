@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2984.robot.util.Motion;
-import org.usfirst.frc.team2984.robot.util.Settings;
 import org.usfirst.frc.team2984.util.DummyReporter;
 
 import com.ctre.CANTalon;
