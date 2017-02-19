@@ -1,11 +1,11 @@
 package org.usfirst.frc.team2984.robot.subsystems;
 
-import org.opencv.core.Core;
-//import org.opencv.core.Mat;
+import org.opencv.core.Mat;
 import org.usfirst.frc.team2984.robot.util.Dimension;
 import org.usfirst.frc.team2984.robot.util.VisionTarget;
 
 import edu.wpi.cscore.CvSink;
+//import edu.wpi.cscore.CvSink;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Camera extends Subsystem {
@@ -16,9 +16,9 @@ public class Camera extends Subsystem {
 	}
 	
 	public VisionTarget getVisionTarget() {
-//		Mat image = new Mat();
+		Mat image = new Mat();
 		
-//		sink.grabFrame(image);
+		sink.grabFrame(image);
 		// TODO: stop cheating!
 		Dimension targetSize = new Dimension(5, 10.25);
 		return new VisionTarget(0, 50 * targetSize.width, 50 * targetSize.height);

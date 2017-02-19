@@ -31,10 +31,10 @@ public class CameraTest {
 		camera = new Camera(sink);
 	}
 	
-//	@Test
-//	public void getVisionTargetReturnsFooGivenBar() {
-//		VisionTarget expected = new VisionTarget(0, 50 * targetSize.width, 50 * targetSize.height);
-//		
-//		assertEquals(expected, camera.getVisionTarget());
-//	}
+	@Test
+	public void getVisionTargetReturnsFooGivenBar() {
+		VisionTarget expected = new VisionTarget(0, 50 * targetSize.width, 50 * targetSize.height);
+		
+		assertEquals(expected, camera.getVisionTarget());
+	}
 }
