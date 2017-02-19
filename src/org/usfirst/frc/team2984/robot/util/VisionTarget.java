@@ -67,23 +67,23 @@ public class VisionTarget {
 	 * @param physicalTargetSize the dimensions of the physical target, in inches
 	 * @return the apparent rotation of the camera about the target, in radians
 	 */
-	public double getExternalRotation(Camera camera, Dimension physicalTargetSize) {
+	public double getRotation(Camera camera, Dimension physicalTargetSize) {
 		double distance = this.getDistance(camera,  physicalTargetSize);
 		
 		return Math.asin(this.offset / distance);
 	}
 	
 	/**
-	 * Returns the apparent rotation of the target, in radians and within the range
-	 * 0 to π. Values from 0 to π/2 indicate the target has turned right.
-	 * Values from 0 to π indicate the target has turned left.
+	 * Returns the apparent rotation of the camera about the target, in radians and
+	 * within the range 0 to π. Values from 0 to π/2 indicate the camera has
+	 * rotated right. Values from 0 to -π/2 indicate the target has turned left.
 	 * 
 	 * @param camera
 	 * @param physicalTargetSize the dimensions of the physical vision target, in inches
 	 * @return the external rotation of the camera, in radians
 	 * @throws RuntimeException if width exceeds expected width
 	 */
-	public double getInternalRotation(Camera camera, Dimension physicalTargetSize) {
+	public double getClockAngle(Camera camera, Dimension physicalTargetSize) {
 		double expectedWidth = this.height * (physicalTargetSize.width / physicalTargetSize.height);
 		double cosine = this.width / expectedWidth;
 		
@@ -125,8 +125,8 @@ public class VisionTarget {
 	
 	public Motion getMotion(VisionTarget target, Camera camera, Dimension targetSize) {
 		double distance = target.getDistance(camera, targetSize);
-		double externalRotation = target.getInternalRotation(camera, targetSize);
-		double internalRotation = target.getExternalRotation(camera, targetSize);
+		double externalRotation = target.getClockAngle(camera, targetSize);
+		double internalRotation = target.getRotation(camera, targetSize);
 		
 		double x = Math.abs(internalRotation) > 0 ? 1 : 0;
 		double y = (distance > 24) ? 1 : 0;
