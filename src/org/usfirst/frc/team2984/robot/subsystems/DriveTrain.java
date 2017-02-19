@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class DriveTrain extends Subsystem {
 	private static DriveTrain instance;
 	
-	private double speed = Settings.getInstance().getDouble("DriveMotorRate");
+	private double speed = Settings.getInstance().getDouble("DriveTrainMaxSpeed");
 	private double ticksPerInch = Settings.getInstance().getDouble("DriveTrainTickToInch");
 	private CANTalon frontLeft;
 	private CANTalon frontRight;
@@ -50,7 +50,6 @@ public class DriveTrain extends Subsystem {
 			
 			instance = new DriveTrain(frontLeft, frontRight, rearLeft, rearRight);
 		}
-		
 		return instance;
 	}
 	
@@ -151,7 +150,7 @@ public class DriveTrain extends Subsystem {
 		double p = settings.getDouble("SpeedP");
 		double i = settings.getDouble("SpeedI");
 		double d = settings.getDouble("SpeedD");
-		updatePID(f, p, i, d);
+		updatePID(0.12, 0.12, i, d);
 		this.frontLeft.changeControlMode(TalonControlMode.Speed);
 		this.frontRight.changeControlMode(TalonControlMode.Speed);
 		this.backLeft.changeControlMode(TalonControlMode.Speed);
@@ -207,6 +206,9 @@ public class DriveTrain extends Subsystem {
 	public void switchState(State state){
 		if(state == this.driveState){
 			return;
+		}
+		if(state == null){
+			state = this.driveState;
 		}
 		switch(state){
 			case VOLTAGE_CONTROL:

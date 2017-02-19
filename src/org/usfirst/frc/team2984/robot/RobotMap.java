@@ -11,8 +11,8 @@ public class RobotMap {
 	public static int FRONT_RIGHT_MOTOR_ID = 4;
 	public static int REAR_LEFT_MOTOR_ID = 16;
 	public static int REAR_RIGHT_MOTOR_ID = 1;
-	public static int GEAR_GRABBER_MOTOR_ID = 0; // TODO: set real ID
-	public static int WINCH_MOTOR_ID = 2; // TODO: set real ID
+	public static int GEAR_GRABBER_MOTOR_ID = 30; // TODO: set real ID
+	public static int WINCH_MOTOR_ID = 20; // TODO: set real ID
 	public static int leftDistanceSensorPort;
 	public static int rightDistanceSensorPort;
 	public static double DOCKING_DISTANCE_THRESHOLD = 24D; // in inches

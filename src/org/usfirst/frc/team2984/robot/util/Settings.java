@@ -33,6 +33,16 @@ public class Settings {
 		this.data.put("SensorVtoInCalibration", 1D);
 		this.data.put("SensorWidth", 1D);
 		this.data.put("DockingDistanceThreshold", 24D); // 24 inches
+		
+		this.data.put("SpeedF", 0.12);
+		this.data.put("SpeedP", 0.12);
+		this.data.put("SpeedI", 0.0);
+		this.data.put("SpeedD", 0.0);
+		
+		this.data.put("DistanceF", 0.12);
+		this.data.put("DistanceP", 0.12);
+		this.data.put("DistanceI", 0.0);
+		this.data.put("DistanceD", 0.0);
 	}
 	
 	public void update(String setting, Object value){
