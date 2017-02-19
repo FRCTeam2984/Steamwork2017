@@ -1,6 +1,9 @@
 
 package org.usfirst.frc.team2984.robot;
 
+import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2984.robot.subsystems.GearGrabber;
+import org.usfirst.frc.team2984.robot.subsystems.Winch;
 import org.usfirst.frc.team2984.robot.util.VisionTracker;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
@@ -19,7 +22,9 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 
 	public Robot(){
-		
+		DriveTrain.getInstance();
+		GearGrabber.getInstance();
+		Winch.getInstance();
 	}
 	
 	/**

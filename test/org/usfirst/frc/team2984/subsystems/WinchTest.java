@@ -41,4 +41,10 @@ public class WinchTest {
 		winch.backDown();
 		verify(talon).set(-1);
 	}
+	
+	@Test
+	public void idleSetsTalon() {
+		winch.idle();
+		verify(talon).set(0);
+	}
 }

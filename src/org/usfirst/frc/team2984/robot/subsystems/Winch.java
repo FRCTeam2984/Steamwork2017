@@ -38,6 +38,10 @@ public class Winch extends Subsystem {
     public void backDown(){
     	talon.set(-1);
     }
+    
+    public void idle(){
+    	talon.set(0);
+    }
 
 	@Override
 	protected void initDefaultCommand() {
