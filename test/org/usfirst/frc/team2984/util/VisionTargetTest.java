@@ -4,18 +4,28 @@ import static org.junit.Assert.*;
 
 import java.awt.geom.Point2D;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.usfirst.frc.team2984.robot.Camera;
+import org.usfirst.frc.team2984.robot.util.CameraSpecification;
 import org.usfirst.frc.team2984.robot.util.Dimension;
 import org.usfirst.frc.team2984.robot.util.Motion;
 import org.usfirst.frc.team2984.robot.util.VisionTarget;
+
+import edu.wpi.first.wpilibj.HLUsageReporting;
 
 public class VisionTargetTest {
 	// from manual
 	private Dimension targetSize = new Dimension(5, 10.25);
 	private Dimension resolution = new Dimension(1000, 500);
 	private Dimension fieldOfView = new Dimension(55, 45);
-	private Camera camera = new Camera(resolution, fieldOfView);
+	private CameraSpecification camera;
+	
+	@Before
+	public void before() {
+		// prevents exception during test
+		HLUsageReporting.SetImplementation(new DummyReporter());
+		camera = new CameraSpecification(fieldOfView, resolution);
+	}
 	
 	@Test
 	public void testPointsConstructorSetsCenter() {
