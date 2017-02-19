@@ -20,7 +20,7 @@ public class RobotMap {
 	public static final double DOCKING_DISTANCE_THRESHOLD = 24D; // in inches
 	public static final double DRIVE_TRAIN_MAX_SPEED = 1000.0;
 	public static final double SENSOR_WIDTH = 1D;
-	public static final double DRIVE_TRAIN_TICK_TO_INCH = 0.001;
+	public static final double DRIVE_TRAIN_TICK_TO_INCH = 1215D;
 	public static final double SENSOR_V_TO_IN_CALIBRATION = 1D;
 	
 	public static final int HUE_LOW = 65;
@@ -35,8 +35,8 @@ public class RobotMap {
 	public static final double SPEED_I = 0.0;
 	public static final double SPEED_D = 0.0;
 	
-	public static final double DISTANCE_F = 0.12;
-	public static final double DISTANCE_P = 0.12;
+	public static final double DISTANCE_F = 000032;
+	public static final double DISTANCE_P = 0.000032;
 	public static final double DISTANCE_I = 0.0;
 	public static final double DISTANCE_D = 0.0;
 }

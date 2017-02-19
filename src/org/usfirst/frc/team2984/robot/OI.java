@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2984.robot;
 
 import org.usfirst.frc.team2984.robot.commands.Climb;
+import org.usfirst.frc.team2984.robot.commands.DriveDistance;
 import org.usfirst.frc.team2984.robot.commands.OpenGearGrabber;
 import org.usfirst.frc.team2984.robot.commands.Rappel;
 import org.usfirst.frc.team2984.robot.commands.UpdatePIDsForDriveTrain;
@@ -51,7 +52,8 @@ public class OI {
 	Button climb = new JoystickButton(stick, 2);
 	Button rappel = new JoystickButton(stick, 3);
 	Button openGearGrabber = new JoystickButton(stick, 4);
-    
+	Button driveForward = new JoystickButton(stick, 5);
+	
 	/**
 	 * initializes the behaviors for each input
 	 */
@@ -60,5 +62,6 @@ public class OI {
 		climb.whileHeld(new Climb());
 		rappel.whileHeld(new Rappel());
 		openGearGrabber.whileHeld(new OpenGearGrabber());
+		driveForward.whenPressed(new DriveDistance(0, 18));
 	}
 }

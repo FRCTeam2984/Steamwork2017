@@ -33,6 +33,7 @@ public class Settings {
 //		this.data.put("SensorVtoInCalibration", 1D); // not used
 //		this.data.put("SensorWidth", 1D);
 //		this.data.put("DockingDistanceThreshold", 24D); // 24 inches
+
 		
 //		this.data.put("SpeedF", 0.12);
 //		this.data.put("SpeedP", 0.12);
