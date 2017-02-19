@@ -32,6 +32,7 @@ public class Settings {
 		this.data.put("DriveTrainTickToInch", 0.001 /*TODO: FIND THIS*/);
 		this.data.put("SensorVtoInCalibration", 1D);
 		this.data.put("SensorWidth", 1D);
+		this.data.put("DockingDistanceThreshold", 24D); // 24 inches
 	}
 	
 	public boolean getBoolean(String key){

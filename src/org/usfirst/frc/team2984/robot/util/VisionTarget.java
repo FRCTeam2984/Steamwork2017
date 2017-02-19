@@ -3,6 +3,7 @@ package org.usfirst.frc.team2984.robot.util;
 import java.awt.geom.Point2D;
 
 import org.usfirst.frc.team2984.robot.Camera;
+import org.usfirst.frc.team2984.robot.RobotMap;
 
 /**
  * A rectangular vision target, representing either an angled or head-on orientation. Use
@@ -75,8 +76,16 @@ public class VisionTarget {
 	
 	/**
 	 * Returns the apparent rotation of the camera about the target, in radians and
+	 * within a ranges of -π/2 to π/2. Values from -π/2 to 0 indicate the camera has
+	 * rotated counterclockwise. Values from 0 to π/2 indicate the camera has
+	 * rotated clockwise. A value of 0 indicates that the camera lies on the axis of the
+	 * target.
+	 * 
+	 * TODO: delete the following
+	 * Returns the apparent rotation of the camera about the target, in radians and
 	 * within the range 0 to π. Values from 0 to π/2 indicate the camera has
-	 * rotated right. Values from 0 to -π/2 indicate the target has turned left.
+	 * rotated to the right. Values from π/2 to π indicate the target has rotated
+	 * to the left.
 	 * 
 	 * @param camera
 	 * @param physicalTargetSize the dimensions of the physical vision target, in inches
@@ -91,7 +100,13 @@ public class VisionTarget {
 			throw new RuntimeException("Target width exceeds expected width.");
 		}
 		
-		return Math.acos(cosine);
+		double angle = Math.acos(cosine); // from 0 to pi
+		
+		if (angle < Math.PI / 2) {
+			return -angle;
+		}
+		
+		return Math.PI - angle;
 	}
 	
 	/**
@@ -124,14 +139,19 @@ public class VisionTarget {
 	}
 	
 	public Motion getMotion(VisionTarget target, Camera camera, Dimension targetSize) {
-		double distance = target.getDistance(camera, targetSize);
-		double externalRotation = target.getClockAngle(camera, targetSize);
-		double internalRotation = target.getRotation(camera, targetSize);
+		double cameraDistance = target.getDistance(camera, targetSize);
+		double cameraRotation = target.getRotation(camera, targetSize);
+		double cameraClockAngle = target.getClockAngle(camera, targetSize);
+		double distanceThreshold = RobotMap.DOCKING_DISTANCE_THRESHOLD;
 		
-		double x = Math.abs(internalRotation) > 0 ? 1 : 0;
-		double y = (distance > 24) ? 1 : 0;
-		double rotation = -externalRotation;
-
+		double x = Math.abs(cameraClockAngle) > 0 && cameraDistance > distanceThreshold ?
+				-Math.abs(cameraClockAngle)/cameraClockAngle * 0.2 : 0.0;
+		double y = cameraDistance > distanceThreshold ? 0.2 : 0;
+		double rotation = Math.abs(cameraRotation) > 0 ?
+				-Math.abs(cameraRotation)/cameraRotation * 0.2 : 0.0;
+				
+		y = x == 0 ? y : 0;
+		
 		return new Motion(x, y, rotation);
 	}
 }

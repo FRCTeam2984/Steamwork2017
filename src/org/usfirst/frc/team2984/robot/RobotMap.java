@@ -15,4 +15,5 @@ public class RobotMap {
 	public static int WINCH_MOTOR_ID = 2; // TODO: set real ID
 	public static int leftDistanceSensorPort;
 	public static int rightDistanceSensorPort;
+	public static double DOCKING_DISTANCE_THRESHOLD = 24D; // in inches
 }
