@@ -1,16 +1,13 @@
 package org.usfirst.frc.team2984.robot.subsystems;
 
-import java.util.stream.DoubleStream;
-
-import org.usfirst.frc.team2984.robot.Camera;
 import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.commands.RemoteJoystickDrive;
-import org.usfirst.frc.team2984.robot.util.Dimension;
 import org.usfirst.frc.team2984.robot.util.Motion;
 import org.usfirst.frc.team2984.robot.util.Settings;
-import org.usfirst.frc.team2984.robot.util.VisionTarget;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -41,6 +38,12 @@ public class DriveTrain extends Subsystem {
 			CANTalon frontRight = new CANTalon(RobotMap.FRONT_RIGHT_MOTOR_ID);
 			CANTalon rearLeft = new CANTalon(RobotMap.REAR_LEFT_MOTOR_ID);
 			CANTalon rearRight = new CANTalon(RobotMap.REAR_RIGHT_MOTOR_ID);
+			
+			configureTalon(frontLeft);
+			configureTalon(frontRight);
+			configureTalon(rearLeft);
+			configureTalon(rearRight);
+			
 			instance = new DriveTrain(frontLeft, frontRight, rearLeft, rearRight);
 		}
 		
@@ -90,4 +93,47 @@ public class DriveTrain extends Subsystem {
 	private double getMaximumValue(double first, double second, double third, double fourth) {
 		return Math.max(Math.max(first, second), Math.max(third, fourth));
 	}
+	
+	/**
+	 * sets up the Talon to be used during driving
+	 * @param talon the Talon to configure
+	 */
+	private static void configureTalon(CANTalon talon){
+		//Setup Sensor
+		talon.setFeedbackDevice(FeedbackDevice.QuadEncoder); //CRT Mag Encoder Relative if 1 turn
+		talon.reverseSensor(false);
+		talon.configEncoderCodesPerRev(1000); //number of revs per turn, 1000
+		
+		//Limit the max current, this case to [+12, -12]
+		talon.configNominalOutputVoltage(+0.0f, -0.0f);
+        talon.configPeakOutputVoltage(+12.0f, -12.0f);
+		
+        //Set up the PID values
+        talon.setProfile(0);
+        talon.setF(0.1597); // 0.1597
+        talon.setP(0.42); // 0.42
+        talon.setI(0); 
+        talon.setD(0);
+        talon.changeControlMode(TalonControlMode.Speed);
+	}
+	
+	// from Google Drive
+//	private static void configureTalon(CANTalon talon, boolean reverse){
+//		//Setup Sensor
+//		talon.setFeedbackDevice(FeedbackDevice.QuadEncoder); //CRT Mag Encoder Relative if 1 turn
+//		talon.reverseSensor(reverse);
+//		talon.configEncoderCodesPerRev(1000); //number of revs per turn, 1000
+//		
+//		//Limit the max current, this case to [+12, -12]
+//		talon.configNominalOutputVoltage(+0.0f, -0.0f);
+//        talon.configPeakOutputVoltage(+12.0f, -12.0f);
+//		
+//        //Set up the PID values
+//        talon.setProfile(0);
+//        talon.setF(0.1097); // 0.1597
+//        talon.setP(0.12); // 0.42
+//        talon.setI(0); 
+//        talon.setD(0);
+//        talon.changeControlMode(TalonControlMode.Speed);
+//	}
 }

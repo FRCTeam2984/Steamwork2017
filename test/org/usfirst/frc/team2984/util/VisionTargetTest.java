@@ -7,6 +7,7 @@ import java.awt.geom.Point2D;
 import org.junit.Test;
 import org.usfirst.frc.team2984.robot.Camera;
 import org.usfirst.frc.team2984.robot.util.Dimension;
+import org.usfirst.frc.team2984.robot.util.Motion;
 import org.usfirst.frc.team2984.robot.util.VisionTarget;
 
 public class VisionTargetTest {
@@ -51,9 +52,9 @@ public class VisionTargetTest {
 	
 	@Test
 	public void testGetDistanceReturnsDistanceGivenTenPercentHeightAndHeadOn() {
-		VisionTarget target = new VisionTarget(0, 50, 61.8642);
+		VisionTarget target = new VisionTarget(0, 5 * targetSize.width, 5 * targetSize.height);
 		
-		assertEquals(100.0000, target.getDistance(camera, targetSize), 0.0001);
+		assertEquals(120.7107, target.getDistance(camera, targetSize), 0.0001);
 	}
 	
 	@Test
@@ -91,16 +92,15 @@ public class VisionTargetTest {
 		assertEquals(0.2003, target.getExternalRotation(camera, targetSize), 0.0001);
 	}
 	
-//	@Test
-//	public void testUnknownError() {
-//		// TODO: it should throw in this situation
-//		VisionTarget target = new VisionTarget(0, -40, 61.8642);
-//		
-//		assertEquals(1, target.getExternalRotation(camera, targetSize), 0.0001);
-//	}
+	@Test(expected=RuntimeException.class)
+	public void getExternalRotationThrowsGivenImpossibleApparentWidth() {
+		VisionTarget target = new VisionTarget(0, -40, 61.8642);
+		
+		target.getExternalRotation(camera, targetSize);
+	}
 	
 	@Test
-	public void testGetExternalRotationREturnsValueGivenSmallNegativeCompression() {
+	public void testGetExternalRotationReturnsValueGivenSmallNegativeCompression() {
 		VisionTarget target = new VisionTarget(0, -49, 102.5);
 		
 		assertEquals(Math.PI - 0.2003, target.getExternalRotation(camera, targetSize), 0.0001);
@@ -118,5 +118,13 @@ public class VisionTargetTest {
 		VisionTarget target = new VisionTarget(0, -50*Math.cos(Math.PI/4), 102.5);
 		
 		assertEquals(3*Math.PI / 4, target.getExternalRotation(camera, targetSize), 0.0001);
+	}
+	
+	@Test
+	public void getMotionReturnsForwardGivenHeadOn() {
+		VisionTarget target = new VisionTarget(0, 50, 102.5);
+		Motion expected = new Motion(0, 1, 0);
+		
+		assertEquals(expected, target.getMotion(target, camera, targetSize));
 	}
 }
