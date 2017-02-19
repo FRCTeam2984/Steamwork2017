@@ -2,7 +2,7 @@ package org.usfirst.frc.team2984.robot.util;
 
 import java.awt.geom.Point2D;
 
-import org.usfirst.frc.team2984.robot.Camera;
+import org.usfirst.frc.team2984.robot.RobotMap;
 
 /**
  * A rectangular vision target, representing either an angled or head-on orientation. Use
@@ -54,36 +54,44 @@ public class VisionTarget {
 	 * @param physicalTargetSize the size of the physical target, expressed in inches
 	 * @return the distance to the target in inches
 	 */
-	public double getDistance(Camera camera, Dimension physicalTargetSize) {
-		double theta = Math.toRadians(camera.angleOfView.height) / 2;
+	public double getDistance(CameraSpecification camera, Dimension physicalTargetSize) {
+		double theta = Math.toRadians(camera.getAngularFieldOfView().height) / 2;
 		
 		return this.getVerticalFieldOfView(camera, physicalTargetSize) / (2 * Math.tan(theta));
 	}
 	
 	/**
-	 * Returns the apparent rotation of the camera about the target, in radians.
+	 * Returns the apparent rotation of the camera, in radians.
 	 * 
 	 * @param camera
 	 * @param physicalTargetSize the dimensions of the physical target, in inches
 	 * @return the apparent rotation of the camera about the target, in radians
 	 */
-	public double getInternalRotation(Camera camera, Dimension physicalTargetSize) {
+	public double getRotation(CameraSpecification camera, Dimension physicalTargetSize) {
 		double distance = this.getDistance(camera,  physicalTargetSize);
 		
 		return Math.asin(this.offset / distance);
 	}
 	
 	/**
-	 * Returns the apparent rotation of the target, in radians and within the range
-	 * 0 to π. Values from 0 to π/2 indicate the target has turned right.
-	 * Values from 0 to π indicate the target has turned left.
+	 * Returns the apparent rotation of the camera about the target, in radians and
+	 * within a ranges of -π/2 to π/2. Values from -π/2 to 0 indicate the camera has
+	 * rotated counterclockwise. Values from 0 to π/2 indicate the camera has
+	 * rotated clockwise. A value of 0 indicates that the camera lies on the axis of the
+	 * target.
+	 * 
+	 * TODO: delete the following
+	 * Returns the apparent rotation of the camera about the target, in radians and
+	 * within the range 0 to π. Values from 0 to π/2 indicate the camera has
+	 * rotated to the right. Values from π/2 to π indicate the target has rotated
+	 * to the left.
 	 * 
 	 * @param camera
 	 * @param physicalTargetSize the dimensions of the physical vision target, in inches
 	 * @return the external rotation of the camera, in radians
 	 * @throws RuntimeException if width exceeds expected width
 	 */
-	public double getExternalRotation(Camera camera, Dimension physicalTargetSize) {
+	public double getClockAngle(CameraSpecification camera, Dimension physicalTargetSize) {
 		double expectedWidth = this.height * (physicalTargetSize.width / physicalTargetSize.height);
 		double cosine = this.width / expectedWidth;
 		
@@ -91,7 +99,37 @@ public class VisionTarget {
 			throw new RuntimeException("Target width exceeds expected width.");
 		}
 		
-		return Math.acos(cosine);
+		double angle = Math.acos(cosine); // from 0 to pi
+		
+		if (angle < Math.PI / 2) {
+			return -angle;
+		}
+		
+		return Math.PI - angle;
+	}
+	
+	/**
+	 * 
+	 * @param target
+	 * @param camera
+	 * @param targetSize
+	 * @return
+	 */
+	public Motion getMotion(VisionTarget target, CameraSpecification camera, Dimension targetSize) {
+		double cameraDistance = target.getDistance(camera, targetSize);
+		double cameraRotation = target.getRotation(camera, targetSize);
+		double cameraClockAngle = target.getClockAngle(camera, targetSize);
+		double distanceThreshold = RobotMap.DOCKING_DISTANCE_THRESHOLD;
+		
+		double x = Math.abs(cameraClockAngle) > 0 && cameraDistance > distanceThreshold ?
+				-Math.abs(cameraClockAngle)/cameraClockAngle * 0.2 : 0.0;
+		double y = cameraDistance > distanceThreshold ? 0.2 : 0;
+		double rotation = Math.abs(cameraRotation) > 0 ?
+				-Math.abs(cameraRotation)/cameraRotation * 0.2 : 0.0;
+				
+		y = x == 0 ? y : 0;
+		
+		return new Motion(x, y, rotation);
 	}
 	
 	/**
@@ -116,22 +154,38 @@ public class VisionTarget {
 		return this.height;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		
+		if (!VisionTarget.class.isAssignableFrom(obj.getClass())) {
+			return false;
+		}
+		
+		final VisionTarget other = (VisionTarget) obj;
+		
+		double offsetDiff = Math.abs(this.offset - other.offset);
+		double widthDiff = Math.abs(this.width - other.width);
+		double heightDiff = Math.abs(this.height - other.height);
+		
+		if (offsetDiff > 0.0001 || widthDiff > 0.0001 || heightDiff > 0.0001) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	@Override
+	public int hashCode() {
+		return (int) this.offset + (int) this.width + (int) this.height;
+	}
+
 	/**
 	 * @return vertical field of view, in inches
 	 */
-	private double getVerticalFieldOfView(Camera camera, Dimension objectSize) {
-		return camera.resolution.height * objectSize.height / this.height;
-	}
-	
-	public Motion getMotion(VisionTarget target, Camera camera, Dimension targetSize) {
-		double distance = target.getDistance(camera, targetSize);
-		double externalRotation = target.getExternalRotation(camera, targetSize);
-		double internalRotation = target.getInternalRotation(camera, targetSize);
-		
-		double x = Math.abs(internalRotation) > 0 ? 1 : 0;
-		double y = (distance > 24) ? 1 : 0;
-		double rotation = -externalRotation;
-
-		return new Motion(x, y, rotation);
+	private double getVerticalFieldOfView(CameraSpecification camera, Dimension objectSize) {
+		return camera.getResolution().height * objectSize.height / this.height;
 	}
 }

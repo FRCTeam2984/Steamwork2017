@@ -35,7 +35,11 @@ public class Motion {
 	    
 	    final Motion other = (Motion) obj;
 	    
-	    if (this.x != other.x || this.y != other.y || this.rotation != other.rotation) {
+	    double diffX = Math.abs(this.x - other.x);
+	    double diffY = Math.abs(this.y - other.y);
+	    double diffRotation = Math.abs(this.rotation - other.rotation);
+	    
+	    if (diffX > 0.0001 || diffY > 0.0001 || diffRotation > 0.0001) {
 	    	return false;
 	    }
 	    
