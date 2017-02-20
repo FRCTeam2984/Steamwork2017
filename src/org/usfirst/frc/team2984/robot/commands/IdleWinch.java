@@ -13,6 +13,8 @@ public class IdleWinch extends Command {
 	
     public IdleWinch() {
     	this.winch = Winch.getInstance();
+    	
+    	requires(this.winch);
     }
 
     protected void execute() {
