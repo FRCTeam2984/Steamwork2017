@@ -18,6 +18,7 @@ public class RobotMap {
 	public static int rightDistanceSensorPort; // TODO: set value
 	
 	public static final double DOCKING_DISTANCE_THRESHOLD = 24D; // in inches
+	public static final double DOCKING_ANGLE_THRESHOLD = 0.1;
 	public static final double DRIVE_TRAIN_MAX_SPEED = 1400.0;
 	public static final double SENSOR_WIDTH = 1D;//in inches
 	public static final double DRIVE_TRAIN_TICK_TO_INCH_FORWARD = 1215D; //Ticks Per Inch Forward

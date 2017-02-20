@@ -104,15 +104,13 @@ public class TrackingThread extends Thread {
 			double distance = distance(averageHight);
 			double angle = angle(Math.abs(this.right.x - this.left.x), averageHight);
 			angle *= (this.left.height > this.right.height) ? -1 : 1;
-			double offsetAngle = robotAngle((this.right.x + this.left.x)/2.0);
-			double leftRight = (((this.right.x + this.left.x)/2.0)-160)/160D;
+			double robotAngle = robotAngle((this.right.x + this.left.x)/2.0);
 			SmartDashboard.putNumber("Distance from board", distance);
 			SmartDashboard.putNumber("Angle", angle);
 			hasTrack = true;
 			this.distance = distance;
 			this.offsetAngle = angle;
-			this.robotAngle = offsetAngle;
-			this.leftRight = leftRight;
+			this.robotAngle = robotAngle;
 			SmartDashboard.putBoolean("Track", true);
 
 		} else {
@@ -122,7 +120,7 @@ public class TrackingThread extends Thread {
 	}
 	
 	private double robotAngle(double center){
-		return center*2/320+0.5;
+		return center*2/320-1;
 	}
 	
 	/**
@@ -131,8 +129,9 @@ public class TrackingThread extends Thread {
 	 * @return the distance from he camera to the rectangles.
 	 */
 	private double distance(double hight){
-		//TODO Make linear regression
-		return 0.024291*hight*hight - 4.332*hight + 249.54;
+		//TODO Get Real Values
+		double verticalAngle = hight/240*Math.PI/4;
+		return 5/Math.tan(verticalAngle);
 	}
 	
 	/**
@@ -146,7 +145,7 @@ public class TrackingThread extends Thread {
 	 */
 	private double angle(double dist, double hight){
 		double widthNomialNormalized = NORMAL_WIDTH*hight;
-		double angle = Math.acos(dist / widthNomialNormalized);
+		double angle = Math.acos(Math.min(dist / widthNomialNormalized, 1));
 		return angle;
 	}
 	
@@ -215,10 +214,6 @@ public class TrackingThread extends Thread {
 	 */
 	public synchronized boolean hasTrack(){
 		return this.hasTrack && this.shouldProcess;
-	}
-	
-	public synchronized double getLeftRightDistance(){
-		return this.leftRight;
 	}
 	
 }
