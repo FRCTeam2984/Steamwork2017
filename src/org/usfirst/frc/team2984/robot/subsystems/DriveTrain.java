@@ -27,7 +27,9 @@ public class DriveTrain extends Subsystem {
 	private static DriveTrain instance;
 	
 	private double speed = RobotMap.DRIVE_TRAIN_MAX_SPEED;
-	private double ticksPerInch = RobotMap.DRIVE_TRAIN_TICK_TO_INCH;
+	private double ticksPerInchForward = RobotMap.DRIVE_TRAIN_TICK_TO_INCH_FORWARD;
+	private double ticksPerInchRight = RobotMap.DRIVE_TRAIN_TICK_TO_INCH_RIGHT;
+	private double ticksPerRadian = RobotMap.DRIVE_TRAIN_TICK_TO_RADIAN;
 	private CANTalon frontLeft;
 	private CANTalon frontRight;
 	private CANTalon backLeft;
@@ -92,17 +94,31 @@ public class DriveTrain extends Subsystem {
 	
 	/**
 	 * moves the given distance in x and y
-	 * @param x
-	 * @param y
+	 * @param x in inches how far right
+	 * @param y in inches how far forward
 	 */
 	public void moveDistance(double x, double y){
 		this.switchState(State.DISTANCE_CONTROL);
-		double xTicks = x*this.ticksPerInch;
-		double yTicks = y*this.ticksPerInch;
+		double xTicks = x*this.ticksPerInchForward;
+		double yTicks = y*this.ticksPerInchRight;
 		double fl = xTicks + yTicks;
 		double fr = -xTicks + yTicks;
 		double bl = -xTicks + yTicks;
 		double br = xTicks + yTicks;
+		this.frontLeft.set(fl);
+		this.frontRight.set(fr);
+		this.backRight.set(br);
+		this.backLeft.set(bl);
+		SmartDashboard.putString("WTF", this.frontLeft.getEncPosition() + "," + this.frontRight.getEncPosition() + "," + this.backLeft.getEncPosition() + "," + this.backRight.getEncPosition());
+	}
+	
+	public void rotate(double angle){
+		this.switchState(State.DISTANCE_CONTROL);
+		double ticks = angle*this.ticksPerRadian;
+		double fl = ticks;
+		double fr = -ticks;
+		double bl = ticks;
+		double br = -ticks;
 		this.frontLeft.set(fl);
 		this.frontRight.set(fr);
 		this.backRight.set(br);
@@ -145,7 +161,7 @@ public class DriveTrain extends Subsystem {
 		double i = RobotMap.SPEED_I;
 		double d = RobotMap.SPEED_D;
 
-		updatePID(0.12, 0.12, i, d);
+		updatePID(f, p, i, d);
 		this.frontLeft.changeControlMode(TalonControlMode.Speed);
 		this.frontRight.changeControlMode(TalonControlMode.Speed);
 		this.backLeft.changeControlMode(TalonControlMode.Speed);

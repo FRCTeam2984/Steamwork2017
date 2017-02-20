@@ -21,7 +21,6 @@ public class UpdatePIDsForDriveTrain extends InstantCommand {
     	requires(driveTrain);    
     }
 
-    // Called once when the command executes
     protected void initialize() {
     	double[] pIDValues = joystick.getPIDValues();
     	if(pIDValues == null){

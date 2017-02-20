@@ -20,7 +20,9 @@ public class RobotMap {
 	public static final double DOCKING_DISTANCE_THRESHOLD = 24D; // in inches
 	public static final double DRIVE_TRAIN_MAX_SPEED = 1400.0;
 	public static final double SENSOR_WIDTH = 1D;//in inches
-	public static final double DRIVE_TRAIN_TICK_TO_INCH = 1215D;
+	public static final double DRIVE_TRAIN_TICK_TO_INCH_FORWARD = 1215D; //Ticks Per Inch Forward
+	public static final double DRIVE_TRAIN_TICK_TO_INCH_RIGHT = 1215D; //Ticks Per Inch Forward
+	public static final double DRIVE_TRAIN_TICK_TO_RADIAN = 1000D; //Ticks Per Radian
 	public static final double SENSOR_V_TO_IN_CALIBRATION = 1D;
 	
 	public static final int HUE_LOW = 65;

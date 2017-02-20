@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2984.robot.subsystems;
 
 import org.usfirst.frc.team2984.robot.RobotMap;
+import org.usfirst.frc.team2984.robot.commands.IdleWinch;
 
 import com.ctre.CANTalon;
 
@@ -45,6 +46,6 @@ public class Winch extends Subsystem {
 
 	@Override
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
+		setDefaultCommand(new IdleWinch());
 	}
 }
