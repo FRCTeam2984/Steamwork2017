@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2984.robot;
 
+import org.usfirst.frc.team2984.robot.commands.AlignToThePeg;
 import org.usfirst.frc.team2984.robot.commands.Climb;
 import org.usfirst.frc.team2984.robot.commands.DriveDistance;
 import org.usfirst.frc.team2984.robot.commands.OpenGearGrabber;
@@ -53,6 +54,7 @@ public class OI {
 	Button rappel = new JoystickButton(stick, 3);
 	Button openGearGrabber = new JoystickButton(stick, 4);
 	Button driveForward = new JoystickButton(stick, 5);
+	Button alignToPeg = new JoystickButton(stick, 6);
 	
 	/**
 	 * initializes the behaviors for each input
@@ -63,5 +65,6 @@ public class OI {
 		rappel.whileHeld(new Rappel());
 		openGearGrabber.whileHeld(new OpenGearGrabber());
 		driveForward.whenPressed(new DriveDistance(0, 18));
+		alignToPeg.whenPressed(new AlignToThePeg());
 	}
 }
