@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2984.subsystems;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import edu.wpi.first.wpilibj.HLUsageReporting;
@@ -76,6 +77,106 @@ public class DriveTrainTest {
 		drive.move(new Motion(1, 1, 0));
 		// This passes, but it looks like a bug.
 		verifyTalons(1, 0, 0, 1);
+	}
+	
+	@Test
+	public void isDoneReturnsTrueWhileMovingSlowlyForward() {
+		when(frontLeft.getEncVelocity()).thenReturn(1);
+		when(frontRight.getEncVelocity()).thenReturn(-1);
+		when(backLeft.getEncVelocity()).thenReturn(1);
+		when(backRight.getEncVelocity()).thenReturn(-1);
+
+		assertTrue(drive.isThere(4));
+	}
+	
+	@Test
+	public void isDoneReturnsTrueWhileMovingSlowlyBackward() {
+		when(frontLeft.getEncPosition()).thenReturn(-1);
+		when(frontRight.getEncPosition()).thenReturn(1);
+		when(backLeft.getEncPosition()).thenReturn(-1);
+		when(backRight.getEncPosition()).thenReturn(1);
+
+		assertTrue(drive.isThere(4));
+	}
+	
+	@Test
+	public void isDoneReturnsTrueWhileMovingSlowlyLeft() {
+		when(frontLeft.getEncPosition()).thenReturn(-1);
+		when(frontRight.getEncPosition()).thenReturn(-1);
+		when(backLeft.getEncPosition()).thenReturn(1);
+		when(backRight.getEncPosition()).thenReturn(1);
+
+		assertTrue(drive.isThere(4));
+	}
+	
+	@Test
+	public void isDoneReturnsTrueWhileMovingSlowlyRight() {
+		when(frontLeft.getEncPosition()).thenReturn(1);
+		when(frontRight.getEncPosition()).thenReturn(1);
+		when(backLeft.getEncPosition()).thenReturn(-1);
+		when(backRight.getEncPosition()).thenReturn(-1);
+
+		assertTrue(drive.isThere(4));
+	}
+	
+	@Test
+	public void isDoneReturnsFalseWhileMovingQuicklyForward() {
+		when(frontLeft.getEncVelocity()).thenReturn(100);
+		when(frontRight.getEncVelocity()).thenReturn(-100);
+		when(backLeft.getEncVelocity()).thenReturn(100);
+		when(backRight.getEncVelocity()).thenReturn(-100);
+
+		assertFalse(drive.isThere(4));
+	}
+	
+	@Test
+	public void isDoneReturnsFalseWhileMovingQuicklyBackward() {
+		when(frontLeft.getEncVelocity()).thenReturn(-100);
+		when(frontRight.getEncVelocity()).thenReturn(100);
+		when(backLeft.getEncVelocity()).thenReturn(-100);
+		when(backRight.getEncVelocity()).thenReturn(100);
+
+		assertFalse(drive.isThere(4));
+	}
+	
+	@Test
+	public void isDoneReturnsFalseWhileMovingQuicklyLeft() {
+		when(frontLeft.getEncVelocity()).thenReturn(-100);
+		when(frontRight.getEncVelocity()).thenReturn(-100);
+		when(backLeft.getEncVelocity()).thenReturn(100);
+		when(backRight.getEncVelocity()).thenReturn(100);
+
+		assertFalse(drive.isThere(4));
+	}
+	
+	@Test
+	public void isDoneReturnsFalseWhileMovingQuicklyRight() {
+		when(frontLeft.getEncVelocity()).thenReturn(100);
+		when(frontRight.getEncVelocity()).thenReturn(100);
+		when(backLeft.getEncVelocity()).thenReturn(-100);
+		when(backRight.getEncVelocity()).thenReturn(-100);
+
+		assertFalse(drive.isThere(4));
+	}
+	
+	@Test
+	public void isDoneReturnsFalseWhileMovingDiagionaly() {
+		when(frontLeft.getEncVelocity()).thenReturn(0);
+		when(frontRight.getEncVelocity()).thenReturn(100);
+		when(backLeft.getEncVelocity()).thenReturn(100);
+		when(backRight.getEncVelocity()).thenReturn(0);
+
+		assertFalse(drive.isThere(4));
+	}
+	
+	@Test
+	public void isDoneReturnsTrueWhileMovingSlowlyDiagionaly() {
+		when(frontLeft.getEncVelocity()).thenReturn(0);
+		when(frontRight.getEncVelocity()).thenReturn(1);
+		when(backLeft.getEncVelocity()).thenReturn(1);
+		when(backRight.getEncVelocity()).thenReturn(0);
+
+		assertTrue(drive.isThere(4));
 	}
 	
 	private void verifyTalons(double frontLeft, double frontRight, double backLeft, double backRight) {

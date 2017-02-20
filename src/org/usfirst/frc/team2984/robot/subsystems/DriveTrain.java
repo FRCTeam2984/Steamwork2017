@@ -117,23 +117,17 @@ public class DriveTrain extends Subsystem {
 		this.backRight.setEncPosition(0);
 	}
 	
-	public boolean isThere(double x, double y, double epsilon){
-		int fl = this.frontLeft.getEncPosition();
-		int fr = -this.frontLeft.getEncPosition();
-		int bl = this.frontLeft.getEncPosition();
-		int br = -this.frontLeft.getEncPosition();
-		double xTicks = x*this.ticksPerInch;
-		double yTicks = y*this.ticksPerInch;
-		fl -= xTicks + yTicks;
-		fr -= -xTicks + yTicks;
-		bl -= -xTicks + yTicks;
-		br -= xTicks + yTicks;
-//		fl = Math.abs(fl);
-//		fr = Math.abs(fr);
-//		bl = Math.abs(bl);
-//		br = Math.abs(br);
-		int max = Math.max(Math.max(fl, fr), Math.max(bl, br));
-		return max > -epsilon;
+	public boolean isThere(double epsilon){
+		int fl = this.frontLeft.getEncVelocity();
+		int fr = this.frontRight.getEncVelocity();
+		int bl = this.backRight.getEncVelocity();
+		int br = this.backLeft.getEncVelocity();
+		fl = Math.abs(fl);
+		fr = Math.abs(fr);
+		bl = Math.abs(bl);
+		br = Math.abs(br);
+		double max = getMaximumValue(fl, fr, bl, br);
+		return max < epsilon;
 	}
 	
 	@Override

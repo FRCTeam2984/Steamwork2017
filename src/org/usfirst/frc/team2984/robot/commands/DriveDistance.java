@@ -40,12 +40,11 @@ public class DriveDistance extends Command {
         	this.reset = false;
     	}
     	this.driveTrain.moveDistance(this.distanceRight, this.distanceForward);
-    	SmartDashboard.putBoolean("WHasFinished?", this.driveTrain.isThere(distanceRight, distanceForward, 1000));
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return this.driveTrain.isThere(distanceRight, distanceForward, 1000);
+        return this.driveTrain.isThere(100);
     }
 
     // Called once after isFinished returns true
