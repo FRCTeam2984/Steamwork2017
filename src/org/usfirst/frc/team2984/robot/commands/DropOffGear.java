@@ -25,7 +25,7 @@ public class DropOffGear extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addSequential(new DriveDistance(10, 0));
-//    	addSequantial(new Rotate(30)); TODO: Add this command
+    	addSequential(new Rotate(Math.PI/6));
     	addSequential(new AlignToThePeg());
     	addSequential(new OpenGearGrabber());
     	addParallel(new KeepGearGrabberOpen());
