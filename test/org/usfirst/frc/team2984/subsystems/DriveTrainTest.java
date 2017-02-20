@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.HLUsageReporting;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2984.robot.util.Motion;
-import org.usfirst.frc.team2984.robot.util.Settings;
 import org.usfirst.frc.team2984.util.DummyReporter;
 
 import com.ctre.CANTalon;
@@ -19,13 +19,15 @@ public class DriveTrainTest {
 	private CANTalon frontRight;
 	private CANTalon backLeft;
 	private CANTalon backRight;
-	private double speed = Settings.getInstance().getDouble("DriveMotorRate");
+	private double speed = RobotMap.DRIVE_TRAIN_MAX_SPEED;
+	
+	static {
+		// prevents exception during test
+		HLUsageReporting.SetImplementation(new DummyReporter());
+	}
 	
 	@Before
 	public void before() {
-		// prevents exception during test
-		HLUsageReporting.SetImplementation(new DummyReporter());
-		
 		frontLeft = mock(CANTalon.class);
 		frontRight = mock(CANTalon.class);
 		backLeft = mock(CANTalon.class);

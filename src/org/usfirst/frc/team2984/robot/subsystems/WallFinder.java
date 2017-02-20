@@ -2,7 +2,6 @@ package org.usfirst.frc.team2984.robot.subsystems;
 
 import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.util.DistanceSensor;
-import org.usfirst.frc.team2984.robot.util.Settings;
 import org.usfirst.frc.team2984.robot.util.Wall;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -27,7 +26,7 @@ public class WallFinder extends Subsystem {
 		}
 		DistanceSensor left = new DistanceSensor(RobotMap.leftDistanceSensorPort);
 		DistanceSensor right = new DistanceSensor(RobotMap.rightDistanceSensorPort);
-		wallFinder = new WallFinder(left, right, Settings.getInstance().getDouble("SensorWidth"));
+		wallFinder = new WallFinder(left, right, RobotMap.SENSOR_WIDTH);
 		return wallFinder;
 	}
 	

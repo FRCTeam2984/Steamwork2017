@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2984.robot.util;
 
+import org.usfirst.frc.team2984.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
@@ -24,7 +26,8 @@ public class DistanceSensor {
 	 * @return
 	 */
 	public double getDistanceInInches(){
-		return this.sensor.getVoltage()*Settings.getInstance().getDouble("SensorVtoInCalibration");
+		return this.sensor.getVoltage()*RobotMap.SENSOR_V_TO_IN_CALIBRATION;
+//		return this.sensor.getVoltage()*Settings.getInstance().getDouble("SensorVtoInCalibration");
 	}
 	
 }

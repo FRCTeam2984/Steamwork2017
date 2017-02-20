@@ -3,7 +3,6 @@ package org.usfirst.frc.team2984.robot.subsystems;
 import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.commands.RemoteJoystickDrive;
 import org.usfirst.frc.team2984.robot.util.Motion;
-import org.usfirst.frc.team2984.robot.util.Settings;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
@@ -27,8 +26,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveTrain extends Subsystem {
 	private static DriveTrain instance;
 	
-	private double speed = Settings.getInstance().getDouble("DriveTrainMaxSpeed");
-	private double ticksPerInch = Settings.getInstance().getDouble("DriveTrainTickToInch");
+	private double speed = RobotMap.DRIVE_TRAIN_MAX_SPEED;
+	private double ticksPerInch = RobotMap.DRIVE_TRAIN_TICK_TO_INCH;
 	private CANTalon frontLeft;
 	private CANTalon frontRight;
 	private CANTalon backLeft;
@@ -147,13 +146,11 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	private void configureTalonsSpeed(){
-		SmartDashboard.putString("WMode", "SPEED");
+		double f = RobotMap.SPEED_F;
+		double p = RobotMap.SPEED_P;
+		double i = RobotMap.SPEED_I;
+		double d = RobotMap.SPEED_D;
 
-		Settings settings = Settings.getInstance();
-		double f = settings.getDouble("SpeedF");
-		double p = settings.getDouble("SpeedP");
-		double i = settings.getDouble("SpeedI");
-		double d = settings.getDouble("SpeedD");
 		updatePID(0.12, 0.12, i, d);
 		this.frontLeft.changeControlMode(TalonControlMode.Speed);
 		this.frontRight.changeControlMode(TalonControlMode.Speed);
@@ -177,12 +174,11 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	private void configureTalonsDistance(){
+		double f = RobotMap.DISTANCE_F;
+		double p = RobotMap.DISTANCE_P;
+		double i = RobotMap.DISTANCE_I;
+		double d = RobotMap.DISTANCE_D;
 		
-		Settings settings = Settings.getInstance();
-		double f = settings.getDouble("DistanceF");
-		double p = settings.getDouble("DistanceP");
-		double i = settings.getDouble("DistanceI");
-		double d = settings.getDouble("DistanceD");
 		updatePID(f, p, i, d);
 		SmartDashboard.putString("WMode", "DIST" + p + "," + f);
 		this.frontLeft.changeControlMode(TalonControlMode.Position);
@@ -239,24 +235,4 @@ public class DriveTrain extends Subsystem {
 	public State getState(){
 		return this.driveState;
 	}
-	
-	// from Google Drive
-//	private static void configureTalon(CANTalon talon, boolean reverse){
-//		//Setup Sensor
-//		talon.setFeedbackDevice(FeedbackDevice.QuadEncoder); //CRT Mag Encoder Relative if 1 turn
-//		talon.reverseSensor(reverse);
-//		talon.configEncoderCodesPerRev(1000); //number of revs per turn, 1000
-//		
-//		//Limit the max current, this case to [+12, -12]
-//		talon.configNominalOutputVoltage(+0.0f, -0.0f);
-//        talon.configPeakOutputVoltage(+12.0f, -12.0f);
-//		
-//        //Set up the PID values
-//        talon.setProfile(0);
-//        talon.setF(0.1097); // 0.1597
-//        talon.setP(0.12); // 0.42
-//        talon.setI(0); 
-//        talon.setD(0);
-//        talon.changeControlMode(TalonControlMode.Speed);
-//	}
 }
