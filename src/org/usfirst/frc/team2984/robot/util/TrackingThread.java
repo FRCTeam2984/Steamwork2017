@@ -40,15 +40,8 @@ public class TrackingThread extends Thread {
 	CvSource outputStream ;
 	
 	public TrackingThread(){
-//		Settings settings = Settings.getInstance();
 		minc = new Scalar(RobotMap.HUE_LOW, RobotMap.SATURATION_LOW, RobotMap.VALUE_LOW);
-//		minc = new Scalar(settings.getInt("HueLow"),
-//				settings.getInt("SaturationLow"), settings.getInt("ValueLow"));
 		maxc = new Scalar(RobotMap.HUE_HIGH, RobotMap.SATURATION_HIGH, RobotMap.VALUE_HIGH);
-//		maxc = new Scalar(settings.getInt("HueHigh"),
-//				settings.getInt("SaturationHigh"), settings.getInt("ValueHigh"));
-//		minc = new Scalar(40, 0, 0);
-//		maxc = new Scalar(120, 255, 255);
 		this.shouldProcess = true;
 		this.hasTrack = false;
 		this.offsetAngle = -1;

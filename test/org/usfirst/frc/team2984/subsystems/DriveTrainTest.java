@@ -19,14 +19,15 @@ public class DriveTrainTest {
 	private CANTalon frontRight;
 	private CANTalon backLeft;
 	private CANTalon backRight;
-//	private double speed = Settings.getInstance().getDouble("DriveTrainMaxSpeed");
 	private double speed = RobotMap.DRIVE_TRAIN_MAX_SPEED;
+	
+	static {
+		// prevents exception during test
+		HLUsageReporting.SetImplementation(new DummyReporter());
+	}
 	
 	@Before
 	public void before() {
-		// prevents exception during test
-		HLUsageReporting.SetImplementation(new DummyReporter());
-		
 		frontLeft = mock(CANTalon.class);
 		frontRight = mock(CANTalon.class);
 		backLeft = mock(CANTalon.class);

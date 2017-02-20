@@ -28,7 +28,6 @@ public class DriveTrain extends Subsystem {
 	
 	private double speed = RobotMap.DRIVE_TRAIN_MAX_SPEED;
 	private double ticksPerInch = RobotMap.DRIVE_TRAIN_TICK_TO_INCH;
-//	private double ticksPerInch = Settings.getInstance().getDouble("DriveTrainTickToInch");
 	private CANTalon frontLeft;
 	private CANTalon frontRight;
 	private CANTalon backLeft;
@@ -147,14 +146,9 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	private void configureTalonsSpeed(){
-//		Settings settings = Settings.getInstance();
-//		double f = settings.getDouble("SpeedF");
 		double f = RobotMap.SPEED_F;
-//		double p = settings.getDouble("SpeedP");
 		double p = RobotMap.SPEED_P;
-//		double i = settings.getDouble("SpeedI");
 		double i = RobotMap.SPEED_I;
-//		double d = settings.getDouble("SpeedD");
 		double d = RobotMap.SPEED_D;
 
 		updatePID(0.12, 0.12, i, d);
@@ -180,14 +174,9 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	private void configureTalonsDistance(){
-//		Settings settings = Settings.getInstance();
-//		double f = settings.getDouble("DistanceF");
 		double f = RobotMap.DISTANCE_F;
-//		double p = settings.getDouble("DistanceP");
 		double p = RobotMap.DISTANCE_P;
-//		double i = settings.getDouble("DistanceI");
 		double i = RobotMap.DISTANCE_I;
-//		double d = settings.getDouble("DistanceD");
 		double d = RobotMap.DISTANCE_D;
 		
 		updatePID(f, p, i, d);
@@ -246,24 +235,4 @@ public class DriveTrain extends Subsystem {
 	public State getState(){
 		return this.driveState;
 	}
-	
-	// from Google Drive
-//	private static void configureTalon(CANTalon talon, boolean reverse){
-//		//Setup Sensor
-//		talon.setFeedbackDevice(FeedbackDevice.QuadEncoder); //CRT Mag Encoder Relative if 1 turn
-//		talon.reverseSensor(reverse);
-//		talon.configEncoderCodesPerRev(1000); //number of revs per turn, 1000
-//		
-//		//Limit the max current, this case to [+12, -12]
-//		talon.configNominalOutputVoltage(+0.0f, -0.0f);
-//        talon.configPeakOutputVoltage(+12.0f, -12.0f);
-//		
-//        //Set up the PID values
-//        talon.setProfile(0);
-//        talon.setF(0.1097); // 0.1597
-//        talon.setP(0.12); // 0.42
-//        talon.setI(0); 
-//        talon.setD(0);
-//        talon.changeControlMode(TalonControlMode.Speed);
-//	}
 }
