@@ -130,7 +130,7 @@ public class TrackingThread extends Thread {
 	 */
 	private double distance(double hight){
 		//TODO Get Real Values
-		double verticalAngle = hight/240*Math.PI/4;
+		double verticalAngle = hight/240*(35/180D*Math.PI);
 		return 5/Math.tan(verticalAngle);
 	}
 	
