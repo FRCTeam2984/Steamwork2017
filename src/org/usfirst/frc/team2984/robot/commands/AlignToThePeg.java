@@ -26,6 +26,12 @@ public class AlignToThePeg extends Command {
     	
     	requires(driveTrain);
     }
+    
+    public AlignToThePeg(VisionTracker tracker, DriveTrain driveTrain){
+    	this.tracker = tracker;
+    	this.driveTrain = driveTrain;
+    	this.done = false;
+    }
 
     // Called just before this Command runs the first time
     protected void initialize() {
@@ -37,7 +43,7 @@ public class AlignToThePeg extends Command {
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+    public void execute() {
 //		Robot.mecanumDriveTrain.move(0, 1, 0);
     	this.done = true;
     	if(this.tracker.hasTrack()){
@@ -60,13 +66,13 @@ public class AlignToThePeg extends Command {
     			rotation = robotAngle;
     			this.done = false;
     		}
-    		SmartDashboard.putNumber("Distance", forward);
-    		SmartDashboard.putNumber("angle", angle);
-    		SmartDashboard.putNumber("robotAngle", robotAngle);
+//    		SmartDashboard.putNumber("Distance", forward);
+//    		SmartDashboard.putNumber("angle", angle);
+//    		SmartDashboard.putNumber("robotAngle", robotAngle);
 
     		driveTrain.move(new Motion(right, forward, rotation));
     	} else {
-    		SmartDashboard.putNumber("Drive?", -1);
+//    		SmartDashboard.putNumber("Drive?", -1);
 
     		driveTrain.move(new Motion(0, 0, 0));
 			this.done = false;
