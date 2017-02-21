@@ -55,6 +55,8 @@ public class OI {
 	Button openGearGrabber = new JoystickButton(stick, 4);
 	Button driveForward = new JoystickButton(stick, 5);
 	Button alignToPeg = new JoystickButton(stick, 6);
+	Button drop = new JoystickButton(stick, 8);
+
 	
 	/**
 	 * initializes the behaviors for each input
@@ -66,5 +68,6 @@ public class OI {
 		openGearGrabber.whileHeld(new OpenGearGrabber());
 		driveForward.whenPressed(new DriveDistance(0, 18));
 		alignToPeg.whenPressed(new AlignToThePeg());
+		drop.whileHeld(new Rappel());
 	}
 }
