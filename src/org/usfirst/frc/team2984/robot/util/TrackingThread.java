@@ -166,7 +166,7 @@ public class TrackingThread extends Thread {
         outputStream.putFrame(output);
         int i = 0;
         while(i < contours.size()){
-        	if(Imgproc.contourArea(contours.get(i)) < 5){
+        	if(Imgproc.contourArea(contours.get(i)) < 40){
         		contours.remove(i);
         		continue;
         	}

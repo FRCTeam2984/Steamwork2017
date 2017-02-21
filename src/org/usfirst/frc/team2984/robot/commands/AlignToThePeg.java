@@ -63,7 +63,7 @@ public class AlignToThePeg extends Command {
     			this.done = false;
     		}
     		if(Math.abs(robotAngle) > 0.1){
-    			rotation = robotAngle;
+    			rotation = -robotAngle;
     			this.done = false;
     		}
 //    		SmartDashboard.putNumber("Distance", forward);

@@ -60,4 +60,32 @@ public class AlignToThePegTest {
 		assertEquals(compare, argument.getValue());
 	}
 	
+	@Test
+	public void testMotionGiven15DegreeAngleAndFarAway() {
+		when(tracker.hasTrack()).thenReturn(true);
+		when(tracker.getDistance()).thenReturn(126.67144846034347);
+		when(tracker.getAngle()).thenReturn(-0.5351050734609452);
+		when(tracker.robotAngle()).thenReturn(0.66875);
+		Motion compare = new Motion(0, 0.5, -0.66875);
+		command.execute();
+		ArgumentCaptor<Motion> argument = ArgumentCaptor.forClass(Motion.class);
+		verify(driveTrain).move(argument.capture());;
+		assertEquals(compare, argument.getValue());
+	}
+	
+	@Test
+	public void testMotionGiven15DegreeAngleAndClose() {
+		when(tracker.hasTrack()).thenReturn(true);
+		when(tracker.getDistance()).thenReturn(52.22553650759857);
+		when(tracker.getAngle()).thenReturn(-0.0);
+		when(tracker.robotAngle()).thenReturn(0.70625);
+		Motion compare = new Motion(0, 0.5, -0.70625);
+		command.execute();
+		ArgumentCaptor<Motion> argument = ArgumentCaptor.forClass(Motion.class);
+		verify(driveTrain).move(argument.capture());;
+		assertEquals(compare, argument.getValue());
+	}
+	
+	
+	
 }
