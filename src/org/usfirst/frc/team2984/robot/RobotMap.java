@@ -17,8 +17,8 @@ public class RobotMap {
 	public static int leftDistanceSensorPort; // TODO: set value
 	public static int rightDistanceSensorPort; // TODO: set value
 	
-	public static final double DOCKING_DISTANCE_THRESHOLD = 24D; // in inches
-	public static final double DOCKING_ANGLE_THRESHOLD = 0.55;
+	public static final double DOCKING_DISTANCE_THRESHOLD = 34D; // in inches
+	public static final double DOCKING_ANGLE_THRESHOLD = 0.1;
 	public static final double DRIVE_TRAIN_MAX_SPEED = 1400.0;
 	public static final double SENSOR_WIDTH = 1D;//in inches
 	public static final double DRIVE_TRAIN_TICK_TO_INCH_FORWARD = 1215D; //Ticks Per Inch Forward
@@ -26,12 +26,12 @@ public class RobotMap {
 	public static final double DRIVE_TRAIN_TICK_TO_RADIAN = 1000D; //Ticks Per Radian
 	public static final double SENSOR_V_TO_IN_CALIBRATION = 1D;
 	
-	public static final int HUE_LOW = 65;
-	public static final int SATURATION_LOW = 57;
-	public static final int VALUE_LOW = 34;
-	public static final int HUE_HIGH = 115;
-	public static final int SATURATION_HIGH = 207;
-	public static final int VALUE_HIGH = 179;
+	public static final int HUE_LOW = 58;
+	public static final int SATURATION_LOW = 144;
+	public static final int VALUE_LOW = 133;
+	public static final int HUE_HIGH = 133;
+	public static final int SATURATION_HIGH = 255;
+	public static final int VALUE_HIGH = 255;
 	
 	public static final double SPEED_F = 0.12;
 	public static final double SPEED_P = 0.12;

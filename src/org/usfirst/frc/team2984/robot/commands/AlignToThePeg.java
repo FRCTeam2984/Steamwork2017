@@ -59,16 +59,17 @@ public class AlignToThePeg extends Command {
     			this.done = false;
     		}
     		if(Math.abs(angle) > RobotMap.DOCKING_ANGLE_THRESHOLD){
-    			right += angle/Math.abs(angle)*0.5;
+    			right += angle*2;
     			this.done = false;
     		}
     		if(Math.abs(robotAngle) > 0.1){
-    			rotation = -robotAngle;
+    			rotation = robotAngle/2;
     			this.done = false;
     		}
-//    		SmartDashboard.putNumber("Distance", forward);
-//    		SmartDashboard.putNumber("angle", angle);
-//    		SmartDashboard.putNumber("robotAngle", robotAngle);
+    		SmartDashboard.putNumber("WDistance", forward);
+    		SmartDashboard.putNumber("Wangle", angle);
+    		SmartDashboard.putNumber("WrobotAngle", robotAngle);
+    		SmartDashboard.putNumber("Right", angle/Math.abs(angle)*0.5);
 
     		driveTrain.move(new Motion(right, forward, rotation));
     	} else {

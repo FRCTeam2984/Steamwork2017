@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TrackingThread extends Thread {
 
-	private static final double NORMAL_WIDTH = 1.65;
+	private static final double NORMAL_WIDTH = 1.43;
 	
 	private Rect left;
 	private Rect right;
@@ -58,7 +58,7 @@ public class TrackingThread extends Thread {
 	public void run() {
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
         camera.setResolution(320, 240);
-        camera.setExposureManual(1);
+        camera.setExposureManual(0);
         CvSink cvSink = CameraServer.getInstance().getVideo();
         outputStream = CameraServer.getInstance().putVideo("Blur", 320, 240);
 
