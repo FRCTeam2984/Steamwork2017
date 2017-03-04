@@ -1,26 +1,22 @@
 package org.usfirst.frc.team2984.robot.util;
 
-import static org.opencv.core.Core.inRange;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import org.opencv.calib3d.Calib3d;
 import org.opencv.core.Core;
+import org.opencv.core.Core.MinMaxLocResult;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfDouble;
-import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.MatOfPoint3f;
 import org.opencv.core.Point;
 import org.opencv.core.Point3;
-import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.core.TermCriteria;
-import org.opencv.core.Core.MinMaxLocResult;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team2984.robot.RobotMap;
 
@@ -32,15 +28,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TrackingThread extends Thread {
 
-	private static final double NORMAL_WIDTH = 1.43;
-	
-	private Rect left;
-	private Rect right;
-	private Mat output;
-	private Mat processingMat;
-	private Mat tmp;
     private Scalar minc;
-    private Scalar maxc;
 	
 	private volatile boolean shouldProcess;
 	private volatile boolean hasTrack;
@@ -50,7 +38,6 @@ public class TrackingThread extends Thread {
 	
 	public TrackingThread(){
 		minc = new Scalar(RobotMap.HUE_LOW, RobotMap.SATURATION_LOW, RobotMap.VALUE_LOW);
-		maxc = new Scalar(RobotMap.HUE_HIGH, RobotMap.SATURATION_HIGH, RobotMap.VALUE_HIGH);
 		ArrayList<Point3> objectPoints = new ArrayList<Point3>(8);
 		
 		//Top Left -> Top Right -> Bottom Left -> Bottom Right
@@ -71,9 +58,7 @@ public class TrackingThread extends Thread {
 		this.shouldProcess = true;
 		this.hasTrack = false;
 		this.peg = new Peg(0,0,0,0,0,0);
-		this.output = new Mat();
-		this.tmp = new Mat();
-	}
+		}
 	
 	/**
 	 * Starts the camera capture, sets resolution and exposure, and starts processing the video.
@@ -87,7 +72,6 @@ public class TrackingThread extends Thread {
         outputStream = CameraServer.getInstance().putVideo("Blur", 320, 240);
 
         Mat source = new Mat();
-        processingMat = new Mat();
 
         while(true) {
 
