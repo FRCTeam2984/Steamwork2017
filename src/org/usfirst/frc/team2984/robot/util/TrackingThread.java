@@ -142,10 +142,10 @@ public class TrackingThread extends Thread {
 	 */
 	public Peg solvePnP(Point[] points){
 		Mat intrinsics = Mat.eye(3, 3, CvType.CV_32F);
-		intrinsics.put(0, 0, 386.3);
-		intrinsics.put(1, 1, 515.066666667);
-		intrinsics.put(0, 2, 320 / 2);
-		intrinsics.put(1, 2, 240 / 2);
+		intrinsics.put(0, 0, 335.322088882); //f_x
+		intrinsics.put(1, 1, 340.496899735); //f_y
+		intrinsics.put(0, 2, 162.390476354); //c_x
+		intrinsics.put(1, 2, 123.955427542); //c_y
 		MatOfPoint2f points2dMat = new MatOfPoint2f( points);
 
 		Mat rvec = new Mat();
