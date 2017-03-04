@@ -22,16 +22,8 @@ public class VisionTracker{
 		this.tracker.setTracking(should);
 	}
 	
-	public double getAngle(){
-		return this.tracker.getAngle();
-	}
-	
-	public double getDistance(){
-		return this.tracker.getDistance();
-	}
-	
-	public double robotAngle(){
-		return this.tracker.robotAngle();
+	public Peg getPeg(){
+		return this.tracker.getPeg();
 	}
 	
 	public boolean hasTrack(){

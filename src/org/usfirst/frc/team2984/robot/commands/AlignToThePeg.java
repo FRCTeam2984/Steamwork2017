@@ -3,6 +3,7 @@ package org.usfirst.frc.team2984.robot.commands;
 import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2984.robot.util.Motion;
+import org.usfirst.frc.team2984.robot.util.Peg;
 import org.usfirst.frc.team2984.robot.util.VisionTracker;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -47,10 +48,11 @@ public class AlignToThePeg extends Command {
 //		Robot.mecanumDriveTrain.move(0, 1, 0);
     	this.done = true;
     	if(this.tracker.hasTrack()){
-    		double dist = this.tracker.getDistance();
-    		double angle = this.tracker.getAngle();
+    		Peg peg = tracker.getPeg();
+    		double dist = peg.getZ();
+    		double angle = peg.getYaw();
     		angle = (!Double.isNaN(angle) && Math.abs(angle) > 0.45) ? -angle/2 : 0;
-    		double robotAngle = this.tracker.robotAngle();
+    		double robotAngle = Math.atan2(peg.getZ(), peg.getX());
     		double forward = 0;
     		double right = 0;
     		double rotation = 0;
