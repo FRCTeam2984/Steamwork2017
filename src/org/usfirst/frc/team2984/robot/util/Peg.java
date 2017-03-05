@@ -12,6 +12,7 @@ public class Peg {
 	private double yaw;
 	private double pitch;
 	private double roll;
+	private long time;
 	
 	public Peg(Mat tvec, Mat rvec){
 		this.x = tvec.get(0, 0)[0];
@@ -21,6 +22,7 @@ public class Peg {
 		this.yaw = rotations[0];
 		this.pitch = rotations[1];
 		this.roll = rotations[2];
+		this.time = System.currentTimeMillis();
 	}
 	
 	public Peg(double x, double y, double z, double yaw, double pitch, double roll){
@@ -30,6 +32,7 @@ public class Peg {
 		this.yaw = yaw;
 		this.pitch = pitch;
 		this.roll = roll;
+		this.time = System.currentTimeMillis();
 	}
 	
 	/**
@@ -97,6 +100,10 @@ public class Peg {
 
 	public double getRoll() {
 		return roll;
+	}
+	
+	public long age(){
+		return System.currentTimeMillis() - this.time;
 	}
 	
 	public String toString(){

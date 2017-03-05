@@ -24,11 +24,21 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TrackingThread extends Thread {
 
     private Scalar minc;
+    private Mat intrinsics;
+    
+    private Mat binaryValue;
+    private Mat labels = new Mat();
+    private Mat stats = new Mat();
+    private Mat centroids = new Mat();
+    private Mat corersProcessed = new Mat();
+    Mat cornersMat = new Mat();
+    private TermCriteria criteria;
 	
 	private volatile boolean shouldProcess;
 	private volatile boolean hasTrack;
@@ -36,28 +46,53 @@ public class TrackingThread extends Thread {
 	CvSource outputStream;
 	private MatOfPoint3f objectPoints;
 	
+	private Scalar circleColor;
+	
 	public TrackingThread(){
 		minc = new Scalar(RobotMap.HUE_LOW, RobotMap.SATURATION_LOW, RobotMap.VALUE_LOW);
 		ArrayList<Point3> objectPoints = new ArrayList<Point3>(8);
 		
 		//Top Left -> Top Right -> Bottom Left -> Bottom Right
-		objectPoints.add(new Point3(-5.125, 2.5, 0));
-		objectPoints.add(new Point3(-3.125, 2.5, 0));
-		objectPoints.add(new Point3(3.125, 2.5, 0));
-		objectPoints.add(new Point3(5.125, 2.5, 0));
+		double shiftX = -5-1/8D;
+		double shiftY = -2-1/2D;
+		objectPoints.add(new Point3(0 + shiftX, shiftY, 0));
+		objectPoints.add(new Point3(2+3/32D + shiftX, shiftY, 0));
+		objectPoints.add(new Point3(8+3/8D + shiftX, shiftY, 0));
+		objectPoints.add(new Point3(10+11/32D + shiftX, shiftY, 0));
 //		objectPoints.add(new Point3(-4.125, 0, 0));
 //		objectPoints.add(new Point3(4.125, 0, 0));
-		objectPoints.add(new Point3(-5.125, -2.5, 0));
-		objectPoints.add(new Point3(-3.125, -2.5, 0));
-		objectPoints.add(new Point3(3.125, -2.5, 0));
-		objectPoints.add(new Point3(5.125, -2.5, 0));
+		objectPoints.add(new Point3(0 + shiftX, -5-3/8D + shiftY, 0));
+		objectPoints.add(new Point3(2 + shiftX, -5-1/4D + shiftY, 0));
+		objectPoints.add(new Point3(8+3/8D + shiftX, -5 + shiftY, 0));
+		objectPoints.add(new Point3(10+11/32D + shiftX, -5 + shiftY, 0));
+		
+//		objectPoints.add(new Point3(-5.125, 2.5, 0));
+//		objectPoints.add(new Point3(-3.125, 2.5, 0));
+//		objectPoints.add(new Point3(3.125, 2.5, 0));
+//		objectPoints.add(new Point3(5.125, 2.5, 0));
+////		objectPoints.add(new Point3(-4.125, 0, 0));
+////		objectPoints.add(new Point3(4.125, 0, 0));
+//		objectPoints.add(new Point3(-5.125, -2.5, 0));
+//		objectPoints.add(new Point3(-3.125, -2.5, 0));
+//		objectPoints.add(new Point3(3.125, -2.5, 0));
+//		objectPoints.add(new Point3(5.125, -2.5, 0));
 
-		Point3[] points = new Point3[4];
+		Point3[] points = new Point3[8];
 		
 		this.objectPoints = new MatOfPoint3f(objectPoints.toArray(points));
 		this.shouldProcess = true;
 		this.hasTrack = false;
 		this.peg = new Peg(0,0,0,0,0,0);
+		
+		intrinsics = Mat.eye(3, 3, CvType.CV_32F);
+		intrinsics.put(0, 0, 335.322088882); //f_x
+		intrinsics.put(1, 1, 340.496899735); //f_y
+		intrinsics.put(0, 2, 162.390476354); //c_x
+		intrinsics.put(1, 2, 123.955427542); //c_y
+		
+		this.binaryValue = new Mat();
+		criteria = new TermCriteria(TermCriteria.EPS | TermCriteria.MAX_ITER, 30, 0.1);
+		circleColor = new Scalar(255);
 		}
 	
 	/**
@@ -86,7 +121,9 @@ public class TrackingThread extends Thread {
         			Thread.sleep(10);
         		}
         	} catch(Exception e){
+        		DriverStation.reportError(e.toString(), false);
         		SmartDashboard.putString("Error", e.getStackTrace()[0] +  "");
+        		SmartDashboard.putString("Error String", e +  "");
         	}
         }
 	}
@@ -99,6 +136,7 @@ public class TrackingThread extends Thread {
 		List<Point> points = this.findRectanglePoints(source);
 		if(points.size() != 8){
 			this.hasTrack = false;
+			return;
 		}
 		this.hasTrack = true;
 		points.sort(new Comparator<Point>(){
@@ -125,27 +163,25 @@ public class TrackingThread extends Thread {
 	 * @return the peg corresponding to the projected points.
 	 */
 	public Peg solvePnP(Point[] points){
-		Mat intrinsics = Mat.eye(3, 3, CvType.CV_32F);
-		intrinsics.put(0, 0, 335.322088882); //f_x
-		intrinsics.put(1, 1, 340.496899735); //f_y
-		intrinsics.put(0, 2, 162.390476354); //c_x
-		intrinsics.put(1, 2, 123.955427542); //c_y
+		
 		MatOfPoint2f points2dMat = new MatOfPoint2f( points);
 
 		Mat rvec = new Mat();
 		Mat tvec = new Mat();
 		Calib3d.solvePnP(objectPoints, points2dMat, intrinsics, new MatOfDouble(), rvec, tvec, false, Calib3d.CV_EPNP);
 		Mat cameraAngle = Mat.eye(3, 3, CvType.CV_64F);
-		cameraAngle.put(0, 0, 0.9848);
-		cameraAngle.put(0, 2, -0.1737);
-		cameraAngle.put(2, 0, 0.1737);
-		cameraAngle.put(2, 2, 0.9848);
+		cameraAngle.put(0, 0, 0.9902);
+		cameraAngle.put(0, 2, -0.1391);
+		cameraAngle.put(2, 0, 0.1391);
+		cameraAngle.put(2, 2, 0.9902);
 		Mat rotatedT = new Mat();
 		Core.gemm(cameraAngle, tvec, 1, new Mat(0, 0, CvType.CV_64F), 0, rotatedT);
 		tvec.release();
 		Peg p = new Peg(rotatedT, rvec);
 		rotatedT.release();
 		rvec.release();
+		points2dMat.release();
+		cameraAngle.release();
 		return p;
 
 	}
@@ -173,21 +209,21 @@ public class TrackingThread extends Thread {
         Imgproc.cvtColor(source, source, Imgproc.COLOR_BGR2HSV);
         List<Mat> hsv = new ArrayList<Mat>();
         Core.split(source, hsv);
+        hsv.get(0).release();
+        hsv.get(1).release();
         Mat value = hsv.get(2);
-        Mat binaryValue = new Mat();
-        Imgproc.threshold(value, binaryValue, minc.val[2], 255, Imgproc.THRESH_BINARY);
-        this.dialateAndMask(value, binaryValue, 10);
+        Scalar meanColor = Core.mean(value);
+        Imgproc.threshold(value, binaryValue, Math.max(minc.val[2]*meanColor.val[0]/100, minc.val[2]), 255, Imgproc.THRESH_BINARY);
+        this.dialateAndMask(value, binaryValue, 12);
+        value.copyTo(source);
         //2.
-        Mat cornersMat = new Mat();
         Imgproc.cornerMinEigenVal(value, cornersMat, 4, 3);
+
         //3.
 		MinMaxLocResult minMax = Core.minMaxLoc(cornersMat);
-        Imgproc.threshold(cornersMat, cornersMat, minMax.maxVal/4, 255, Imgproc.THRESH_BINARY);
+        Imgproc.threshold(cornersMat, cornersMat, minMax.maxVal*2/9, 255, Imgproc.THRESH_BINARY);
         //4.
-        Mat labels = new Mat();
-        Mat stats = new Mat();
-        Mat centroids = new Mat();
-        Mat corersProcessed = new Mat();
+        
         cornersMat.convertTo(corersProcessed, CvType.CV_8U);
         Imgproc.connectedComponentsWithStats(corersProcessed, labels, stats, centroids);
         //5.
@@ -200,7 +236,6 @@ public class TrackingThread extends Thread {
         }
         MatOfPoint2f corners = new MatOfPoint2f(centroidsArray);
         //6.
-        TermCriteria criteria = new TermCriteria(TermCriteria.EPS | TermCriteria.MAX_ITER, 30, 0.1);
         Imgproc.cornerSubPix(value, corners, new Size(5,5), new Size(-1,-1), criteria);
         //7.
         Point[] points = corners.toArray();
@@ -209,13 +244,20 @@ public class TrackingThread extends Thread {
         	if(point.x == 0 || point.y == 0)
         		continue;
         	if(isValZero(point, 0, 0, labels) && isValZero(point, 1, 0, labels) && isValZero(point, 0, 1, labels)
-        			&& isValZero(point, -1, 0, labels) && isValZero(point, 0, -1, labels)&&
-        			isValZero(point, 2, 0, labels) && isValZero(point, 0, 2, labels) 
-        			&& isValZero(point, -2, 0, labels) && isValZero(point, 0, -2, labels)){
+        			&& isValZero(point, -1, 0, labels) && isValZero(point, 0, -1, labels) && isValZero(point, 1, 1, labels) && isValZero(point, -1, 1, labels)
+        			&& isValZero(point, -1, -1, labels) && isValZero(point, 1, -1, labels)){
+        		continue;
+        	}
+        	if(isValZero(point, 0, 0, binaryValue)){
         		continue;
         	}
         	finalPoints.add(point);
         }
+        for(Point p : finalPoints){
+        	Imgproc.circle(source, p, 2, circleColor);
+        }
+        value.release();
+        corners.release();
         return finalPoints;
 	}
 	
@@ -254,6 +296,8 @@ public class TrackingThread extends Thread {
 		newMasked.setTo(new Scalar(minMax.minVal));
 		toMask.copyTo(newMasked, dialted);
 		newMasked.copyTo(toMask);
+		dialted.copyTo(binary);
+		dialted.release();
 		newMasked.release();
 		kernel.release();
 	}

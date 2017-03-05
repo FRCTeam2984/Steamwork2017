@@ -47,12 +47,16 @@ public class AlignToThePeg extends Command {
     public void execute() {
 //		Robot.mecanumDriveTrain.move(0, 1, 0);
     	this.done = true;
-    	if(this.tracker.hasTrack()){
-    		Peg peg = tracker.getPeg();
-    		double dist = peg.getZ();
-    		double angle = peg.getYaw();
-    		angle = (!Double.isNaN(angle) && Math.abs(angle) > 0.45) ? -angle/2 : 0;
-    		double robotAngle = Math.atan2(peg.getZ(), peg.getX());
+    	Peg p = this.tracker.getPeg();
+    	if(p == null){
+    		this.done = true;
+    		return;
+    	}
+    	if(p.age() < 200){
+    		double dist = p.getZ();
+    		double angle = Math.toDegrees(p.getYaw());
+    		double robotAngle = Math.toDegrees(Math.atan2(p.getX(), p.getZ()));
+    		System.out.println(robotAngle);
     		double forward = 0;
     		double right = 0;
     		double rotation = 0;
@@ -60,19 +64,14 @@ public class AlignToThePeg extends Command {
     			forward = 0.5;
     			this.done = false;
     		}
-    		if(Math.abs(angle) > RobotMap.DOCKING_ANGLE_THRESHOLD){
+    		if(Math.abs(angle) > RobotMap.DOCKING_YAW_THRESHOLD){
     			right += angle*2;
     			this.done = false;
     		}
-    		if(Math.abs(robotAngle) > 0.1){
-    			rotation = robotAngle/2;
+    		if(Math.abs(robotAngle) > RobotMap.DOCKING_ROBOT_ANGLE_THRESHOLD){
+    			rotation = robotAngle/Math.abs(robotAngle)*0.5;
     			this.done = false;
     		}
-    		SmartDashboard.putNumber("WDistance", forward);
-    		SmartDashboard.putNumber("Wangle", angle);
-    		SmartDashboard.putNumber("WrobotAngle", robotAngle);
-    		SmartDashboard.putNumber("Right", angle/Math.abs(angle)*0.5);
-
     		driveTrain.move(new Motion(right, forward, rotation));
     	} else {
 //    		SmartDashboard.putNumber("Drive?", -1);

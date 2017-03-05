@@ -206,7 +206,7 @@ public class DriveTrain extends Subsystem {
 		//Limit the max current, this case to [+12, -12]
 		talon.configNominalOutputVoltage(+0.0f, -0.0f);
         talon.configPeakOutputVoltage(+12.0f, -12.0f);
-		talon.setCloseLoopRampRate(24);
+		talon.setCloseLoopRampRate(38);
         
         //Set up the PID values
         talon.setProfile(0);
