@@ -4,16 +4,14 @@ package org.usfirst.frc.team2984.robot;
 import org.usfirst.frc.team2984.robot.commands.TestAutoCommand;
 import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2984.robot.subsystems.GearGrabber;
+import org.usfirst.frc.team2984.robot.subsystems.Gyroscope;
 import org.usfirst.frc.team2984.robot.subsystems.Winch;
 import org.usfirst.frc.team2984.robot.util.VisionTracker;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,12 +22,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 	public static OI oi;
-	public static ADXRS450_Gyro gyro;
 
 	public Robot(){
 		DriveTrain.getInstance();
 		GearGrabber.getInstance();
 		Winch.getInstance();
+		Gyroscope.getInstance();
 	}
 	
 	/**
@@ -41,8 +39,6 @@ public class Robot extends IterativeRobot {
 		VisionTracker.init();
 		oi = new OI();
 		DigitalOutput output = new DigitalOutput(2);
-		gyro = new ADXRS450_Gyro();
-		gyro.calibrate();
 		output.set(true);
 	}
 
@@ -53,7 +49,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
 	}
 
 	@Override
@@ -106,7 +101,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		SmartDashboard.putString("Gyor", " " + gyro.getAngle());
 		LiveWindow.run();
 	}
 }

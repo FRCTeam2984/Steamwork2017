@@ -74,7 +74,7 @@ public class WallFinderTest {
 		when(left.getDistanceInInches()).thenReturn(1.288675135);
 		when(right.getDistanceInInches()).thenReturn(0.711324865);
 		Wall wall = wallFinder.getWall();
-		assertEquals(Math.PI/6, wall.getAngle(), 0.00001);
+		assertEquals(30, wall.getAngle(), 0.00001);
 	}
 	
 	@Test
@@ -82,6 +82,6 @@ public class WallFinderTest {
 		when(left.getDistanceInInches()).thenReturn(0.711324865);
 		when(right.getDistanceInInches()).thenReturn(1.288675135);
 		Wall wall = wallFinder.getWall();
-		assertEquals(-Math.PI/6, wall.getAngle(), 0.00001);
+		assertEquals(-30, wall.getAngle(), 0.00001);
 	}
 }

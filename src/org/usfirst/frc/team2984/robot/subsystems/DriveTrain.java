@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class DriveTrain extends Subsystem {
 	private static DriveTrain instance;
+	private Gyroscope gyro;
 	
 	private double speed = RobotMap.DRIVE_TRAIN_MAX_SPEED;
 	private double ticksPerInchForward = RobotMap.DRIVE_TRAIN_TICK_TO_INCH_FORWARD;
@@ -50,7 +51,7 @@ public class DriveTrain extends Subsystem {
 			CANTalon rearLeft = new CANTalon(RobotMap.REAR_LEFT_MOTOR_ID);
 			CANTalon rearRight = new CANTalon(RobotMap.REAR_RIGHT_MOTOR_ID);
 			
-			instance = new DriveTrain(frontLeft, frontRight, rearLeft, rearRight);
+			instance = new DriveTrain(frontLeft, frontRight, rearLeft, rearRight, Gyroscope.getInstance());
 		}
 		return instance;
 	}
@@ -61,7 +62,7 @@ public class DriveTrain extends Subsystem {
 	 * @param backLeft
 	 * @param backRight
 	 */
-	public DriveTrain(CANTalon frontLeft, CANTalon frontRight, CANTalon backLeft, CANTalon backRight) {
+	public DriveTrain(CANTalon frontLeft, CANTalon frontRight, CANTalon backLeft, CANTalon backRight, Gyroscope gyro) {
 		super("drive-train");
 		
 		this.frontLeft = frontLeft;
@@ -69,6 +70,8 @@ public class DriveTrain extends Subsystem {
 		this.backLeft = backLeft;
 		this.backRight = backRight;
 		this.switchState(State.SPEED_CONTROL);
+		
+		this.gyro = gyro;
 	}
 	
 	public void move(Motion motion) {
@@ -90,6 +93,33 @@ public class DriveTrain extends Subsystem {
 		this.frontRight.set(fr * this.speed);
 		this.backRight.set(br * this.speed);
 		this.backLeft.set(bl * this.speed);
+	}
+	
+	/**
+	 * Moves at a field-centric angle, speed and rotates the robot to a desired angle
+	 * @param angle the angle to move at
+	 * @param speed the speed [0, 1] to move at
+	 * @param rotation the rotation to rotate at, speed is not specified
+	 */
+	public void moveAtAngle(double angle, double speed, double rotation){
+		this.switchState(State.SPEED_CONTROL);
+		double fl = speed;
+		double fr = speed;
+		double bl = speed;
+		double br = speed;
+		double max = getMaximumValue(fl, fr, bl, br);
+		
+		if (max > 1) {
+			fl = fl / max;
+			fr = fr / max;
+			bl = bl / max;
+			br = br / max;
+		}
+		this.frontLeft.set(fl * this.speed);
+		this.frontRight.set(fr * this.speed);
+		this.backRight.set(br * this.speed);
+		this.backLeft.set(bl * this.speed);
+
 	}
 	
 	/**

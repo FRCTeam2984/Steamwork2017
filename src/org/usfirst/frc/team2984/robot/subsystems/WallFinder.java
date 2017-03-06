@@ -40,12 +40,9 @@ public class WallFinder extends Subsystem {
     }
     
     public Wall getWall(){
-    	double distance = this.leftSensor.getDistanceInInches();
-    	distance += this.rightSensor.getDistanceInInches();
-    	distance /= 2;
-    	double sensorDelta = this.leftSensor.getDistanceInInches() - this.rightSensor.getDistanceInInches();
-    	double angle = Math.atan(sensorDelta/this.sensorWidth);
-    	return new Wall(distance,angle);
+    	double left = this.leftSensor.getDistanceInInches();
+    	double right = this.rightSensor.getDistanceInInches();
+    	return new Wall(left, right, this.sensorWidth);
     }
 }
 

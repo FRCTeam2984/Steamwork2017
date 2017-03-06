@@ -1,18 +1,22 @@
 package org.usfirst.frc.team2984.subsystems;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
-import edu.wpi.first.wpilibj.HLUsageReporting;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2984.robot.subsystems.Gyroscope;
 import org.usfirst.frc.team2984.robot.util.Motion;
 import org.usfirst.frc.team2984.util.DummyReporter;
 
 import com.ctre.CANTalon;
+
+import edu.wpi.first.wpilibj.HLUsageReporting;
 
 public class DriveTrainTest {
 	private DriveTrain drive;
@@ -20,6 +24,7 @@ public class DriveTrainTest {
 	private CANTalon frontRight;
 	private CANTalon backLeft;
 	private CANTalon backRight;
+	private Gyroscope gyroscope;
 	private double speed = RobotMap.DRIVE_TRAIN_MAX_SPEED;
 	
 	static {
@@ -33,7 +38,8 @@ public class DriveTrainTest {
 		frontRight = mock(CANTalon.class);
 		backLeft = mock(CANTalon.class);
 		backRight = mock(CANTalon.class);
-		drive = new DriveTrain(frontLeft, frontRight, backLeft, backRight);
+		gyroscope = mock(Gyroscope.class);
+		drive = new DriveTrain(frontLeft, frontRight, backLeft, backRight, gyroscope);
 	}
 	
 	@Test
@@ -179,10 +185,19 @@ public class DriveTrainTest {
 		assertTrue(drive.isThere(4));
 	}
 	
+	@Test
+	public void movesForwardSlowlyWhenGyroAngleIsZeroRobotAngleIsZeroAndRotationIsZero() {
+		when(gyroscope.getAngle()).thenReturn(0D);
+		drive.moveAtAngle(0, 1, 0);
+
+		verifyTalons(1, 1, 1, 1);
+	}
+	
 	private void verifyTalons(double frontLeft, double frontRight, double backLeft, double backRight) {
 		verify(this.frontLeft).set(frontLeft * speed);
 		verify(this.frontRight).set(frontRight * speed);
 		verify(this.backLeft).set(backLeft * speed);
 		verify(this.backRight).set(backRight * speed);
 	}
+	
 }

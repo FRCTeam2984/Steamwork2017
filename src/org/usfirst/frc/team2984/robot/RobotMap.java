@@ -55,5 +55,7 @@ public class RobotMap {
 	public static final double GEAR_GRABBER_CLOSE = 0;
 	public static final double GEAR_GRABBER_OPEN = 600;
 	public static final double GEAR_GRABBER_DELTA = 50;
+	
+	public static final double ROBOT_START_ANGLE = 0;
 
 }
