@@ -2,7 +2,7 @@ package org.usfirst.frc.team2984.robot.util;
 
 import java.awt.geom.Point2D;
 
-import org.usfirst.frc.team2984.robot.RobotMap;
+import org.opencv.core.Rect;
 
 /**
  * A rectangular vision target, representing either an angled or head-on orientation. Use
@@ -26,6 +26,48 @@ public class VisionTarget {
 		this.offset = offset;
 		this.width = width;
 		this.height = height;
+	}
+	
+	/**
+	 * A rectangular vision target, representing either an angled or head-on orientation.
+	 * Units are pixels.
+	 * 
+	 * @param rectA one of the two vision rectangles
+	 * @param rectB the other vision rectangle
+	 */
+	public VisionTarget(Rect rectA, Rect rectB, CameraSpecification camera){
+		Rect left = rectA;
+		Rect right = rectB;
+		if(rectA.x > rectB.x){
+			left = right;
+			right = rectA;
+		}
+		double width = camera.resolution.width;
+		double averageX = (left.x + right.x + left.width + right.width)/2D;
+		this.offset = averageX - width/2;
+		this.height = (left.height + right.height)/2;
+		this.width = right.x - left.x + right.width/2 + left.width/2;
+	}
+	
+	/**
+	 * A rectangular vision target, representing either an angled or head-on orientation.
+	 * Units are pixels.
+	 * 
+	 * @param rectA one of the two vision rectangles
+	 * @param rectB the other vision rectangle
+	 */
+	public VisionTarget(SingleTarget rectA, SingleTarget rectB, CameraSpecification camera){
+		SingleTarget left = rectA;
+		SingleTarget right = rectB;
+		if(rectA.getX() > rectB.getX()){
+			left = right;
+			right = rectA;
+		}
+		double width = camera.resolution.width;
+		double averageX = (left.getX() + right.getX() + left.getWidth() + right.getWidth())/2D;
+		this.offset = averageX - width/2;
+		this.height = (left.getHeight() + right.getHeight())/2;
+		this.width = right.getX() - left.getX() + right.getWidth()/2 + left.getWidth()/2;
 	}
 	
 	/**
@@ -55,22 +97,19 @@ public class VisionTarget {
 	 * @return the distance to the target in inches
 	 */
 	public double getDistance(CameraSpecification camera, Dimension physicalTargetSize) {
-		double theta = Math.toRadians(camera.getAngularFieldOfView().height) / 2;
+		double theta = Math.toRadians(this.height/camera.resolution.height * camera.angularFieldOfView.height);
 		
-		return this.getVerticalFieldOfView(camera, physicalTargetSize) / (2 * Math.tan(theta));
+		return physicalTargetSize.height / Math.tan(theta);
 	}
 	
 	/**
-	 * Returns the apparent rotation of the camera, in radians.
+	 * Returns the apparent rotation of the camera, in degrees.
 	 * 
 	 * @param camera
-	 * @param physicalTargetSize the dimensions of the physical target, in inches
-	 * @return the apparent rotation of the camera about the target, in radians
+	 * @return the apparent rotation of the camera about the target, in degrees
 	 */
-	public double getRotation(CameraSpecification camera, Dimension physicalTargetSize) {
-		double distance = this.getDistance(camera,  physicalTargetSize);
-		
-		return Math.asin(this.offset / distance);
+	public double getRotation(CameraSpecification camera) {
+		return (this.offset)/camera.resolution.width*camera.angularFieldOfView.width;
 	}
 	
 	/**
@@ -117,9 +156,9 @@ public class VisionTarget {
 	 */
 	public Motion getMotion(VisionTarget target, CameraSpecification camera, Dimension targetSize) {
 		double cameraDistance = target.getDistance(camera, targetSize);
-		double cameraRotation = target.getRotation(camera, targetSize);
+		double cameraRotation = target.getRotation(camera);
 		double cameraClockAngle = target.getClockAngle(camera, targetSize);
-		double distanceThreshold = RobotMap.DOCKING_DISTANCE_THRESHOLD;
+		double distanceThreshold = 34;
 		
 		double x = Math.abs(cameraClockAngle) > 0 && cameraDistance > distanceThreshold ?
 				-Math.abs(cameraClockAngle)/cameraClockAngle * 0.2 : 0.0;
@@ -182,10 +221,7 @@ public class VisionTarget {
 		return (int) this.offset + (int) this.width + (int) this.height;
 	}
 
-	/**
-	 * @return vertical field of view, in inches
-	 */
-	private double getVerticalFieldOfView(CameraSpecification camera, Dimension objectSize) {
-		return camera.getResolution().height * objectSize.height / this.height;
+	public String toString(){
+		return "Vision Target { Height: " + this.height + ", Width: " + this.width + ", Offset: " + this.offset + "}";
 	}
 }

@@ -1,11 +1,12 @@
 package org.usfirst.frc.team2984.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.geom.Point2D;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.opencv.core.Rect;
 import org.usfirst.frc.team2984.robot.util.CameraSpecification;
 import org.usfirst.frc.team2984.robot.util.Dimension;
 import org.usfirst.frc.team2984.robot.util.Motion;
@@ -64,35 +65,35 @@ public class VisionTargetTest {
 	public void getDistanceReturnsDistanceGivenNearHeadOn() {
 		VisionTarget target = new VisionTarget(0, 50 * targetSize.width, 50 * targetSize.height);
 		
-		assertEquals(12.0711, target.getDistance(camera, targetSize), 0.0001);
+		assertEquals(9.855184, target.getDistance(camera, targetSize), 0.0001);
 	}
 	
 	@Test
 	public void getDistanceReturnsDistanceGivenFarHeadOn() {
 		VisionTarget target = new VisionTarget(0, 5 * targetSize.width, 5 * targetSize.height);
 		
-		assertEquals(120.7107, target.getDistance(camera, targetSize), 0.0001);
+		assertEquals(127.04878, target.getDistance(camera, targetSize), 0.0001);
 	}
 	
 	@Test
 	public void getRotationReturnsZeroGivenNoOffset() {
 		VisionTarget target = new VisionTarget(0, 50, 61.8642);
 		
-		assertEquals(0d, target.getRotation(camera, targetSize), 0.0001);
+		assertEquals(0d, target.getRotation(camera), 0.0001);
 	}
 	
 	@Test
 	public void getRotationReturnsDegreesGivenPositiveOffset() {
-		VisionTarget target = new VisionTarget(38.2683, 50, 61.8642);
+		VisionTarget target = new VisionTarget(181.818181818, 50, 61.8642);
 		
-		assertEquals(Math.PI / 8, target.getRotation(camera, targetSize), 0.0001);
+		assertEquals(10, target.getRotation(camera), 0.0001);
 	}
 	
 	@Test
 	public void getRotationReturnsDegreesGivenNegativeOffset() {
-		VisionTarget target = new VisionTarget(-38.2683, 50, 61.8642);
+		VisionTarget target = new VisionTarget(-181.818181818, 50, 61.8642);
 		
-		assertEquals(-Math.PI / 8, target.getRotation(camera, targetSize), 0.0001);
+		assertEquals(-10, target.getRotation(camera), 0.0001);
 	}
 	
 	@Test(expected=RuntimeException.class)
@@ -201,5 +202,22 @@ public class VisionTargetTest {
 		Motion expected = new Motion(0.2, 0, -0.2);
 		
 		assertEquals(expected, target.getMotion(target, camera, targetSize));
+	}
+	
+	@Test
+	public void getWidthReturnsWidthWhenGivenLeftThenRight() {
+		Rect left = new Rect(0, 0, 50, 100);
+		Rect right = new Rect(200, 0, 50, 100);
+		VisionTarget target = new VisionTarget(left, right, camera);
+		
+		assertEquals(250, target.getWidth(), 0.00001);
+	}
+	@Test
+	public void getWidthReturnsWidthWhenGivenRightThenLeft() {
+		Rect left = new Rect(200, 0, 100, 100);
+		Rect right = new Rect(0, 0, 50, 100);
+		VisionTarget target = new VisionTarget(left, right, camera);
+		
+		assertEquals(275, target.getWidth(), 0.00001);
 	}
 }

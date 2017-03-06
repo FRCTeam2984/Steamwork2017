@@ -3,7 +3,7 @@ package org.usfirst.frc.team2984.robot.commands;
 import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2984.robot.util.Motion;
-import org.usfirst.frc.team2984.robot.util.Peg;
+import org.usfirst.frc.team2984.robot.util.VisionTarget;
 import org.usfirst.frc.team2984.robot.util.VisionTracker;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -47,29 +47,30 @@ public class AlignToThePeg extends Command {
     public void execute() {
 //		Robot.mecanumDriveTrain.move(0, 1, 0);
     	this.done = true;
-    	Peg p = this.tracker.getPeg();
-    	if(p == null){
+    	VisionTarget target = this.tracker.getTarget();
+    	if(target == null){
     		this.done = true;
     		return;
     	}
-    	if(p.age() < 200){
-    		double dist = p.getZ();
-    		double angle = Math.toDegrees(p.getYaw());
-    		double robotAngle = Math.toDegrees(Math.atan2(p.getX(), p.getZ()));
-    		System.out.println(robotAngle);
+    	if(this.tracker.hasTrack()){
+    		double dist = target.getDistance(RobotMap.CAMERA_SPECIFICATION, RobotMap.TARGET_DIMENSION);
+    		double cameraAngle = target.getRotation(RobotMap.CAMERA_SPECIFICATION);
+    		double[] robotAndClockAngle = this.getAngleAndRobotAngle(dist, cameraAngle, 0);
+    		double angle = robotAndClockAngle[0];
+    		double robotAngle = robotAndClockAngle[1];
     		double forward = 0;
     		double right = 0;
     		double rotation = 0;
     		if(dist > RobotMap.DOCKING_DISTANCE_THRESHOLD){
-    			forward = 0.5;
+    			forward = 0.3;
     			this.done = false;
     		}
     		if(Math.abs(angle) > RobotMap.DOCKING_YAW_THRESHOLD){
-    			right += angle*2;
+    			right -= angle*2;
     			this.done = false;
     		}
     		if(Math.abs(robotAngle) > RobotMap.DOCKING_ROBOT_ANGLE_THRESHOLD){
-    			rotation = robotAngle/Math.abs(robotAngle)*0.5;
+    			rotation = robotAngle/Math.abs(robotAngle)*0.3;
     			this.done = false;
     		}
     		driveTrain.move(new Motion(right, forward, rotation));
@@ -80,6 +81,10 @@ public class AlignToThePeg extends Command {
 			this.done = false;
 
     	}
+    }
+    
+    private double[] getAngleAndRobotAngle(double cameraAngle, double distance, double gyroAngle){
+    	return new double[]{0,0};
     }
 
     // Make this return true when this Command no longer needs to run execute()

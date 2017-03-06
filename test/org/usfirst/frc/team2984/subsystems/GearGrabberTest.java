@@ -4,6 +4,7 @@ import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.subsystems.GearGrabber;
 import org.usfirst.frc.team2984.util.DummyReporter;
 
@@ -27,18 +28,18 @@ public class GearGrabberTest {
 	@Test
 	public void testClenchDrivesTalon() {
 		grabber.clench();
-		verify(talon).set(-0.2);
+		verify(talon).set(RobotMap.GEAR_GRABBER_CLOSE - RobotMap.GEAR_GRABBER_DELTA);
 	}
 	
 	@Test
 	public void testCloseDrivesTalon() {
 		grabber.close();
-		verify(talon).set(-0.2);
+		verify(talon).set(RobotMap.GEAR_GRABBER_CLOSE);
 	}
 	
 	@Test
 	public void testOpenDrivesTalon() {
 		grabber.open();
-		verify(talon).set(0.2);
+		verify(talon).set(RobotMap.GEAR_GRABBER_OPEN);
 	}
 }

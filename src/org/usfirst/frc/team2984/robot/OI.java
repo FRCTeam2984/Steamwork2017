@@ -67,7 +67,8 @@ public class OI {
 		rappel.whileHeld(new Rappel());
 		openGearGrabber.whileHeld(new OpenGearGrabber());
 		driveForward.whenPressed(new DriveDistance(0, 18));
-		alignToPeg.whenPressed(new AlignToThePeg());
+		AlignToThePeg alignToPegCommand = new AlignToThePeg();
+		alignToPeg.whileHeld(alignToPegCommand);
 		drop.whileHeld(new Rappel());
 	}
 }

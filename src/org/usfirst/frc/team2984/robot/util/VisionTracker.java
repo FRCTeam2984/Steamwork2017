@@ -22,8 +22,8 @@ public class VisionTracker{
 		this.tracker.setTracking(should);
 	}
 	
-	public Peg getPeg(){
-		return this.tracker.getPeg();
+	public VisionTarget getTarget(){
+		return this.tracker.getTarget();
 	}
 	
 	public boolean hasTrack(){

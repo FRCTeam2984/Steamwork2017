@@ -1,5 +1,8 @@
 package org.usfirst.frc.team2984.robot;
 
+import org.usfirst.frc.team2984.robot.util.CameraSpecification;
+import org.usfirst.frc.team2984.robot.util.Dimension;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -13,6 +16,11 @@ public class RobotMap {
 	public static final int REAR_RIGHT_MOTOR_ID = 1;
 	public static final int GEAR_GRABBER_MOTOR_ID = 30;
 	public static final int WINCH_MOTOR_ID = 20; 
+	
+	public static final Dimension CAMERA_RESOLUTION = new Dimension(320, 240);
+	public static final Dimension CAMERA_FOV = new Dimension(56,41.625);
+	public static final CameraSpecification CAMERA_SPECIFICATION = new CameraSpecification(CAMERA_RESOLUTION, CAMERA_FOV);
+	public static final Dimension TARGET_DIMENSION = new Dimension(10.25, 5);
 
 	public static int leftDistanceSensorPort; // TODO: set value
 	public static int rightDistanceSensorPort; // TODO: set value
@@ -29,7 +37,7 @@ public class RobotMap {
 	
 	public static final int HUE_LOW = 58;
 	public static final int SATURATION_LOW = 300;
-	public static final int VALUE_LOW = 220;
+	public static final int VALUE_LOW = 180;
 	public static final int HUE_HIGH = 133;
 	public static final int SATURATION_HIGH = 255;
 	public static final int VALUE_HIGH = 255;
@@ -43,4 +51,9 @@ public class RobotMap {
 	public static final double DISTANCE_P = 0.000032;
 	public static final double DISTANCE_I = 0.0;
 	public static final double DISTANCE_D = 0.0;
+	
+	public static final double GEAR_GRABBER_CLOSE = 0;
+	public static final double GEAR_GRABBER_OPEN = 600;
+	public static final double GEAR_GRABBER_DELTA = 50;
+
 }

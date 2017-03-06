@@ -13,6 +13,7 @@ import org.usfirst.frc.team2984.robot.commands.AlignToThePeg;
 import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2984.robot.util.Motion;
 import org.usfirst.frc.team2984.robot.util.Peg;
+import org.usfirst.frc.team2984.robot.util.VisionTarget;
 import org.usfirst.frc.team2984.robot.util.VisionTracker;
 import org.usfirst.frc.team2984.util.DummyReporter;
 
@@ -37,7 +38,7 @@ public class AlignToThePegTest {
 	@Test
 	public void testMotionGivenSteightOnAndFarAway() {
 		when(tracker.hasTrack()).thenReturn(true);
-		when(tracker.getPeg()).thenReturn(new Peg(0,0,50,0,0,0));
+		when(tracker.getTarget()).thenReturn(new VisionTarget(0,0,10));
 		
 		Motion compare = new Motion(0, 0.5, 0);
 		command.execute();
@@ -49,7 +50,7 @@ public class AlignToThePegTest {
 	@Test
 	public void testMotionGivenSteightOnAndTooClose() {
 		when(tracker.hasTrack()).thenReturn(true);
-		when(tracker.getPeg()).thenReturn(new Peg(0,0,RobotMap.DOCKING_DISTANCE_THRESHOLD-1,0,0,0));
+		when(tracker.getTarget()).thenReturn(new VisionTarget(0,0,100));
 		Motion compare = new Motion(0, 0, 0);
 		command.execute();
 		ArgumentCaptor<Motion> argument = ArgumentCaptor.forClass(Motion.class);
@@ -60,7 +61,7 @@ public class AlignToThePegTest {
 	@Test
 	public void testMotionGiven15DegreeAngleAndFarAway() {
 		when(tracker.hasTrack()).thenReturn(true);
-		when(tracker.getPeg()).thenReturn(new Peg(32.784983332,0,126.67144846034347,0,0,0));
+		when(tracker.getTarget()).thenReturn(new VisionTarget(0,0,10));
 		Motion compare = new Motion(0, 0.5, 0.5);
 		command.execute();
 		ArgumentCaptor<Motion> argument = ArgumentCaptor.forClass(Motion.class);
@@ -71,7 +72,7 @@ public class AlignToThePegTest {
 	@Test
 	public void testMotionGiven15DegreeAngleAndClose() {
 		when(tracker.hasTrack()).thenReturn(true);
-		when(tracker.getPeg()).thenReturn(new Peg(13.516963489,0,52.22553650759857,0,0,0));
+		when(tracker.getTarget()).thenReturn(new VisionTarget(0,0,30));
 		Motion compare = new Motion(0, 0.5, 0.5);
 		command.execute();
 		ArgumentCaptor<Motion> argument = ArgumentCaptor.forClass(Motion.class);

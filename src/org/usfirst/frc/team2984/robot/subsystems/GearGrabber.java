@@ -31,19 +31,16 @@ public class GearGrabber extends Subsystem {
 	}
 	
 	public void close(){
-		talon.set(0);
-		SmartDashboard.putNumber("PID", talon.getEncPosition());
+		talon.set(RobotMap.GEAR_GRABBER_CLOSE);
 
 	}
 	
 	public void open(){
-		talon.set(600);
-		SmartDashboard.putNumber("PID", talon.getEncPosition());
+		talon.set(RobotMap.GEAR_GRABBER_OPEN);
 	}
 	
 	public void clench(){
-		talon.set(0);
-		SmartDashboard.putNumber("PID", talon.getEncPosition());
+		talon.set(RobotMap.GEAR_GRABBER_CLOSE - RobotMap.GEAR_GRABBER_DELTA);
 
 	}
 	
