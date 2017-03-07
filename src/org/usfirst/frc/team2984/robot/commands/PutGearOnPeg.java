@@ -16,7 +16,6 @@ public class PutGearOnPeg extends Command {
 
 	private WallFinder wallFinder;
 	private DriveTrain driveTrain;
-	private Gyroscope gyro;
 	private boolean done;
 	private boolean reset;
 	
@@ -25,7 +24,6 @@ public class PutGearOnPeg extends Command {
         // eg. requires(chassis);
 //    	requires(Robot.driveTrain);
     	driveTrain = DriveTrain.getInstance();
-    	gyro = Gyroscope.getInstance();
     	wallFinder = WallFinder.getInstance();
     	this.done = false;
     	
@@ -34,10 +32,9 @@ public class PutGearOnPeg extends Command {
 
     }
     
-    public PutGearOnPeg(WallFinder wallFinder, DriveTrain driveTrain, Gyroscope gyro){
+    public PutGearOnPeg(WallFinder wallFinder, DriveTrain driveTrain){
     	this.wallFinder = wallFinder;
     	this.driveTrain = driveTrain;
-    	this.gyro = gyro;
     	this.done = false;
     }
 
@@ -60,20 +57,14 @@ public class PutGearOnPeg extends Command {
     	}
 		double dist = wall.getDistance();
 		double angle = wall.getAngle();
-//		if(Math.abs(cameraAngle) > RobotMap.DOCKING_ROBOT_ANGLE_THRESHOLD){
-//			rotation = Math.min(Math.max(-cameraAngle*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR, -1), 1);
-//			this.done = false;
-//		}
-//		if(Math.abs(angle) > RobotMap.DOCKING_YAW_THRESHOLD){
-//			angleToMove = RobotMap.pegAngle-90;
-//			speed = Math.min(Math.abs(angle * RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR), 1);
-//			this.done = false;
-//		} else if(dist > RobotMap.DOCKING_DISTANCE_THRESHOLD){
-//			angleToMove = RobotMap.pegAngle-180;
-//			speed = Math.min(Math.abs(dist * RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR), 1);
-//			this.done = false;
-//		}
-//		driveTrain.moveAtAngle(angleToMove, speed, rotation);
+		if(dist < RobotMap.PEG_DROPOFF_DISTANCE){
+			this.driveTrain.move(new Motion(0,0,0));
+		}
+		double deltaY = this.driveTrain.getDisplacementY();
+		double deltaX = this.driveTrain.getDisplacementX();
+		double wantedX = Math.sin(Math.PI/2 * RobotMap.ROBOT_PROPORTINAL_UNDULATING_FACTOR * deltaY) * RobotMap.UNDULATING_AMPLITUDED;
+		double x = (wantedX - deltaX) * RobotMap.PEG_DROPOFF_OCCILATION_P;
+		this.driveTrain.move(new Motion(x, RobotMap.GEAR_DROPOFF_SPEED, 0));
     }
 
     // Make this return true when this Command no longer needs to run execute()

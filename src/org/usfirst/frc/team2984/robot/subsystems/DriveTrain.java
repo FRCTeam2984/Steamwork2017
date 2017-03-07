@@ -274,6 +274,30 @@ public class DriveTrain extends Subsystem {
 		this.driveState = state;
 	}
 	
+	/**
+	 * Returns the displacement in the Y direction based on the encoder position in inches.
+	 * @return The displacement in the Y in inches.
+	 */
+	public double getDisplacementY(){
+		double fl = this.frontLeft.getEncPosition();
+		double fr = this.frontRight.getEncPosition();
+		double bl = this.backLeft.getEncPosition();
+		double br = this.backRight.getEncPosition();
+		return (fl + fr + bl + br)/4D/RobotMap.DRIVE_TRAIN_TICK_TO_INCH_FORWARD;
+	}
+	
+	/**
+	 * Returns the displacement in the X direction based on the encoder position in inches.
+	 * @return The displacement in the X in inches.
+	 */
+	public double getDisplacementX(){
+		double fl = this.frontLeft.getEncPosition();
+		double fr = this.frontRight.getEncPosition();
+		double bl = this.backLeft.getEncPosition();
+		double br = this.backRight.getEncPosition();
+		return (fl - fr - bl + br)/4D/RobotMap.DRIVE_TRAIN_TICK_TO_INCH_FORWARD;
+	}
+	
 	public void updatePID(double f, double p, double i, double d){
 		this.setupEncoderAndPID(this.frontLeft, false, f, p, i, d);
 		this.setupEncoderAndPID(this.frontRight, true, f, p, i, d);

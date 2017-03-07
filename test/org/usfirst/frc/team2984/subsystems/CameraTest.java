@@ -1,9 +1,10 @@
 package org.usfirst.frc.team2984.subsystems;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opencv.core.Core;
 import org.usfirst.frc.team2984.robot.subsystems.Camera;
@@ -31,6 +32,7 @@ public class CameraTest {
 		camera = new Camera(sink);
 	}
 	
+	@Ignore
 	@Test
 	public void getVisionTargetReturnsFooGivenBar() {
 		VisionTarget expected = new VisionTarget(0, 50 * targetSize.width, 50 * targetSize.height);

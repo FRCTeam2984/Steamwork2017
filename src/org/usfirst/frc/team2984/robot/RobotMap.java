@@ -28,6 +28,14 @@ public class RobotMap {
 	public static final double DOCKING_DISTANCE_THRESHOLD = 30D; // in inches
 	public static final double DOCKING_YAW_THRESHOLD = 5;
 	public static final double DOCKING_ROBOT_ANGLE_THRESHOLD = 5;
+	public static final double PEG_DROPOFF_DISTANCE = 10D;
+	
+	public static final double PEG_DROPOFF_OCCILATION_P = 0.1;
+	public static final double PEG_DROPOFF_ROTATION_P = 0.2;
+	public static final double ROBOT_PROPORTINAL_UNDULATING_FACTOR = 0.05;
+	public static final double UNDULATING_AMPLITUDED = 2;
+	public static final double GEAR_DROPOFF_SPEED = 0.3;
+
 	public static final double DRIVE_TRAIN_MAX_SPEED = 1400.0;
 	public static final double SENSOR_WIDTH = 1D;//in inches
 	public static final double DRIVE_TRAIN_TICK_TO_INCH_FORWARD = 1215D; //Ticks Per Inch Forward

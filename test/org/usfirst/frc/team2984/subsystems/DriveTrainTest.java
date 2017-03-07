@@ -261,6 +261,136 @@ public class DriveTrainTest {
 		verifyTalons(0, 0, 0, 0);
 	}
 	
+	@Test
+	public void returnsZeroYDisplacementWhenEncodersAreAllZero(){
+		when(frontLeft.getEncPosition()).thenReturn(0);
+		when(frontRight.getEncPosition()).thenReturn(0);
+		when(backLeft.getEncPosition()).thenReturn(0);
+		when(backRight.getEncPosition()).thenReturn(0);
+
+		assertEquals(0, drive.getDisplacementY(), 0.00001);
+	}
+	
+	@Test
+	public void returnsOneYDisplacementWhenEncodersAreAllPositiveOneInch(){
+		int ticksY = (int) (RobotMap.DRIVE_TRAIN_TICK_TO_INCH_FORWARD);
+		when(frontLeft.getEncPosition()).thenReturn(ticksY);
+		when(frontRight.getEncPosition()).thenReturn(ticksY);
+		when(backLeft.getEncPosition()).thenReturn(ticksY);
+		when(backRight.getEncPosition()).thenReturn(ticksY);
+
+		assertEquals(1, drive.getDisplacementY(), 0.00001);
+	}
+	
+	@Test
+	public void returnsOneHalfYDisplacementWhenHalfTheEncodersArePositiveOneInch(){
+		int ticksY = (int) (RobotMap.DRIVE_TRAIN_TICK_TO_INCH_FORWARD);
+		when(frontLeft.getEncPosition()).thenReturn(ticksY);
+		when(frontRight.getEncPosition()).thenReturn(0);
+		when(backLeft.getEncPosition()).thenReturn(0);
+		when(backRight.getEncPosition()).thenReturn(ticksY);
+
+		assertEquals(0.5, drive.getDisplacementY(), 0.00001);
+	}
+	
+	@Test
+	public void returnsThreeFourthsYDisplacementWhenHalfTheEncodersArePositiveOneInchAndTheOtherHalfAnInch(){
+		int ticksY = (int) (RobotMap.DRIVE_TRAIN_TICK_TO_INCH_FORWARD);
+		when(frontLeft.getEncPosition()).thenReturn(ticksY);
+		when(frontRight.getEncPosition()).thenReturn(ticksY/2);
+		when(backLeft.getEncPosition()).thenReturn(ticksY/2);
+		when(backRight.getEncPosition()).thenReturn(ticksY);
+
+		assertEquals(0.75, drive.getDisplacementY(), 0.0003);
+	}
+	
+	@Test
+	public void returnsZeroYDisplacementWhenTranslatedRight(){
+		int ticksY = (int) (RobotMap.DRIVE_TRAIN_TICK_TO_INCH_FORWARD);
+		when(frontLeft.getEncPosition()).thenReturn(ticksY);
+		when(frontRight.getEncPosition()).thenReturn(-ticksY);
+		when(backLeft.getEncPosition()).thenReturn(-ticksY);
+		when(backRight.getEncPosition()).thenReturn(ticksY);
+
+		assertEquals(0, drive.getDisplacementY(), 0.00001);
+	}
+	
+	@Test
+	public void returnsOneFourthYDisplacementWhenTranslatedRightAndUp(){
+		int ticksY = (int) (RobotMap.DRIVE_TRAIN_TICK_TO_INCH_FORWARD);
+		when(frontLeft.getEncPosition()).thenReturn(ticksY);
+		when(frontRight.getEncPosition()).thenReturn(-ticksY/2);
+		when(backLeft.getEncPosition()).thenReturn(-ticksY/2);
+		when(backRight.getEncPosition()).thenReturn(ticksY);
+
+		assertEquals(0.25, drive.getDisplacementY(), 0.0003);
+	}
+	
+	@Test
+	public void returnsZeroXDisplacementWhenEncodersAreAllZero(){
+		when(frontLeft.getEncPosition()).thenReturn(0);
+		when(frontRight.getEncPosition()).thenReturn(0);
+		when(backLeft.getEncPosition()).thenReturn(0);
+		when(backRight.getEncPosition()).thenReturn(0);
+
+		assertEquals(0, drive.getDisplacementX(), 0.00001);
+	}
+	
+	@Test
+	public void returnsZeroXDisplacementWhenEncodersAreAllPositiveOneInch(){
+		int ticksY = (int) (RobotMap.DRIVE_TRAIN_TICK_TO_INCH_FORWARD);
+		when(frontLeft.getEncPosition()).thenReturn(ticksY);
+		when(frontRight.getEncPosition()).thenReturn(ticksY);
+		when(backLeft.getEncPosition()).thenReturn(ticksY);
+		when(backRight.getEncPosition()).thenReturn(ticksY);
+
+		assertEquals(0, drive.getDisplacementX(), 0.00001);
+	}
+	
+	@Test
+	public void returnsOneHalfXDisplacementWhenHalfTheEncodersArePositiveOneInch(){
+		int ticksY = (int) (RobotMap.DRIVE_TRAIN_TICK_TO_INCH_FORWARD);
+		when(frontLeft.getEncPosition()).thenReturn(ticksY);
+		when(frontRight.getEncPosition()).thenReturn(0);
+		when(backLeft.getEncPosition()).thenReturn(0);
+		when(backRight.getEncPosition()).thenReturn(ticksY);
+
+		assertEquals(0.5, drive.getDisplacementX(), 0.00001);
+	}
+	
+	@Test
+	public void returnsOneFourthXDisplacementWhenHalfTheEncodersArePositiveOneInchAndTheOtherHalfAnInch(){
+		int ticksY = (int) (RobotMap.DRIVE_TRAIN_TICK_TO_INCH_FORWARD);
+		when(frontLeft.getEncPosition()).thenReturn(ticksY);
+		when(frontRight.getEncPosition()).thenReturn(ticksY/2);
+		when(backLeft.getEncPosition()).thenReturn(ticksY/2);
+		when(backRight.getEncPosition()).thenReturn(ticksY);
+
+		assertEquals(0.25, drive.getDisplacementX(), 0.0003);
+	}
+	
+	@Test
+	public void returnsOneXDisplacementWhenTranslatedRight(){
+		int ticksY = (int) (RobotMap.DRIVE_TRAIN_TICK_TO_INCH_FORWARD);
+		when(frontLeft.getEncPosition()).thenReturn(ticksY);
+		when(frontRight.getEncPosition()).thenReturn(-ticksY);
+		when(backLeft.getEncPosition()).thenReturn(-ticksY);
+		when(backRight.getEncPosition()).thenReturn(ticksY);
+
+		assertEquals(1, drive.getDisplacementX(), 0.00001);
+	}
+	
+	@Test
+	public void returnsThreeFourthXDisplacementWhenTranslatedRightAndUp(){
+		int ticksY = (int) (RobotMap.DRIVE_TRAIN_TICK_TO_INCH_FORWARD);
+		when(frontLeft.getEncPosition()).thenReturn(ticksY);
+		when(frontRight.getEncPosition()).thenReturn(-ticksY/2);
+		when(backLeft.getEncPosition()).thenReturn(-ticksY/2);
+		when(backRight.getEncPosition()).thenReturn(ticksY);
+
+		assertEquals(0.75, drive.getDisplacementX(), 0.0003);
+	}
+	
 	private void verifyTalons(double frontLeft, double frontRight, double backLeft, double backRight) {
 		final ArgumentCaptor<Double> captor = ArgumentCaptor.forClass(Double.class);
 		verify(this.frontLeft).set(captor.capture());
