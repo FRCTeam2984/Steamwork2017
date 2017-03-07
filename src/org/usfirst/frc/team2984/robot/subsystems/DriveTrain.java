@@ -2,6 +2,7 @@ package org.usfirst.frc.team2984.robot.subsystems;
 
 import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.commands.RemoteJoystickDrive;
+import org.usfirst.frc.team2984.robot.util.MathUtil;
 import org.usfirst.frc.team2984.robot.util.Motion;
 
 import com.ctre.CANTalon;
@@ -97,30 +98,37 @@ public class DriveTrain extends Subsystem {
 	
 	/**
 	 * Moves at a field-centric angle, speed and rotates the robot to a desired angle
-	 * @param angle the angle to move at
+	 * @param angle the angle to move at, clockwise
 	 * @param speed the speed [0, 1] to move at
-	 * @param rotation the rotation to rotate at, speed is not specified
+	 * @param rotation the rotation to rotate at, this is a speed not an angle;
 	 */
 	public void moveAtAngle(double angle, double speed, double rotation){
 		this.switchState(State.SPEED_CONTROL);
-		double fl = speed;
-		double fr = speed;
-		double bl = speed;
-		double br = speed;
-		double max = getMaximumValue(fl, fr, bl, br);
-		
-		if (max > 1) {
-			fl = fl / max;
-			fr = fr / max;
-			bl = bl / max;
-			br = br / max;
-		}
-		this.frontLeft.set(fl * this.speed);
-		this.frontRight.set(fr * this.speed);
-		this.backRight.set(br * this.speed);
-		this.backLeft.set(bl * this.speed);
-
+		double gyroAngle = this.gyro.getAngle();
+		double angleRadian = -Math.toRadians(angle - gyroAngle);
+		double x = 0;
+		double y = speed;
+		double xPrime = x * Math.cos(angleRadian) - y * Math.sin(angleRadian);
+		double yPrime = x * Math.sin(angleRadian) + y * Math.cos(angleRadian);
+		Motion motion = new Motion(xPrime, yPrime, rotation);
+		this.move(motion);
 	}
+	
+	/**
+	 * Moves at a desired speed in the local x and y directions while holding the given angle.
+	 * @param angle the angle to move at, clockwise
+	 * @param speed the speed [0, 1] to move at
+	 * @param rotation the rotation to rotate at, this is a speed not an angle;
+	 */
+	public void moveWithFixedAngle(double x, double y, double angle){
+		this.switchState(State.SPEED_CONTROL);
+		double gyroAngle = this.gyro.getAngle();
+		double rotation = MathUtil.shortestDeltaAngle(gyroAngle, angle) * RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR;
+		Motion motion = new Motion(x, y, Math.max(Math.min(rotation, 1), -1));
+		this.move(motion);
+	}
+	
+	
 	
 	/**
 	 * moves the given distance in x and y

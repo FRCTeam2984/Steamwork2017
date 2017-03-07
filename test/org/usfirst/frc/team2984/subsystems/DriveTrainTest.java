@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2984.subsystems;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -7,7 +8,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.usfirst.frc.team2984.robot.RobotMap;
 import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2984.robot.subsystems.Gyroscope;
@@ -188,16 +191,86 @@ public class DriveTrainTest {
 	@Test
 	public void movesForwardSlowlyWhenGyroAngleIsZeroRobotAngleIsZeroAndRotationIsZero() {
 		when(gyroscope.getAngle()).thenReturn(0D);
+		drive.moveAtAngle(0, 0.3, 0);
+
+		verifyTalons(0.3, 0.3, 0.3, 0.3);
+	}
+	
+	@Test
+	public void movesForwardQuicklyWhenGyroAngleIsZeroRobotAngleIsZeroAndRotationIsZero() {
+		when(gyroscope.getAngle()).thenReturn(0D);
 		drive.moveAtAngle(0, 1, 0);
 
 		verifyTalons(1, 1, 1, 1);
 	}
 	
+	
+	@Test
+	public void movesForwardSlowlyWhenGyroAngleIsNintyRobotAngleIsNintyAndRotationIsZero() {
+		when(gyroscope.getAngle()).thenReturn(90D);
+		drive.moveAtAngle(90, 0.3, 0);
+
+		verifyTalons(0.3, 0.3, 0.3, 0.3);
+	}
+	
+	@Test
+	public void movesForwardQuicklyAndRotatesWhenGyroAngleIsNintyRobotAngleIsNintyAndRotationIsNinty() {
+		when(gyroscope.getAngle()).thenReturn(90D);
+		drive.moveAtAngle(90, 1, 1);
+
+		verifyTalons(1, 0, 1, 0);
+	}
+	
+	@Test
+	public void movesRightSlowlyWhenGyroAngleIsZeroRobotAngleIsNintyAndRotationIsZero() {
+		when(gyroscope.getAngle()).thenReturn(0D);
+		drive.moveAtAngle(90, 0.3, 0);
+
+		verifyTalons(0.3, -0.3, -0.3, 0.3);
+	}
+	
+	@Test
+	public void movesRightQuicklyWhenGyroAngleIsZeroRobotAngleIsNintyAndRotationIsZero() {
+		when(gyroscope.getAngle()).thenReturn(0D);
+		drive.moveAtAngle(90, 1, 0);
+
+		verifyTalons(1, -1, -1, 1);
+	}
+	
+	@Test
+	public void rotatesClockwiesWhenGyroAngleIsZeroRobotAngleIsZeroAndRotationIsNinty() {
+		when(gyroscope.getAngle()).thenReturn(0D);
+		drive.moveAtAngle(0, 0, 90);
+
+		verifyTalons(1, -1, 1, -1);
+	}
+	
+	@Test
+	public void rotatesClockwiesWhenGyroAngleIsNintyRobotAngleIsZeroAndRotationIsNinty() {
+		when(gyroscope.getAngle()).thenReturn(90D);
+		drive.moveAtAngle(0, 0, 90);
+
+		verifyTalons(1, -1, 1, -1);
+	}
+	
+	@Test
+	public void doesNotMoveWhenGyroAngleIsThreeHunderedRobotAngleIsZeroAndRotationIsZero() {
+		when(gyroscope.getAngle()).thenReturn(300D);
+		drive.moveAtAngle(0, 0, 0);
+
+		verifyTalons(0, 0, 0, 0);
+	}
+	
 	private void verifyTalons(double frontLeft, double frontRight, double backLeft, double backRight) {
-		verify(this.frontLeft).set(frontLeft * speed);
-		verify(this.frontRight).set(frontRight * speed);
-		verify(this.backLeft).set(backLeft * speed);
-		verify(this.backRight).set(backRight * speed);
+		final ArgumentCaptor<Double> captor = ArgumentCaptor.forClass(Double.class);
+		verify(this.frontLeft).set(captor.capture());
+		assertEquals(frontLeft * speed, (double)captor.getValue(), 0.00001);
+		verify(this.frontRight).set(captor.capture());
+		assertEquals(frontRight * speed, (double)captor.getValue(), 0.00001);
+		verify(this.backLeft).set(captor.capture());
+		assertEquals(backLeft * speed, (double)captor.getValue(), 0.00001);
+		verify(this.backRight).set(captor.capture());
+		assertEquals(backRight * speed, (double)captor.getValue(), 0.00001);
 	}
 	
 }

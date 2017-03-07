@@ -148,6 +148,20 @@ public class VisionTarget {
 	}
 	
 	/**
+	 * Gets the clock angle based on the camera specification, the current robot angle, and the peg's angle
+	 * @param cameraSpecification the camera specification for the camera
+	 * @param robotAngle the angle the robot is at
+	 * @param pegAngle the angle the peg is at
+	 * @return the clock angle
+	 */
+	public double getClockAngle(CameraSpecification cameraSpecification, double robotAngle, double pegAngle) {
+		double rotation = this.getRotation(cameraSpecification);
+		double antiTargetAngle = pegAngle-180;
+		
+		return antiTargetAngle - robotAngle - rotation;
+	}
+	
+	/**
 	 * 
 	 * @param target
 	 * @param camera
@@ -224,4 +238,5 @@ public class VisionTarget {
 	public String toString(){
 		return "Vision Target { Height: " + this.height + ", Width: " + this.width + ", Offset: " + this.offset + "}";
 	}
+
 }

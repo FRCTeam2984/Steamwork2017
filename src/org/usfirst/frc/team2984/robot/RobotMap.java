@@ -19,7 +19,7 @@ public class RobotMap {
 	
 	public static final Dimension CAMERA_RESOLUTION = new Dimension(320, 240);
 	public static final Dimension CAMERA_FOV = new Dimension(56,41.625);
-	public static final CameraSpecification CAMERA_SPECIFICATION = new CameraSpecification(CAMERA_RESOLUTION, CAMERA_FOV);
+	public static final CameraSpecification CAMERA_SPECIFICATION = new CameraSpecification(CAMERA_FOV, CAMERA_RESOLUTION);
 	public static final Dimension TARGET_DIMENSION = new Dimension(10.25, 5);
 
 	public static int leftDistanceSensorPort; // TODO: set value
@@ -31,16 +31,11 @@ public class RobotMap {
 	public static final double DRIVE_TRAIN_MAX_SPEED = 1400.0;
 	public static final double SENSOR_WIDTH = 1D;//in inches
 	public static final double DRIVE_TRAIN_TICK_TO_INCH_FORWARD = 1215D; //Ticks Per Inch Forward
-	public static final double DRIVE_TRAIN_TICK_TO_INCH_RIGHT = 1215D; //Ticks Per Inch Forward
+	public static final double DRIVE_TRAIN_TICK_TO_INCH_RIGHT = 1215D; //Ticks Per Inch Right
 	public static final double DRIVE_TRAIN_TICK_TO_RADIAN = 1000D; //Ticks Per Radian
 	public static final double SENSOR_V_TO_IN_CALIBRATION = 1D;
 	
-	public static final int HUE_LOW = 58;
-	public static final int SATURATION_LOW = 300;
 	public static final int VALUE_LOW = 180;
-	public static final int HUE_HIGH = 133;
-	public static final int SATURATION_HIGH = 255;
-	public static final int VALUE_HIGH = 255;
 	
 	public static final double SPEED_F = 0.12;
 	public static final double SPEED_P = 0.12;
@@ -57,5 +52,8 @@ public class RobotMap {
 	public static final double GEAR_GRABBER_DELTA = 50;
 	
 	public static final double ROBOT_START_ANGLE = 0;
+	public static final double ROBOT_ANGLE_PROPORIONAL_SCALAR = 0.05;
+	
+	public static double pegAngle = 120;
 
 }

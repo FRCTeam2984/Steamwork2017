@@ -212,6 +212,7 @@ public class VisionTargetTest {
 		
 		assertEquals(250, target.getWidth(), 0.00001);
 	}
+	
 	@Test
 	public void getWidthReturnsWidthWhenGivenRightThenLeft() {
 		Rect left = new Rect(200, 0, 100, 100);
@@ -219,5 +220,40 @@ public class VisionTargetTest {
 		VisionTarget target = new VisionTarget(left, right, camera);
 		
 		assertEquals(275, target.getWidth(), 0.00001);
+	}
+	
+	@Test
+	public void getClockAngleReturnsZeroGivenHeadOnTarget() {
+		VisionTarget target = new VisionTarget(0, 0, 10);
+		assertEquals(0, target.getClockAngle(camera, 0, 180), 0.00001);
+	}
+	
+	@Test
+	public void getClockAngleReturnsThirtyFiveGivenZeroRobotAngleAndNegativeTwentyFiveCameraAngle() {
+		VisionTarget target = new VisionTarget(-0.909090909*camera.resolution.width/2, 0, 10);
+		assertEquals(-35, target.getClockAngle(camera, 0, 120), 0.00001);
+	}
+	
+	@Test
+	public void getClockAngleReturnsThirtyFiveGivenZeroRobotAngleAndTwentyFiveCameraAngle() {
+		VisionTarget target = new VisionTarget(0.909090909*camera.resolution.width/2, 0, 10);
+		assertEquals(35, target.getClockAngle(camera, 0, 240), 0.00001);
+	}
+	
+	@Test
+	public void getClockAngleReturnsZeroGivenZeroRobotAngleZeroCameraAngleAndNegativeSixtyGyroAngle() {
+		VisionTarget target = new VisionTarget(0, 0, 10);
+		assertEquals(0, target.getClockAngle(camera, -60, 120), 0.00001);
+	}
+	
+	@Test
+	public void testDistanceUnerOtherCameraSettings(){
+		VisionTarget target = new VisionTarget(0, 0, 16.50395806);
+		Dimension cameraResolution = new Dimension(320, 240);
+		Dimension cameraFOV = new Dimension(56,41.625);
+		CameraSpecification cameraSpec = new CameraSpecification(cameraFOV, cameraResolution);
+		double dist = target.getDistance(cameraSpec, new Dimension(10.25, 5));
+		
+		assertEquals(100, dist, 0.00001);
 	}
 }
