@@ -19,7 +19,9 @@ public class RobotMap {
 	
 	public static final Dimension CAMERA_RESOLUTION = new Dimension(320, 240);
 	public static final Dimension CAMERA_FOV = new Dimension(56,41.625);
-	public static final CameraSpecification CAMERA_SPECIFICATION = new CameraSpecification(CAMERA_FOV, CAMERA_RESOLUTION);
+	public static final double CAMERA_ANGLE = 10;
+	public static final CameraSpecification CAMERA_SPECIFICATION = new CameraSpecification(CAMERA_FOV, CAMERA_RESOLUTION, CAMERA_ANGLE);
+	public static final double CAMERA_OFFSET = 2;
 	public static final Dimension TARGET_DIMENSION = new Dimension(10.25, 5);
 
 	public static int leftDistanceSensorPort; // TODO: set value

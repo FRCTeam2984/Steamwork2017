@@ -109,7 +109,9 @@ public class VisionTarget {
 	 * @return the apparent rotation of the camera about the target, in degrees
 	 */
 	public double getRotation(CameraSpecification camera) {
-		return (this.offset)/camera.resolution.width*camera.angularFieldOfView.width;
+		double rawAngle = Math.toRadians((this.offset)/camera.resolution.width*camera.angularFieldOfView.width);
+		double correctedAngle = MathUtil.yawFromRotatedCircle(Math.toRadians(camera.angle), rawAngle);
+		return Math.toDegrees(correctedAngle);
 	}
 	
 	/**

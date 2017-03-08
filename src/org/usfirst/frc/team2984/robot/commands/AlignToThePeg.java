@@ -18,7 +18,6 @@ public class AlignToThePeg extends Command {
 	private VisionTracker tracker;
 	private DriveTrain driveTrain;
 	private Gyroscope gyro;
-	private double targetAngle;
 	private boolean done;
 	
     public AlignToThePeg() {
@@ -58,9 +57,11 @@ public class AlignToThePeg extends Command {
     	}
     	if(this.tracker.hasTrack()){
     		double dist = target.getDistance(RobotMap.CAMERA_SPECIFICATION, RobotMap.TARGET_DIMENSION);
-    		double cameraAngle = target.getRotation(RobotMap.CAMERA_SPECIFICATION);
+    		double angleOffset = Math.toDegrees(Math.asin(RobotMap.CAMERA_OFFSET/dist));
+    		double rawAngle = target.getRotation(RobotMap.CAMERA_SPECIFICATION);
+    		double cameraAngle =  rawAngle + angleOffset;
     		double robotAngle = this.gyro.getAngle();
-    		double angle = target.getClockAngle(RobotMap.CAMERA_SPECIFICATION, robotAngle, RobotMap.pegAngle);
+    		double angle = target.getClockAngle(RobotMap.CAMERA_SPECIFICATION, robotAngle, RobotMap.pegAngle) - angleOffset;
     		double angleToMove = 0;
     		double speed = 0;
     		double rotation = 0;

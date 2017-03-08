@@ -25,7 +25,7 @@ public class VisionTargetTest {
 	public void before() {
 		// prevents exception during test
 		HLUsageReporting.SetImplementation(new DummyReporter());
-		camera = new CameraSpecification(fieldOfView, resolution);
+		camera = new CameraSpecification(fieldOfView, resolution, 0);
 	}
 	
 	@Test
@@ -251,9 +251,20 @@ public class VisionTargetTest {
 		VisionTarget target = new VisionTarget(0, 0, 16.50395806);
 		Dimension cameraResolution = new Dimension(320, 240);
 		Dimension cameraFOV = new Dimension(56,41.625);
-		CameraSpecification cameraSpec = new CameraSpecification(cameraFOV, cameraResolution);
+		CameraSpecification cameraSpec = new CameraSpecification(cameraFOV, cameraResolution, 0);
 		double dist = target.getDistance(cameraSpec, new Dimension(10.25, 5));
 		
 		assertEquals(100, dist, 0.00001);
+	}
+	
+	@Test
+	public void testAngleUnerOtherCameraSettings(){
+		VisionTarget target = new VisionTarget(-50, 0, 16.50395806);
+		Dimension cameraResolution = new Dimension(100, 100);
+		Dimension cameraFOV = new Dimension(90,0);
+		CameraSpecification cameraSpec = new CameraSpecification(cameraFOV, cameraResolution, 10);
+		double angle = target.getRotation(cameraSpec);
+		
+		assertEquals(-45.43854, angle, 0.0001);
 	}
 }

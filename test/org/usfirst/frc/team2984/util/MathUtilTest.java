@@ -47,4 +47,21 @@ public class MathUtilTest {
 		assertEquals(expected, MathUtil.shortestDeltaAngle(start, end), 0.00001);
 	}
 	
+	@Test
+	public void yawFromRotatedCircleReturnsCircleYawIfCircleIsAtZeroDegreese() {
+		double angle = Math.toRadians(10);
+		double circleAngle = Math.toRadians(0);
+		double expectedYaw = Math.toRadians(10);
+		double yaw = MathUtil.yawFromRotatedCircle(circleAngle, angle);
+		assertEquals(expectedYaw, yaw, 0.00001);
+	}
+	
+	@Test
+	public void yawFromRotatedCircleIsRootTwoOfNormalWhenAtFortyFiveDegreese() {
+		double angle = Math.toRadians(20);
+		double circleAngle = Math.toRadians(68.65578);
+		double expectedYaw = Math.toRadians(45);
+		double yaw = MathUtil.yawFromRotatedCircle(circleAngle, angle);
+		assertEquals(expectedYaw, yaw, 0.00001);
+	}
 }

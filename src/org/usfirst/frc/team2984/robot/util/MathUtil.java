@@ -26,4 +26,10 @@ public class MathUtil {
 		}
 	}
 	
+	public static double yawFromRotatedCircle(double circleAngle, double circleYaw){
+		double yawMagnituded = Math.atan(Math.tan(circleYaw)/Math.cos(circleAngle));
+		double yaw = Math.copySign(yawMagnituded, circleYaw);
+		return yaw;
+	}
+	
 }
