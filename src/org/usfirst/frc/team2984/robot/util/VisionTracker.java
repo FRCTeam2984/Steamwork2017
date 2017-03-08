@@ -4,11 +4,11 @@ public class VisionTracker{
 
 	private static VisionTracker visionTracker;
 	
-	private TrackingThread tracker;
+	private TrackingThread thread;
 	
 	private VisionTracker(){
-		this.tracker = new TrackingThread();
-		this.tracker.start();
+		this.thread = new TrackingThread();
+		this.thread.start();
 	}
 	
 	public static VisionTracker getInstance(){
@@ -19,15 +19,15 @@ public class VisionTracker{
 	}
 	
 	public void shouldTrack(boolean should){
-		this.tracker.setTracking(should);
+		this.thread.setTracking(should);
 	}
 	
 	public VisionTarget getTarget(){
-		return this.tracker.getTarget();
+		return this.thread.getTarget();
 	}
 	
 	public boolean hasTrack(){
-		return this.tracker.hasTrack();
+		return this.thread.hasTrack();
 	}
 	
 	public static void init(){
