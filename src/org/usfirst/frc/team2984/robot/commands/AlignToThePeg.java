@@ -46,44 +46,61 @@ public class AlignToThePeg extends Command {
         	this.tracker = VisionTracker.getInstance();
     	}
     }
+    
+    private double getYaw(VisionTarget target, double angleOffset) {
+    	double robotAngle = this.gyro.getAngle();
+    	double clockAngle = target.getClockAngle(RobotMap.CAMERA_SPECIFICATION, robotAngle, RobotMap.pegAngle);
+    	
+    	return clockAngle - angleOffset;
+    }
+    
+    private void track(VisionTarget target) {
+		double distance = target.getDistance(RobotMap.CAMERA_SPECIFICATION, RobotMap.TARGET_DIMENSION);
+		double angleOffset = Math.toDegrees(Math.asin(RobotMap.CAMERA_OFFSET/distance));
+		double targetRotation = target.getRotation(RobotMap.CAMERA_SPECIFICATION);
+		double cameraAngle =  targetRotation + angleOffset;
+		double heading = 0;
+		double speed = 0;
+		double rotation = 0;
+		if(Math.abs(cameraAngle) > RobotMap.DOCKING_ROBOT_ANGLE_THRESHOLD){
+			rotation = Math.min(Math.max(cameraAngle*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR, -1), 1);
+			this.done = false;
+		}
+		
+		double yaw = this.getYaw(target, angleOffset);
+		
+		if(Math.abs(yaw) > RobotMap.DOCKING_YAW_THRESHOLD){
+			heading = RobotMap.pegAngle-90;
+			speed = -Math.min(Math.max(yaw * RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR, -1), 1);
+			this.done = false;
+		} else if(distance > RobotMap.DOCKING_DISTANCE_THRESHOLD){
+			heading = RobotMap.pegAngle-180;
+			speed = Math.min(Math.abs(distance * RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR), 1);
+			this.done = false;
+		}
+		driveTrain.moveAtAngle(heading, speed, rotation);
+    }
 
     // Called repeatedly when this Command is scheduled to run
     public void execute() {
     	this.done = true;
     	VisionTarget target = this.tracker.getTarget();
+    	
     	if(target == null){
     		driveTrain.move(new Motion(0, 0, 0));
     		return;
     	}
+    	
     	if(this.tracker.hasTrack()){
-    		double dist = target.getDistance(RobotMap.CAMERA_SPECIFICATION, RobotMap.TARGET_DIMENSION);
-    		double angleOffset = Math.toDegrees(Math.asin(RobotMap.CAMERA_OFFSET/dist));
-    		double rawAngle = target.getRotation(RobotMap.CAMERA_SPECIFICATION);
-    		double cameraAngle =  rawAngle + angleOffset;
-    		double robotAngle = this.gyro.getAngle();
-    		double angle = target.getClockAngle(RobotMap.CAMERA_SPECIFICATION, robotAngle, RobotMap.pegAngle) - angleOffset;
-    		double angleToMove = 0;
-    		double speed = 0;
-    		double rotation = 0;
-    		if(Math.abs(cameraAngle) > RobotMap.DOCKING_ROBOT_ANGLE_THRESHOLD){
-    			rotation = Math.min(Math.max(cameraAngle*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR, -1), 1);
-    			this.done = false;
-    		}
-    		if(Math.abs(angle) > RobotMap.DOCKING_YAW_THRESHOLD){
-    			angleToMove = RobotMap.pegAngle-90;
-    			speed = -Math.min(Math.max(angle * RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR, -1), 1);
-    			this.done = false;
-    		} else if(dist > RobotMap.DOCKING_DISTANCE_THRESHOLD){
-    			angleToMove = RobotMap.pegAngle-180;
-    			speed = Math.min(Math.abs(dist * RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR), 1);
-    			this.done = false;
-    		}
-    		driveTrain.moveAtAngle(angleToMove, speed, rotation);
+    		track(target);
     	} else {
     		driveTrain.move(new Motion(0, 0, 0));
 			this.done = false;
-
     	}
+    }
+    
+    public boolean isDone() {
+    	return this.done;
     }
 
     // Make this return true when this Command no longer needs to run execute()

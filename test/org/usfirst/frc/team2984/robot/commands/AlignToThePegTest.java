@@ -1,6 +1,6 @@
-package org.usfirst.frc.team2984.commands;
+package org.usfirst.frc.team2984.robot.commands;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -53,6 +53,21 @@ public class AlignToThePegTest {
 	}
 	
 	@Test
+	public void executeGivenThirtyDegreesOffStraighOnAndFarAwayHaltsCommand() {
+		when(tracker.hasTrack()).thenReturn(true);
+		double distance = 100;
+		double xOff = -RobotMap.CAMERA_OFFSET;
+		double angle = Math.toDegrees(invertCircleOffset(Math.asin(xOff/distance)));
+		double inputAngle = angle / RobotMap.CAMERA_FOV.width * RobotMap.CAMERA_RESOLUTION.width;
+		double inputHeight = RobotMap.CAMERA_RESOLUTION.height/RobotMap.CAMERA_FOV.height*Math.atan(RobotMap.TARGET_DIMENSION.height/distance);
+		when(tracker.getTarget()).thenReturn(new VisionTarget(inputAngle,0,inputHeight));
+		when(gyro.getAngle()).thenReturn(-30D);
+		
+		command.execute();
+		assertFalse(command.isFinished());
+	}
+	
+	@Test
 	public void testMotionGivenSteightOnAndFarAway() {
 		when(tracker.hasTrack()).thenReturn(true);
 		double distance = 100;
@@ -65,6 +80,21 @@ public class AlignToThePegTest {
 		
 		command.execute();
 		assertMotionAtAngle(-60, 1, 0);
+	}
+	
+	@Test
+	public void executeGivenStraighOnAndFarAwayHalts() {
+		when(tracker.hasTrack()).thenReturn(true);
+		double distance = 100;
+		double xOff = -RobotMap.CAMERA_OFFSET;
+		double angle = Math.toDegrees(invertCircleOffset(Math.asin(xOff/distance)));
+		double inputAngle = angle / RobotMap.CAMERA_FOV.width * RobotMap.CAMERA_RESOLUTION.width;
+		double inputHeight = RobotMap.CAMERA_RESOLUTION.height/RobotMap.CAMERA_FOV.height*Math.atan(RobotMap.TARGET_DIMENSION.height/distance);
+		when(tracker.getTarget()).thenReturn(new VisionTarget(inputAngle,0,inputHeight));
+		when(gyro.getAngle()).thenReturn(-60D);
+		
+		command.execute();
+		assertFalse(command.isFinished());
 	}
 	
 	@Test
@@ -81,6 +111,22 @@ public class AlignToThePegTest {
 		
 		command.execute();
 		assertMotionAtAngle(0, 0, 0);
+	}
+	
+	@Test
+	public void executeGivenStraighOnAndTooCloseFoo() {
+		when(tracker.hasTrack()).thenReturn(true);
+		double distance = RobotMap.DOCKING_DISTANCE_THRESHOLD-1;
+		double xOff = -RobotMap.CAMERA_OFFSET;
+		double angleOff = Math.asin(xOff/distance);
+		double angle = Math.toDegrees(invertCircleOffset(angleOff));
+		double inputAngle = angle / RobotMap.CAMERA_FOV.width * RobotMap.CAMERA_RESOLUTION.width;
+		double inputHeight = RobotMap.CAMERA_RESOLUTION.height/RobotMap.CAMERA_FOV.height*Math.toDegrees(Math.atan(RobotMap.TARGET_DIMENSION.height/distance));
+		when(tracker.getTarget()).thenReturn(new VisionTarget(inputAngle,0,inputHeight));
+		when(gyro.getAngle()).thenReturn(-60D);
+		
+		command.execute();
+		assertTrue(command.isFinished());
 	}
 	
 	@Test
