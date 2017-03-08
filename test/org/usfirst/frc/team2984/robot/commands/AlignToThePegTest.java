@@ -35,10 +35,11 @@ public class AlignToThePegTest {
 		driveTrain = mock(DriveTrain.class);
 		gyro = mock(Gyroscope.class);
 		command = new AlignToThePeg(tracker, driveTrain, gyro);
+		RobotMap.pegAngle = 120;
 	}
 	
 	@Test
-	public void testMotionGivenThityDegreeseOffSteightOnAndFarAway() {
+	public void testMotionGivenThityDegreeseOffStaightOnAndFarAway() {
 		when(tracker.hasTrack()).thenReturn(true);
 		double distance = 100;
 		double xOff = -RobotMap.CAMERA_OFFSET;
@@ -98,7 +99,7 @@ public class AlignToThePegTest {
 	}
 	
 	@Test
-	public void testMotionGivenSteightOnAndTooClose() {
+	public void testMotionGivenStaightOnAndTooClose() {
 		when(tracker.hasTrack()).thenReturn(true);
 		double distance = RobotMap.DOCKING_DISTANCE_THRESHOLD-1;
 		double xOff = -RobotMap.CAMERA_OFFSET;
@@ -217,6 +218,141 @@ public class AlignToThePegTest {
 		assertMotionAtAngle(-60, 1, (RobotMap.DOCKING_ROBOT_ANGLE_THRESHOLD+1)*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR);
 	}
 	
+	@Test
+	public void testMotionAtOnehunderedEightyDegreeseStaightOnAndFarAway() {
+		RobotMap.pegAngle = 180;
+		when(tracker.hasTrack()).thenReturn(true);
+		double distance = 100;
+		double xOff = -RobotMap.CAMERA_OFFSET;
+		double inverseAngle = invertCircleOffset(Math.asin(xOff/distance));
+		double angle = Math.toDegrees(inverseAngle);
+		double inputAngle = angle / RobotMap.CAMERA_FOV.width * RobotMap.CAMERA_RESOLUTION.width;
+		double inputHeight = RobotMap.CAMERA_RESOLUTION.height/RobotMap.CAMERA_FOV.height*Math.toDegrees(Math.atan(RobotMap.TARGET_DIMENSION.height/distance));
+		when(tracker.getTarget()).thenReturn(new VisionTarget(inputAngle,0,inputHeight));
+		when(gyro.getAngle()).thenReturn(0D);
+		
+		command.execute();
+		assertMotionAtAngle(0, 1, 0);
+	}
+	
+	@Test
+	public void testMotionAtTwohunderedAndFortyDegreeseStaightOnAndFarAway() {
+		RobotMap.pegAngle = 240;
+		when(tracker.hasTrack()).thenReturn(true);
+		double distance = 100;
+		double xOff = -RobotMap.CAMERA_OFFSET;
+		double inverseAngle = invertCircleOffset(Math.asin(xOff/distance));
+		double angle = Math.toDegrees(inverseAngle);
+		double inputAngle = angle / RobotMap.CAMERA_FOV.width * RobotMap.CAMERA_RESOLUTION.width;
+		double inputHeight = RobotMap.CAMERA_RESOLUTION.height/RobotMap.CAMERA_FOV.height*Math.toDegrees(Math.atan(RobotMap.TARGET_DIMENSION.height/distance));
+		when(tracker.getTarget()).thenReturn(new VisionTarget(inputAngle,0,inputHeight));
+		when(gyro.getAngle()).thenReturn(60D);
+		
+		command.execute();
+		assertMotionAtAngle(60, 1, 0);
+	}
+	
+	@Test
+	public void testMotionAtOnehunderedEightyDegreeseGyroThirtyOffVisionStaightOnAndFarAway() {
+		RobotMap.pegAngle = 180;
+		when(tracker.hasTrack()).thenReturn(true);
+		double distance = 100;
+		double xOff = -RobotMap.CAMERA_OFFSET;
+		double inverseAngle = invertCircleOffset(Math.asin(xOff/distance));
+		double angle = Math.toDegrees(inverseAngle);
+		double inputAngle = angle / RobotMap.CAMERA_FOV.width * RobotMap.CAMERA_RESOLUTION.width;
+		double inputHeight = RobotMap.CAMERA_RESOLUTION.height/RobotMap.CAMERA_FOV.height*Math.toDegrees(Math.atan(RobotMap.TARGET_DIMENSION.height/distance));
+		when(tracker.getTarget()).thenReturn(new VisionTarget(inputAngle,0,inputHeight));
+		when(gyro.getAngle()).thenReturn(30D);
+		
+		command.execute();
+		assertMotionAtAngle(90, 1, 0);
+	}
+	
+	@Test
+	public void testMotionAtOnehunderedEightyDegreeseGyroNegativeThirtyOffVisionStaightOnAndFarAway() {
+		RobotMap.pegAngle = 180;
+		when(tracker.hasTrack()).thenReturn(true);
+		double distance = 100;
+		double xOff = -RobotMap.CAMERA_OFFSET;
+		double inverseAngle = invertCircleOffset(Math.asin(xOff/distance));
+		double angle = Math.toDegrees(inverseAngle);
+		double inputAngle = angle / RobotMap.CAMERA_FOV.width * RobotMap.CAMERA_RESOLUTION.width;
+		double inputHeight = RobotMap.CAMERA_RESOLUTION.height/RobotMap.CAMERA_FOV.height*Math.toDegrees(Math.atan(RobotMap.TARGET_DIMENSION.height/distance));
+		when(tracker.getTarget()).thenReturn(new VisionTarget(inputAngle,0,inputHeight));
+		when(gyro.getAngle()).thenReturn(-30D);
+		
+		command.execute();
+		assertMotionAtAngle(90, -1, 0);
+	}
+	
+	@Test
+	public void testMotionAtOnehunderedEightyDegreeseGyroStaightOnVisionFifteenAndFarAway() {
+		RobotMap.pegAngle = 180;
+		when(tracker.hasTrack()).thenReturn(true);
+		double distance = 100;
+		double xOff = -RobotMap.CAMERA_OFFSET;
+		double inverseAngle = invertCircleOffset(Math.asin(xOff/distance) + Math.PI/12);
+		double angle = Math.toDegrees(inverseAngle);
+		double inputAngle = angle / RobotMap.CAMERA_FOV.width * RobotMap.CAMERA_RESOLUTION.width;
+		double inputHeight = RobotMap.CAMERA_RESOLUTION.height/RobotMap.CAMERA_FOV.height*Math.toDegrees(Math.atan(RobotMap.TARGET_DIMENSION.height/distance));
+		when(tracker.getTarget()).thenReturn(new VisionTarget(inputAngle,0,inputHeight));
+		when(gyro.getAngle()).thenReturn(0D);
+		
+		command.execute();
+		assertMotionAtAngle(90, 15*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR, 15*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR);
+	}
+	
+	@Test
+	public void testMotionAtOnehunderedEightyDegreeseGyroStaightOnVisionTwentyAndFarAway() {
+		RobotMap.pegAngle = 180;
+		when(tracker.hasTrack()).thenReturn(true);
+		double distance = 100;
+		double xOff = -RobotMap.CAMERA_OFFSET;
+		double inverseAngle = invertCircleOffset(Math.asin(xOff/distance) + Math.PI/9);
+		double angle = Math.toDegrees(inverseAngle);
+		double inputAngle = angle / RobotMap.CAMERA_FOV.width * RobotMap.CAMERA_RESOLUTION.width;
+		double inputHeight = RobotMap.CAMERA_RESOLUTION.height/RobotMap.CAMERA_FOV.height*Math.toDegrees(Math.atan(RobotMap.TARGET_DIMENSION.height/distance));
+		when(tracker.getTarget()).thenReturn(new VisionTarget(inputAngle,0,inputHeight));
+		when(gyro.getAngle()).thenReturn(0D);
+		
+		command.execute();
+		assertMotionAtAngle(90, 20*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR, 20*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR);
+	}
+	
+	@Test
+	public void testMotionAtOnehunderedEightyDegreeseGyroNegativeFifteenVisionFifteenAndFarAway() {
+		RobotMap.pegAngle = 180;
+		when(tracker.hasTrack()).thenReturn(true);
+		double distance = 100;
+		double xOff = -RobotMap.CAMERA_OFFSET;
+		double inverseAngle = invertCircleOffset(Math.asin(xOff/distance) + Math.PI/12);
+		double angle = Math.toDegrees(inverseAngle);
+		double inputAngle = angle / RobotMap.CAMERA_FOV.width * RobotMap.CAMERA_RESOLUTION.width;
+		double inputHeight = RobotMap.CAMERA_RESOLUTION.height/RobotMap.CAMERA_FOV.height*Math.toDegrees(Math.atan(RobotMap.TARGET_DIMENSION.height/distance));
+		when(tracker.getTarget()).thenReturn(new VisionTarget(inputAngle,0,inputHeight));
+		when(gyro.getAngle()).thenReturn(-15D);
+		
+		command.execute();
+		assertMotionAtAngle(0, 1, 15*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR);
+	}
+	
+	@Test
+	public void testMotionAtTwohunderedFortyDegreeseGyroNegativeOneVisionStaightOnAndClose() {
+		RobotMap.pegAngle = 240;
+		when(tracker.hasTrack()).thenReturn(true);
+		double distance = 33;
+		double xOff = -RobotMap.CAMERA_OFFSET;
+		double inverseAngle = invertCircleOffset(Math.asin(xOff/distance));
+		double angle = Math.toDegrees(inverseAngle);
+		double inputAngle = angle / RobotMap.CAMERA_FOV.width * RobotMap.CAMERA_RESOLUTION.width;
+		double inputHeight = RobotMap.CAMERA_RESOLUTION.height/RobotMap.CAMERA_FOV.height*Math.toDegrees(Math.atan(RobotMap.TARGET_DIMENSION.height/distance));
+		when(tracker.getTarget()).thenReturn(new VisionTarget(inputAngle,0,inputHeight));
+		when(gyro.getAngle()).thenReturn(-1D);
+		
+		command.execute();
+		assertMotionAtAngle(150, -1, 0);
+	}
 	
 	private double invertCircleOffset(double wanted){
 		double alpha = Math.cos(Math.toRadians(RobotMap.CAMERA_ANGLE));
