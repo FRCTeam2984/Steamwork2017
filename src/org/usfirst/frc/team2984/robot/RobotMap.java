@@ -57,6 +57,11 @@ public class RobotMap {
 	public static final double DISTANCE_I = 0.0;
 	public static final double DISTANCE_D = 0.0;
 	
+	public static final double ROTATION_P = 0.01;
+	public static final double ROTATION_I = 0.0;
+	public static final double ROTATION_D = 0.0;
+	public static final double ROTATION_THRESHOLD = 1;
+	
 	public static final double GEAR_GRABBER_CLOSE = 0;
 	public static final double GEAR_GRABBER_OPEN = 600;
 	public static final double GEAR_GRABBER_DELTA = 50;

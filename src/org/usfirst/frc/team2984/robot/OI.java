@@ -2,10 +2,9 @@ package org.usfirst.frc.team2984.robot;
 
 import org.usfirst.frc.team2984.robot.commands.AlignToThePeg;
 import org.usfirst.frc.team2984.robot.commands.Climb;
-import org.usfirst.frc.team2984.robot.commands.DriveDistance;
+import org.usfirst.frc.team2984.robot.commands.GearDelivery;
 import org.usfirst.frc.team2984.robot.commands.OpenGearGrabber;
 import org.usfirst.frc.team2984.robot.commands.Rappel;
-import org.usfirst.frc.team2984.robot.commands.UpdatePIDsForDriveTrain;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -49,26 +48,26 @@ public class OI {
 	/**
 	 * the button that will make the robot drive forward for one second
 	 */
-	Button updatePID = new JoystickButton(stick, 1);
+//	Button updatePID = new JoystickButton(stick, 1);
 	Button climb = new JoystickButton(stick, 2);
 	Button rappel = new JoystickButton(stick, 3);
 	Button openGearGrabber = new JoystickButton(stick, 4);
 	Button driveForward = new JoystickButton(stick, 5);
 	Button alignToPeg = new JoystickButton(stick, 6);
-	Button drop = new JoystickButton(stick, 8);
+	Button deliver = new JoystickButton(stick, 8);
 
 	
 	/**
 	 * initializes the behaviors for each input
 	 */
 	public OI(){
-		updatePID.whenPressed(new UpdatePIDsForDriveTrain());
+//		updatePID.whenPressed(new UpdatePIDsForDriveTrain());
 		climb.whileHeld(new Climb());
 		rappel.whileHeld(new Rappel());
 		openGearGrabber.whileHeld(new OpenGearGrabber());
-		driveForward.whenPressed(new DriveDistance(0, 18));
+//		driveForward.whenPressed(new DriveDistance(0, 18));
 		AlignToThePeg alignToPegCommand = new AlignToThePeg();
 		alignToPeg.whileHeld(alignToPegCommand);
-		drop.whileHeld(new Rappel());
+		deliver.whileHeld(new GearDelivery());
 	}
 }
