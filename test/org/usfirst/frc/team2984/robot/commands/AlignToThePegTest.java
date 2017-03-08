@@ -115,7 +115,7 @@ public class AlignToThePegTest {
 	}
 	
 	@Test
-	public void executeGivenStraighOnAndTooCloseFoo() {
+	public void executeGivenStraighOnAndTooCloseHalts() {
 		when(tracker.hasTrack()).thenReturn(true);
 		double distance = RobotMap.DOCKING_DISTANCE_THRESHOLD-1;
 		double xOff = -RobotMap.CAMERA_OFFSET;

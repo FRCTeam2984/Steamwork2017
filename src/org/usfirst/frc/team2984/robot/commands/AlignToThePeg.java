@@ -46,6 +46,43 @@ public class AlignToThePeg extends Command {
         	this.tracker = VisionTracker.getInstance();
     	}
     }
+
+    // Called repeatedly when this Command is scheduled to run
+    public void execute() {
+    	this.done = true;
+    	VisionTarget target = this.tracker.getTarget();
+    	
+    	if(target == null){
+    		driveTrain.move(new Motion(0, 0, 0));
+    		return;
+    	}
+    	
+    	if(this.tracker.hasTrack()){
+    		track(target);
+    	} else {
+    		driveTrain.move(new Motion(0, 0, 0));
+			this.done = false;
+    	}
+    }
+    
+    public boolean isDone() {
+    	return this.done;
+    }
+
+    // Make this return true when this Command no longer needs to run execute()
+    protected boolean isFinished() {
+        return this.done;
+    }
+
+    // Called once after isFinished returns true
+    protected void end() {
+    	this.done = false;
+    }
+
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    protected void interrupted() {
+    }
     
     private double getYaw(VisionTarget target, double angleOffset) {
     	double robotAngle = this.gyro.getAngle();
@@ -92,9 +129,7 @@ public class AlignToThePeg extends Command {
 		double distance = target.getDistance(RobotMap.CAMERA_SPECIFICATION, RobotMap.TARGET_DIMENSION);
 		double angleOffset = Math.toDegrees(Math.asin(RobotMap.CAMERA_OFFSET/distance));
 		double targetRotation = target.getRotation(RobotMap.CAMERA_SPECIFICATION);
-//		double cameraAngle =  targetRotation + angleOffset;
 		double rotation = this.getRotation(targetRotation + angleOffset);
-		
 		double yaw = this.getYaw(target, angleOffset);
 		double heading = this.getHeading(yaw, distance);
 		double speed = this.getSpeed(yaw, distance);
@@ -105,43 +140,10 @@ public class AlignToThePeg extends Command {
 			this.done = false;
 		}
 		
-		driveTrain.moveAtAngle(heading, speed, rotation);
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    public void execute() {
-    	this.done = true;
-    	VisionTarget target = this.tracker.getTarget();
-    	
-    	if(target == null){
-    		driveTrain.move(new Motion(0, 0, 0));
-    		return;
-    	}
-    	
-    	if(this.tracker.hasTrack()){
-    		track(target);
-    	} else {
-    		driveTrain.move(new Motion(0, 0, 0));
+		if(Math.abs(targetRotation + angleOffset) > RobotMap.DOCKING_ROBOT_ANGLE_THRESHOLD){
 			this.done = false;
-    	}
-    }
-    
-    public boolean isDone() {
-    	return this.done;
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return this.done;
-    }
-
-    // Called once after isFinished returns true
-    protected void end() {
-    	this.done = false;
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
+		}
+		
+		driveTrain.moveAtAngle(heading, speed, rotation);
     }
 }
