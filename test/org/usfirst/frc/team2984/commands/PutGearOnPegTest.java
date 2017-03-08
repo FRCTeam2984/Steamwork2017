@@ -6,7 +6,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.usfirst.frc.team2984.robot.RobotMap;
@@ -85,7 +84,6 @@ public class PutGearOnPegTest {
 		assertMotion(new Motion(0, RobotMap.GEAR_DROPOFF_SPEED, 0));
 	}
 	
-	@Ignore
 	@Test
 	public void testMotionGivenFarAwayAtTwoDegreseAndAtPositiveMaxAtOneDisplacement() {
 		when(tracker.getWall()).thenReturn(new Wall(RobotMap.PEG_DROPOFF_DISTANCE + 10, 2));
@@ -94,6 +92,16 @@ public class PutGearOnPegTest {
 		
 		command.execute();
 		assertMotion(new Motion(0, RobotMap.GEAR_DROPOFF_SPEED, -2*RobotMap.PEG_DROPOFF_ROTATION_P));
+	}
+	
+	@Test
+	public void testMotionGivenFarAwayAtLargeDegreseAndAtPositiveMaxAtOneDisplacement() {
+		when(tracker.getWall()).thenReturn(new Wall(RobotMap.PEG_DROPOFF_DISTANCE + 10, 1/RobotMap.PEG_DROPOFF_ROTATION_P + 1));
+		when(driveTrain.getDisplacementX()).thenReturn(RobotMap.UNDULATING_AMPLITUDED);
+		when(driveTrain.getDisplacementY()).thenReturn(1/RobotMap.ROBOT_PROPORTINAL_UNDULATING_FACTOR);
+		
+		command.execute();
+		assertMotion(new Motion(0, RobotMap.GEAR_DROPOFF_SPEED, -1));
 	}
 	
 	private void assertMotion(Motion motion){
