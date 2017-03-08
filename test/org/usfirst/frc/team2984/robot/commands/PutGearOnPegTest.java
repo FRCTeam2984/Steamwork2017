@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2984.commands;
+package org.usfirst.frc.team2984.robot.commands;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
