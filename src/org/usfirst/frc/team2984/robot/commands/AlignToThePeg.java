@@ -54,30 +54,57 @@ public class AlignToThePeg extends Command {
     	return clockAngle - angleOffset;
     }
     
-    private void track(VisionTarget target) {
-		double distance = target.getDistance(RobotMap.CAMERA_SPECIFICATION, RobotMap.TARGET_DIMENSION);
-		double angleOffset = Math.toDegrees(Math.asin(RobotMap.CAMERA_OFFSET/distance));
-		double targetRotation = target.getRotation(RobotMap.CAMERA_SPECIFICATION);
-		double cameraAngle =  targetRotation + angleOffset;
-		double heading = 0;
-		double speed = 0;
+    private double getHeading(double yaw, double distance) {
+    	double result = 0;
+    	
+		if (Math.abs(yaw) > RobotMap.DOCKING_YAW_THRESHOLD){
+			result = RobotMap.pegAngle-90;
+		} else if (distance > RobotMap.DOCKING_DISTANCE_THRESHOLD){
+			result = RobotMap.pegAngle-180;
+		}
+    	
+    	return result;
+    }
+    
+    private double getSpeed(double yaw, double distance) {
+    	double result = 0;
+    	
+		if(Math.abs(yaw) > RobotMap.DOCKING_YAW_THRESHOLD){
+			result = -Math.min(Math.max(yaw * RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR, -1), 1);
+		} else if(distance > RobotMap.DOCKING_DISTANCE_THRESHOLD){
+			result = Math.min(Math.abs(distance * RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR), 1);
+		}
+		
+		return result;
+    }
+    
+    private double getRotation(double cameraAngle) {
 		double rotation = 0;
 		if(Math.abs(cameraAngle) > RobotMap.DOCKING_ROBOT_ANGLE_THRESHOLD){
 			rotation = Math.min(Math.max(cameraAngle*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR, -1), 1);
 			this.done = false;
 		}
 		
-		double yaw = this.getYaw(target, angleOffset);
+		return rotation;
+    }
+    
+    private void track(VisionTarget target) {
+		double distance = target.getDistance(RobotMap.CAMERA_SPECIFICATION, RobotMap.TARGET_DIMENSION);
+		double angleOffset = Math.toDegrees(Math.asin(RobotMap.CAMERA_OFFSET/distance));
+		double targetRotation = target.getRotation(RobotMap.CAMERA_SPECIFICATION);
+//		double cameraAngle =  targetRotation + angleOffset;
+		double rotation = this.getRotation(targetRotation + angleOffset);
 		
-		if(Math.abs(yaw) > RobotMap.DOCKING_YAW_THRESHOLD){
-			heading = RobotMap.pegAngle-90;
-			speed = -Math.min(Math.max(yaw * RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR, -1), 1);
+		double yaw = this.getYaw(target, angleOffset);
+		double heading = this.getHeading(yaw, distance);
+		double speed = this.getSpeed(yaw, distance);
+		
+		if (Math.abs(yaw) > RobotMap.DOCKING_YAW_THRESHOLD){
 			this.done = false;
-		} else if(distance > RobotMap.DOCKING_DISTANCE_THRESHOLD){
-			heading = RobotMap.pegAngle-180;
-			speed = Math.min(Math.abs(distance * RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR), 1);
+		} else if (distance > RobotMap.DOCKING_DISTANCE_THRESHOLD){
 			this.done = false;
 		}
+		
 		driveTrain.moveAtAngle(heading, speed, rotation);
     }
 
