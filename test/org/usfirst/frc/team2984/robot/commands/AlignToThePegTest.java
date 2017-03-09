@@ -390,6 +390,24 @@ public class AlignToThePegTest {
 				Math.min(RobotMap.ROBOT_SCALAR_FOR_OTHER_SCALARS_VIA_DISTANCE*29*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR*7.5 ,RobotMap.DOCKING_MAX_SPEED));
 	}
 	
+	@Test
+	public void testRampingOfRotationWhenFurtherAwayDoesNotGoOverOne() {
+		RobotMap.pegAngle = 180;
+		when(tracker.hasTrack()).thenReturn(true);
+		double distance = 100;
+		double xOff = -RobotMap.CAMERA_OFFSET;
+		double inverseAngle = invertCircleOffset(Math.asin(xOff/distance) + Math.PI/24);
+		double angle = Math.toDegrees(inverseAngle);
+		double inputAngle = angle / RobotMap.CAMERA_FOV.width * RobotMap.CAMERA_RESOLUTION.width;
+		double inputHeight = RobotMap.CAMERA_RESOLUTION.height/RobotMap.CAMERA_FOV.height*Math.toDegrees(Math.atan(RobotMap.TARGET_DIMENSION.height/distance));
+		when(tracker.getTarget()).thenReturn(new VisionTarget(inputAngle,0,inputHeight));
+		when(gyro.getAngle()).thenReturn(-7.5D);
+		
+		command.execute();
+		assertMotionAtAngle(0, Math.min(RobotMap.DOCKING_MAX_SPEED, 100*RobotMap.ROBOT_DISTANCE_PROPORIONAL_SCALAR),
+				Math.min(RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR*7.5 ,RobotMap.DOCKING_MAX_SPEED));
+	}
+	
 	private double invertCircleOffset(double wanted){
 		double alpha = Math.cos(Math.toRadians(RobotMap.CAMERA_ANGLE));
 		double beta = Math.tan(Math.abs(wanted));
