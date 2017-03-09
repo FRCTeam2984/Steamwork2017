@@ -65,7 +65,7 @@ public class PutGearOnPeg extends Command {
 		double wantedX = Math.sin(Math.PI/2 * RobotMap.ROBOT_PROPORTINAL_UNDULATING_FACTOR * deltaY) * RobotMap.UNDULATING_AMPLITUDED;
 		double x = (wantedX - deltaX) * RobotMap.PEG_DROPOFF_OCCILATION_P;
 		double angleOff = -angle*RobotMap.PEG_DROPOFF_ROTATION_P;
-		angleOff = Math.max(Math.min(angleOff, 1), -1);
+		angleOff = Math.max(Math.min(angleOff, RobotMap.DOCKING_MAX_SPEED), -RobotMap.DOCKING_MAX_SPEED);
 		this.driveTrain.move(new Motion(x, RobotMap.GEAR_DROPOFF_SPEED, angleOff));
     }
 

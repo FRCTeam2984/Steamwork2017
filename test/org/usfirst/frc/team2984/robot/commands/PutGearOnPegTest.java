@@ -101,7 +101,7 @@ public class PutGearOnPegTest {
 		when(driveTrain.getDisplacementY()).thenReturn(1/RobotMap.ROBOT_PROPORTINAL_UNDULATING_FACTOR);
 		
 		command.execute();
-		assertMotion(new Motion(0, RobotMap.GEAR_DROPOFF_SPEED, -1));
+		assertMotion(new Motion(0, RobotMap.GEAR_DROPOFF_SPEED, -RobotMap.DOCKING_MAX_SPEED));
 	}
 	
 	private void assertMotion(Motion motion){

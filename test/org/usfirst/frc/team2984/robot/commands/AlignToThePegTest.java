@@ -45,12 +45,12 @@ public class AlignToThePegTest {
 		double xOff = -RobotMap.CAMERA_OFFSET;
 		double angle = Math.toDegrees(invertCircleOffset(Math.asin(xOff/distance)));
 		double inputAngle = angle / RobotMap.CAMERA_FOV.width * RobotMap.CAMERA_RESOLUTION.width;
-		double inputHeight = RobotMap.CAMERA_RESOLUTION.height/RobotMap.CAMERA_FOV.height*Math.atan(RobotMap.TARGET_DIMENSION.height/distance);
+		double inputHeight = RobotMap.CAMERA_RESOLUTION.height/RobotMap.CAMERA_FOV.height*Math.toDegrees(Math.atan(RobotMap.TARGET_DIMENSION.height/distance));
 		when(tracker.getTarget()).thenReturn(new VisionTarget(inputAngle,0,inputHeight));
 		when(gyro.getAngle()).thenReturn(-30D);
 		
 		command.execute();
-		assertMotionAtAngle(30, 1, 0);
+		assertMotionAtAngle(30, Math.min(30*RobotMap.ROBOT_YAW_PROPORIONAL_SCALAR,RobotMap.DOCKING_MAX_SPEED), 0);
 	}
 	
 	@Test
@@ -80,7 +80,7 @@ public class AlignToThePegTest {
 		when(gyro.getAngle()).thenReturn(-60D);
 		
 		command.execute();
-		assertMotionAtAngle(-60, 1, 0);
+		assertMotionAtAngle(-60, RobotMap.DOCKING_MAX_SPEED, 0);
 	}
 	
 	@Test
@@ -142,7 +142,7 @@ public class AlignToThePegTest {
 		when(gyro.getAngle()).thenReturn(-30D);
 		
 		command.execute();
-		assertMotionAtAngle(30, 1, 0);
+		assertMotionAtAngle(30, Math.min(30*RobotMap.ROBOT_YAW_PROPORIONAL_SCALAR,RobotMap.DOCKING_MAX_SPEED), 0);
 	}
 	
 	@Test
@@ -167,7 +167,7 @@ public class AlignToThePegTest {
 		when(gyro.getAngle()).thenReturn(-90D);
 		
 		command.execute();
-		assertMotionAtAngle(30, -1, 0);
+		assertMotionAtAngle(30, -Math.min(30*RobotMap.ROBOT_YAW_PROPORIONAL_SCALAR,RobotMap.DOCKING_MAX_SPEED), 0);
 	}
 	
 	@Test
@@ -183,7 +183,7 @@ public class AlignToThePegTest {
 		when(gyro.getAngle()).thenReturn(-90D);
 		
 		command.execute();
-		assertMotionAtAngle(30, -1, -(RobotMap.DOCKING_ROBOT_ANGLE_THRESHOLD+1)*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR);
+		assertMotionAtAngle(30, -Math.min((30 + RobotMap.DOCKING_ROBOT_ANGLE_THRESHOLD + 1)*RobotMap.ROBOT_YAW_PROPORIONAL_SCALAR,RobotMap.DOCKING_MAX_SPEED), -(RobotMap.DOCKING_ROBOT_ANGLE_THRESHOLD+1)*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR);
 	}
 	
 	@Test
@@ -199,7 +199,7 @@ public class AlignToThePegTest {
 		when(gyro.getAngle()).thenReturn(-40D);
 		
 		command.execute();
-		assertMotionAtAngle(30, 1, (RobotMap.DOCKING_ROBOT_ANGLE_THRESHOLD+1)*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR);
+		assertMotionAtAngle(30, Math.min((20 + RobotMap.DOCKING_ROBOT_ANGLE_THRESHOLD + 1)*RobotMap.ROBOT_YAW_PROPORIONAL_SCALAR,RobotMap.DOCKING_MAX_SPEED), (RobotMap.DOCKING_ROBOT_ANGLE_THRESHOLD+1)*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR);
 	}
 	
 	@Test
@@ -215,7 +215,7 @@ public class AlignToThePegTest {
 		when(gyro.getAngle()).thenReturn(-69+RobotMap.DOCKING_YAW_THRESHOLD);
 		
 		command.execute();
-		assertMotionAtAngle(-60, 1, (RobotMap.DOCKING_ROBOT_ANGLE_THRESHOLD+1)*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR);
+		assertMotionAtAngle(-60, Math.min(100*RobotMap.ROBOT_DISTANCE_PROPORIONAL_SCALAR, RobotMap.DOCKING_MAX_SPEED), (RobotMap.DOCKING_ROBOT_ANGLE_THRESHOLD+1)*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR);
 	}
 	
 	@Test
@@ -232,7 +232,7 @@ public class AlignToThePegTest {
 		when(gyro.getAngle()).thenReturn(0D);
 		
 		command.execute();
-		assertMotionAtAngle(0, 1, 0);
+		assertMotionAtAngle(0, Math.min(100*RobotMap.ROBOT_DISTANCE_PROPORIONAL_SCALAR, RobotMap.DOCKING_MAX_SPEED), 0);
 	}
 	
 	@Test
@@ -249,7 +249,7 @@ public class AlignToThePegTest {
 		when(gyro.getAngle()).thenReturn(60D);
 		
 		command.execute();
-		assertMotionAtAngle(60, 1, 0);
+		assertMotionAtAngle(60, Math.min(100*RobotMap.ROBOT_DISTANCE_PROPORIONAL_SCALAR, RobotMap.DOCKING_MAX_SPEED), 0);
 	}
 	
 	@Test
@@ -266,7 +266,7 @@ public class AlignToThePegTest {
 		when(gyro.getAngle()).thenReturn(30D);
 		
 		command.execute();
-		assertMotionAtAngle(90, 1, 0);
+		assertMotionAtAngle(90, Math.min(30*RobotMap.ROBOT_YAW_PROPORIONAL_SCALAR,RobotMap.DOCKING_MAX_SPEED), 0);
 	}
 	
 	@Test
@@ -283,7 +283,7 @@ public class AlignToThePegTest {
 		when(gyro.getAngle()).thenReturn(-30D);
 		
 		command.execute();
-		assertMotionAtAngle(90, -1, 0);
+		assertMotionAtAngle(90, -Math.min(30*RobotMap.ROBOT_YAW_PROPORIONAL_SCALAR,RobotMap.DOCKING_MAX_SPEED), 0);
 	}
 	
 	@Test
@@ -292,7 +292,7 @@ public class AlignToThePegTest {
 		when(tracker.hasTrack()).thenReturn(true);
 		double distance = 100;
 		double xOff = -RobotMap.CAMERA_OFFSET;
-		double inverseAngle = invertCircleOffset(Math.asin(xOff/distance) + Math.PI/12);
+		double inverseAngle = invertCircleOffset(Math.asin(xOff/distance) + Math.PI/24);
 		double angle = Math.toDegrees(inverseAngle);
 		double inputAngle = angle / RobotMap.CAMERA_FOV.width * RobotMap.CAMERA_RESOLUTION.width;
 		double inputHeight = RobotMap.CAMERA_RESOLUTION.height/RobotMap.CAMERA_FOV.height*Math.toDegrees(Math.atan(RobotMap.TARGET_DIMENSION.height/distance));
@@ -300,7 +300,7 @@ public class AlignToThePegTest {
 		when(gyro.getAngle()).thenReturn(0D);
 		
 		command.execute();
-		assertMotionAtAngle(90, 15*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR, 15*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR);
+		assertMotionAtAngle(90, 7.5*RobotMap.ROBOT_YAW_PROPORIONAL_SCALAR, 7.5*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR);
 	}
 	
 	@Test
@@ -317,7 +317,7 @@ public class AlignToThePegTest {
 		when(gyro.getAngle()).thenReturn(0D);
 		
 		command.execute();
-		assertMotionAtAngle(90, 20*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR, 20*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR);
+		assertMotionAtAngle(90, Math.min(20*RobotMap.ROBOT_YAW_PROPORIONAL_SCALAR, RobotMap.DOCKING_MAX_SPEED), Math.min(20*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR, RobotMap.DOCKING_MAX_SPEED));
 	}
 	
 	@Test
@@ -334,7 +334,7 @@ public class AlignToThePegTest {
 		when(gyro.getAngle()).thenReturn(-15D);
 		
 		command.execute();
-		assertMotionAtAngle(0, 1, 15*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR);
+		assertMotionAtAngle(0, Math.min(100*RobotMap.ROBOT_DISTANCE_PROPORIONAL_SCALAR, RobotMap.DOCKING_MAX_SPEED), Math.min(15*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR, RobotMap.DOCKING_MAX_SPEED));
 	}
 	
 	@Test
@@ -351,7 +351,7 @@ public class AlignToThePegTest {
 		when(gyro.getAngle()).thenReturn(-1D);
 		
 		command.execute();
-		assertMotionAtAngle(150, -1, 0);
+		assertMotionAtAngle(150, -RobotMap.DOCKING_MAX_SPEED, 0);
 	}
 	
 	private double invertCircleOffset(double wanted){

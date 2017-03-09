@@ -21,22 +21,26 @@ public class RobotMap {
 	public static final Dimension CAMERA_FOV = new Dimension(56,41.625);
 	public static final double CAMERA_ANGLE = 10;
 	public static final CameraSpecification CAMERA_SPECIFICATION = new CameraSpecification(CAMERA_FOV, CAMERA_RESOLUTION, CAMERA_ANGLE);
-	public static final double CAMERA_OFFSET = 2;
+	public static final double CAMERA_OFFSET = -3.5;
 	public static final Dimension TARGET_DIMENSION = new Dimension(10.25, 5);
 
-	public static int leftDistanceSensorPort; // TODO: set value
-	public static int rightDistanceSensorPort; // TODO: set value
+	public static int leftDistanceSensorPort = 2; // TODO: set value
+	public static int rightDistanceSensorPort = 1; // TODO: set value
 	
 	public static final double DOCKING_DISTANCE_THRESHOLD = 30D; // in inches
-	public static final double DOCKING_YAW_THRESHOLD = 5;
+	public static final double DOCKING_YAW_THRESHOLD = 3;
 	public static final double DOCKING_ROBOT_ANGLE_THRESHOLD = 5;
 	public static final double PEG_DROPOFF_DISTANCE = 10D;
 	
 	public static final double PEG_DROPOFF_OCCILATION_P = 0.1;
-	public static final double PEG_DROPOFF_ROTATION_P = 0.2;
-	public static final double ROBOT_PROPORTINAL_UNDULATING_FACTOR = 0.05;
+	public static final double PEG_DROPOFF_ROTATION_P = 0.07;
+	public static final double ROBOT_DISTANCE_PROPORIONAL_SCALAR = 0.003;
+	public static final double ROBOT_YAW_PROPORIONAL_SCALAR = 0.02;
+	public static final double DOCKING_MAX_SPEED = 0.5;
+	public static final double ROBOT_PROPORTINAL_UNDULATING_FACTOR = 0.04;
 	public static final double UNDULATING_AMPLITUDED = 2;
 	public static final double GEAR_DROPOFF_SPEED = 0.3;
+	public static final double ROBOT_SCALAR_FOR_OTHER_SCALARS_VIA_DISTANCE = 1/60D;
 
 	public static final double DRIVE_TRAIN_MAX_SPEED = 1400.0;
 	public static final double SENSOR_WIDTH = 1D;//in inches
@@ -45,7 +49,7 @@ public class RobotMap {
 	public static final double DRIVE_TRAIN_TICK_TO_RADIAN = 1000D; //Ticks Per Radian
 	public static final double SENSOR_V_TO_IN_CALIBRATION = 1D;
 	
-	public static final int VALUE_LOW = 180;
+	public static final int VALUE_LOW = 200; //TODO: set to 50
 	
 	public static final double SPEED_F = 0.12;
 	public static final double SPEED_P = 0.12;
@@ -69,6 +73,6 @@ public class RobotMap {
 	public static final double ROBOT_START_ANGLE = 0;
 	public static final double ROBOT_ANGLE_PROPORIONAL_SCALAR = 0.05;
 	
-	public static double pegAngle = 120;
+	public static double pegAngle = 240;
 
 }

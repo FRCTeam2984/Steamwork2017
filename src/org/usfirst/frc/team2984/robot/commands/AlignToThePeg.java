@@ -107,18 +107,18 @@ public class AlignToThePeg extends Command {
     	double result = 0;
     	
 		if(Math.abs(yaw) > RobotMap.DOCKING_YAW_THRESHOLD){
-			result = -Math.min(Math.max(yaw * RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR, -1), 1);
+			result = -Math.min(Math.max(yaw * RobotMap.ROBOT_YAW_PROPORIONAL_SCALAR, -RobotMap.DOCKING_MAX_SPEED), RobotMap.DOCKING_MAX_SPEED);
 		} else if(distance > RobotMap.DOCKING_DISTANCE_THRESHOLD){
-			result = Math.min(Math.abs(distance * RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR), 1);
+			result = Math.min(Math.abs(distance * RobotMap.ROBOT_DISTANCE_PROPORIONAL_SCALAR), RobotMap.DOCKING_MAX_SPEED);
 		}
 		
 		return result;
     }
     
-    private double getRotation(double cameraAngle) {
+    private double getRotation(double cameraAngle, double distance) {
 		double rotation = 0;
 		if(Math.abs(cameraAngle) > RobotMap.DOCKING_ROBOT_ANGLE_THRESHOLD){
-			rotation = Math.min(Math.max(cameraAngle*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR, -1), 1);
+			rotation = Math.min(Math.max(cameraAngle*RobotMap.ROBOT_ANGLE_PROPORIONAL_SCALAR * Math.min(distance*RobotMap.ROBOT_SCALAR_FOR_OTHER_SCALARS_VIA_DISTANCE, 1), -RobotMap.DOCKING_MAX_SPEED), RobotMap.DOCKING_MAX_SPEED);
 			this.done = false;
 		}
 		
@@ -129,7 +129,7 @@ public class AlignToThePeg extends Command {
 		double distance = target.getDistance(RobotMap.CAMERA_SPECIFICATION, RobotMap.TARGET_DIMENSION);
 		double angleOffset = Math.toDegrees(Math.asin(RobotMap.CAMERA_OFFSET/distance));
 		double targetRotation = target.getRotation(RobotMap.CAMERA_SPECIFICATION);
-		double rotation = this.getRotation(targetRotation + angleOffset);
+		double rotation = this.getRotation(targetRotation + angleOffset, distance);
 		double yaw = this.getYaw(target, angleOffset);
 		double heading = this.getHeading(yaw, distance);
 		double speed = this.getSpeed(yaw, distance);

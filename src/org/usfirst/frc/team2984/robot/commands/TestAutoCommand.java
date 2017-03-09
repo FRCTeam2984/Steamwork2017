@@ -24,11 +24,11 @@ public class TestAutoCommand extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new DriveDistance(0, 10));
-//    	addSequantial(new Rotate(30)); TODO: Add this command
-//    	addSequential(new AlignToThePeg());
-    	addSequential(new OpenGearGrabber());
-    	addParallel(new KeepGearGrabberOpen());
-    	addSequential(new DriveDistance(0, -10));
+//    	addSequential(new DriveDistance(0, 10));
+    	addSequential(new Rotate(10, 1000)); //TODO: Add this command
+    	addSequential(new AlignToThePeg());
+//    	addSequential(new OpenGearGrabber());
+//    	addParallel(new KeepGearGrabberOpen());
+//    	addSequential(new DriveDistance(0, -10));
     }
 }

@@ -27,7 +27,7 @@ public class DropOffGear extends CommandGroup {
     	addSequential(new DriveDistance(10, 0));
     	addSequential(new Rotate(-60, 1000));
     	addSequential(new AlignToThePeg());
-    	addSequential(new DropOffGear());
+    	addSequential(new PutGearOnPeg());
     	addSequential(new OpenGearGrabber());
     	addParallel(new KeepGearGrabberOpen());
     	addSequential(new DriveDistance(-10, 0));

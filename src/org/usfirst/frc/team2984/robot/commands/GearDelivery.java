@@ -22,7 +22,7 @@ public class GearDelivery extends CommandGroup {
 	        // a CommandGroup containing them would require both the chassis and the
 	        // arm.
 	    	addSequential(new AlignToThePeg());
-	    	addSequential(new DropOffGear());
+	    	addSequential(new PutGearOnPeg());
 	    	addSequential(new OpenGearGrabber());
 	    	addParallel(new KeepGearGrabberOpen());
 	    	addSequential(new DriveDistance(-10, 0));

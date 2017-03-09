@@ -6,12 +6,12 @@ import org.usfirst.frc.team2984.robot.subsystems.Gyroscope;
 import org.usfirst.frc.team2984.robot.util.MathUtil;
 import org.usfirst.frc.team2984.robot.util.Motion;
 
-import edu.wpi.first.wpilibj.command.PIDCommand;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class Rotate extends PIDCommand {
+public class Rotate extends Command {
 
 	private double angle;
 	private DriveTrain driveTrain;
@@ -25,7 +25,7 @@ public class Rotate extends PIDCommand {
 	 * @param angle the angle
 	 */
     public Rotate(double angle, long maxTime) {
-    	super(RobotMap.ROTATION_P, RobotMap.ROTATION_I, RobotMap.ROTATION_D);
+    	super("Rotate");
     	this.angle = angle;
     	this.driveTrain = DriveTrain.getInstance();
     	this.gyro = Gyroscope.getInstance();
@@ -36,11 +36,13 @@ public class Rotate extends PIDCommand {
 
     @Override
     protected void execute(){
-    	super.execute();
     	if(this.reset){
     		this.time = System.currentTimeMillis();
     		this.reset = false;
     	}
+    	double angle = MathUtil.shortestDeltaAngle(this.gyro.getAngle(), this.angle);
+    	double power = RobotMap.ROTATION_P * angle;
+    	this.driveTrain.move(new Motion(0, 0, power));
     }
     
     protected boolean isFinished() {
@@ -51,15 +53,5 @@ public class Rotate extends PIDCommand {
     	super.end();
     	this.reset = true;
     }
-
-	@Override
-	protected double returnPIDInput() {
-		return MathUtil.shortestDeltaAngle(this.gyro.getAngle(), this.angle);
-	}
-
-	@Override
-	protected void usePIDOutput(double output) {
-		this.driveTrain.move(new Motion(0, 0, output));
-	}
 
 }
