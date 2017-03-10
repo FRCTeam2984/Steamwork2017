@@ -38,8 +38,8 @@ public class TrackingThread extends Thread {
 
 	
 	public TrackingThread(){
-		minc = new Scalar(0, 0, RobotMap.VALUE_LOW);
-		maxc = new Scalar(180, 255, 255);
+		minc = new Scalar(18, 70, RobotMap.VALUE_LOW);
+		maxc = new Scalar(103, 255, 255);
 		this.shouldProcess = true;
 		this.hasTrack = false;
 		this.tmp = new Mat();
@@ -70,6 +70,7 @@ public class TrackingThread extends Thread {
             		if(!source.empty())
             			process(source); 	
             		outputStream.putFrame(source);
+            		SmartDashboard.putString("PEG", this.target.getDistance(RobotMap.CAMERA_SPECIFICATION, RobotMap.TARGET_DIMENSION) + "");
         		} else {
         			Thread.sleep(10);
         		}
@@ -111,7 +112,7 @@ public class TrackingThread extends Thread {
         Imgproc.findContours(processingMat, contours, tmp, Imgproc.RETR_TREE,Imgproc.CHAIN_APPROX_SIMPLE);
         int i = 0;
         while(i < contours.size()){
-        	if(Imgproc.contourArea(contours.get(i)) < 30){
+        	if(Imgproc.contourArea(contours.get(i)) < 40){
         		contours.remove(i);
         		continue;
         	}

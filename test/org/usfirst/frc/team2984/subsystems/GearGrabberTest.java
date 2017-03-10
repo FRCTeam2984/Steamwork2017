@@ -1,6 +1,9 @@
 package org.usfirst.frc.team2984.subsystems;
 
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -41,5 +44,17 @@ public class GearGrabberTest {
 	public void testOpenDrivesTalon() {
 		grabber.open();
 		verify(talon).set(RobotMap.GEAR_GRABBER_OPEN);
+	}
+	
+	@Test
+	public void testGearGrabberOpenReturnsTrueWhenOpen() {
+		when(talon.getEncPosition()).thenReturn((int) (RobotMap.GEAR_GRABBER_OPEN-80));
+		assertTrue(grabber.isOpen(100));
+	}
+	
+	@Test
+	public void testGearGrabberOpenReturnsFalseWhenNotOpen() {
+		when(talon.getEncPosition()).thenReturn((int) (RobotMap.GEAR_GRABBER_OPEN-120));
+		assertFalse(grabber.isOpen(100));
 	}
 }

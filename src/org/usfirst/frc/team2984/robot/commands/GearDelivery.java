@@ -21,11 +21,11 @@ public class GearDelivery extends CommandGroup {
 	        // e.g. if Command1 requires chassis, and Command2 requires arm,
 	        // a CommandGroup containing them would require both the chassis and the
 	        // arm.
-	    	addSequential(new AlignToThePeg());
+//	    	addSequential(new AlignToThePeg());
 	    	addSequential(new PutGearOnPeg());
 	    	addSequential(new OpenGearGrabber());
 	    	addParallel(new KeepGearGrabberOpen());
-	    	addSequential(new DriveDistance(-10, 0));
+	    	addSequential(new DriveDistance(0, -1));
 
 	    }
 }

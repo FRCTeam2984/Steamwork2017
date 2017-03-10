@@ -24,8 +24,8 @@ public class WallFinder extends Subsystem {
 		if(wallFinder != null){
 			return wallFinder;
 		}
-		DistanceSensor left = new DistanceSensor(RobotMap.leftDistanceSensorPort);
-		DistanceSensor right = new DistanceSensor(RobotMap.rightDistanceSensorPort);
+		DistanceSensor left = new DistanceSensor(RobotMap.leftDistanceSensorPort, RobotMap.SENSOR_V_TO_IN_CALIBRATION_RIGHT, RobotMap.SENSOR_START_DISTANCE_RIGHT);
+		DistanceSensor right = new DistanceSensor(RobotMap.rightDistanceSensorPort, RobotMap.SENSOR_V_TO_IN_CALIBRATION_LEFT, RobotMap.SENSOR_START_DISTANCE_LEFT);
 		wallFinder = new WallFinder(left, right, RobotMap.SENSOR_WIDTH);
 		return wallFinder;
 	}
@@ -37,6 +37,14 @@ public class WallFinder extends Subsystem {
 	}
 	
     public void initDefaultCommand() {
+    }
+    
+    public DistanceSensor getLeft(){
+    	return this.leftSensor;
+    }
+    
+    public DistanceSensor getRight(){
+    	return this.rightSensor;
     }
     
     public Wall getWall(){

@@ -1,10 +1,11 @@
 
 package org.usfirst.frc.team2984.robot;
 
-import org.usfirst.frc.team2984.robot.commands.TestAutoCommand;
+import org.usfirst.frc.team2984.robot.commands.DropOffGear;
 import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team2984.robot.subsystems.GearGrabber;
 import org.usfirst.frc.team2984.robot.subsystems.Gyroscope;
+import org.usfirst.frc.team2984.robot.subsystems.WallFinder;
 import org.usfirst.frc.team2984.robot.subsystems.Winch;
 import org.usfirst.frc.team2984.robot.util.VisionTracker;
 
@@ -70,7 +71,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		new TestAutoCommand().start();
+		new DropOffGear().start();
 	}
 
 	/**
@@ -104,6 +105,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 		SmartDashboard.putString("Gyro", Gyroscope.getInstance().getAngle() + "");
+		SmartDashboard.putString("Wall", WallFinder.getInstance().getWall().toString());
+		SmartDashboard.putString("Left", WallFinder.getInstance().getLeft().getDistanceInInches() + "");
+		SmartDashboard.putString("Right", WallFinder.getInstance().getRight().getDistanceInInches() + "");
 
 		LiveWindow.run();
 	}

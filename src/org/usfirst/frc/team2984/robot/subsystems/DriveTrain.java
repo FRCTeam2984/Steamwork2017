@@ -136,18 +136,34 @@ public class DriveTrain extends Subsystem {
 	 * @param y in inches how far forward
 	 */
 	public void moveDistance(double x, double y){
-		this.switchState(State.DISTANCE_CONTROL);
+		this.switchState(State.SPEED_CONTROL);
 		double xTicks = x*this.ticksPerInchForward;
 		double yTicks = y*this.ticksPerInchRight;
 		double fl = xTicks + yTicks;
 		double fr = -xTicks + yTicks;
 		double bl = -xTicks + yTicks;
 		double br = xTicks + yTicks;
-		this.frontLeft.set(fl);
-		this.frontRight.set(fr);
-		this.backRight.set(br);
-		this.backLeft.set(bl);
-		SmartDashboard.putString("WTF", this.frontLeft.getEncPosition() + "," + this.frontRight.getEncPosition() + "," + this.backLeft.getEncPosition() + "," + this.backRight.getEncPosition());
+		double flD = fl - this.frontLeft.getEncPosition();
+		double frD = fr - this.frontRight.getEncPosition();
+		double blD = bl - this.backLeft.getEncPosition();
+		double brD = br - this.backRight.getEncPosition();
+		flD *= RobotMap.DISTANCE_P;
+		frD *= RobotMap.DISTANCE_P;
+		blD *= RobotMap.DISTANCE_P;
+		brD *= RobotMap.DISTANCE_P;
+		flD = cap(flD, 0.5);
+		frD = cap(frD, 0.5);
+		blD = cap(blD, 0.5);
+		brD = cap(brD, 0.5);
+		this.frontLeft.set(flD);
+		this.frontRight.set(frD);
+		this.backRight.set(brD);
+		this.backLeft.set(blD);
+		SmartDashboard.putString("WTF", flD + "," + frD + "," + blD + "," + brD);
+	}
+	
+	private double cap(double x, double mag){
+		return Math.min(Math.max(x, -mag), mag);
 	}
 	
 	public void rotate(double angle){
@@ -184,6 +200,19 @@ public class DriveTrain extends Subsystem {
 		return max < epsilon;
 	}
 	
+	public boolean isThereAtAll(double epsilon){
+		int fl = this.frontLeft.getEncVelocity();
+		int fr = this.frontRight.getEncVelocity();
+		int bl = this.backRight.getEncVelocity();
+		int br = this.backLeft.getEncVelocity();
+		fl = Math.abs(fl);
+		fr = Math.abs(fr);
+		bl = Math.abs(bl);
+		br = Math.abs(br);
+		double max = Math.min(Math.min(fl, fr), Math.min(bl, br));
+		return max < epsilon;
+	}
+	
 	@Override
 	protected void initDefaultCommand() {
 		setDefaultCommand(new RemoteJoystickDrive());
@@ -204,6 +233,10 @@ public class DriveTrain extends Subsystem {
 		this.frontRight.changeControlMode(TalonControlMode.Speed);
 		this.backLeft.changeControlMode(TalonControlMode.Speed);
 		this.backRight.changeControlMode(TalonControlMode.Speed);
+		this.frontLeft.configPeakOutputVoltage(+12.0f, -12.0f);
+		this.frontRight.configPeakOutputVoltage(+12.0f, -12.0f);
+		this.backLeft.configPeakOutputVoltage(+12.0f, -12.0f);
+		this.backRight.configPeakOutputVoltage(+12.0f, -12.0f);
 
 	}
 	
@@ -233,6 +266,10 @@ public class DriveTrain extends Subsystem {
 		this.frontRight.changeControlMode(TalonControlMode.Position);
 		this.backLeft.changeControlMode(TalonControlMode.Position);
 		this.backRight.changeControlMode(TalonControlMode.Position);
+		this.frontLeft.configPeakOutputVoltage(+6.0f, -6.0f);
+		this.frontRight.configPeakOutputVoltage(+6.0f, -6.0f);
+		this.backLeft.configPeakOutputVoltage(+6.0f, -6.0f);
+		this.backRight.configPeakOutputVoltage(+6.0f, -6.0f);
 	}
 	
 	private void setupEncoderAndPID(CANTalon talon, boolean reversed, double f, double p, double i, double d){

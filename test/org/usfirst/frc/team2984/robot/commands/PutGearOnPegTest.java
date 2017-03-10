@@ -9,11 +9,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.usfirst.frc.team2984.robot.RobotMap;
-import org.usfirst.frc.team2984.robot.commands.PutGearOnPeg;
 import org.usfirst.frc.team2984.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team2984.robot.subsystems.WallFinder;
+import org.usfirst.frc.team2984.robot.subsystems.Gyroscope;
 import org.usfirst.frc.team2984.robot.util.Motion;
-import org.usfirst.frc.team2984.robot.util.Wall;
 import org.usfirst.frc.team2984.util.DummyReporter;
 
 import edu.wpi.first.wpilibj.HLUsageReporting;
@@ -21,7 +19,7 @@ import edu.wpi.first.wpilibj.HLUsageReporting;
 public class PutGearOnPegTest {
 	private PutGearOnPeg command;
 	
-	private WallFinder tracker;
+	private Gyroscope gyro;
 	private DriveTrain driveTrain;
 	
 	@Before
@@ -29,16 +27,18 @@ public class PutGearOnPegTest {
 		// prevents exception during test
 		HLUsageReporting.SetImplementation(new DummyReporter());
 		
-		tracker = mock(WallFinder.class);
+		gyro = mock(Gyroscope.class);
 		driveTrain = mock(DriveTrain.class);
-		command = new PutGearOnPeg(tracker, driveTrain);
+		command = new PutGearOnPeg(gyro, driveTrain);
+		RobotMap.pegAngle = 180;
 	}
 	
 	@Test
 	public void testMotionGivenFarAwayAndCenteredAtZeroDisplacement() {
-		when(tracker.getWall()).thenReturn(new Wall(RobotMap.PEG_DROPOFF_DISTANCE + 10, 0));
+		when(gyro.getAngle()).thenReturn(0D);
 		when(driveTrain.getDisplacementX()).thenReturn(0D);
 		when(driveTrain.getDisplacementY()).thenReturn(0D);
+		when(driveTrain.isThere(100)).thenReturn(false);
 		
 		command.execute();
 		assertMotion(new Motion(0, RobotMap.GEAR_DROPOFF_SPEED, 0));
@@ -46,29 +46,32 @@ public class PutGearOnPegTest {
 	
 	@Test
 	public void testMotionGivenFarAwayAndCenteredAtOneDisplacement() {
-		when(tracker.getWall()).thenReturn(new Wall(RobotMap.PEG_DROPOFF_DISTANCE + 10, 0));
+		when(gyro.getAngle()).thenReturn(0D);
 		when(driveTrain.getDisplacementX()).thenReturn(0D);
 		when(driveTrain.getDisplacementY()).thenReturn(1/RobotMap.ROBOT_PROPORTINAL_UNDULATING_FACTOR);
-		
+		when(driveTrain.isThere(100)).thenReturn(false);
+
 		command.execute();
 		assertMotion(new Motion(RobotMap.PEG_DROPOFF_OCCILATION_P*RobotMap.UNDULATING_AMPLITUDED, RobotMap.GEAR_DROPOFF_SPEED, 0));
 	}
 	
 	@Test
 	public void testMotionGivenFarAwayAndCenteredAtThreeDisplacement() {
-		when(tracker.getWall()).thenReturn(new Wall(RobotMap.PEG_DROPOFF_DISTANCE + 10, 0));
+		when(gyro.getAngle()).thenReturn(0D);
 		when(driveTrain.getDisplacementX()).thenReturn(0D);
 		when(driveTrain.getDisplacementY()).thenReturn(3/RobotMap.ROBOT_PROPORTINAL_UNDULATING_FACTOR);
-		
+		when(driveTrain.isThere(100)).thenReturn(false);
+
 		command.execute();
 		assertMotion(new Motion(-RobotMap.PEG_DROPOFF_OCCILATION_P*RobotMap.UNDULATING_AMPLITUDED, RobotMap.GEAR_DROPOFF_SPEED, 0));
 	}
 	
 	@Test
 	public void testMotionGivenFarAwayAndAtPositiveMaxAtOneDisplacement() {
-		when(tracker.getWall()).thenReturn(new Wall(RobotMap.PEG_DROPOFF_DISTANCE + 10, 0));
+		when(gyro.getAngle()).thenReturn(0D);
 		when(driveTrain.getDisplacementX()).thenReturn(RobotMap.UNDULATING_AMPLITUDED);
 		when(driveTrain.getDisplacementY()).thenReturn(1/RobotMap.ROBOT_PROPORTINAL_UNDULATING_FACTOR);
+		when(driveTrain.isThere(100)).thenReturn(false);
 		
 		command.execute();
 		assertMotion(new Motion(0, RobotMap.GEAR_DROPOFF_SPEED, 0));
@@ -76,9 +79,10 @@ public class PutGearOnPegTest {
 	
 	@Test
 	public void testMotionGivenFarAwayAndAtNegativeMaxAtThreeDisplacement() {
-		when(tracker.getWall()).thenReturn(new Wall(RobotMap.PEG_DROPOFF_DISTANCE + 10, 0));
+		when(gyro.getAngle()).thenReturn(0D);
 		when(driveTrain.getDisplacementX()).thenReturn(-RobotMap.UNDULATING_AMPLITUDED);
 		when(driveTrain.getDisplacementY()).thenReturn(3/RobotMap.ROBOT_PROPORTINAL_UNDULATING_FACTOR);
+		when(driveTrain.isThere(100)).thenReturn(false);
 		
 		command.execute();
 		assertMotion(new Motion(0, RobotMap.GEAR_DROPOFF_SPEED, 0));
@@ -86,9 +90,10 @@ public class PutGearOnPegTest {
 	
 	@Test
 	public void testMotionGivenFarAwayAtTwoDegreseAndAtPositiveMaxAtOneDisplacement() {
-		when(tracker.getWall()).thenReturn(new Wall(RobotMap.PEG_DROPOFF_DISTANCE + 10, 2));
+		when(gyro.getAngle()).thenReturn(2D);
 		when(driveTrain.getDisplacementX()).thenReturn(RobotMap.UNDULATING_AMPLITUDED);
 		when(driveTrain.getDisplacementY()).thenReturn(1/RobotMap.ROBOT_PROPORTINAL_UNDULATING_FACTOR);
+		when(driveTrain.isThere(100)).thenReturn(false);
 		
 		command.execute();
 		assertMotion(new Motion(0, RobotMap.GEAR_DROPOFF_SPEED, -2*RobotMap.PEG_DROPOFF_ROTATION_P));
@@ -96,9 +101,10 @@ public class PutGearOnPegTest {
 	
 	@Test
 	public void testMotionGivenFarAwayAtLargeDegreseAndAtPositiveMaxAtOneDisplacement() {
-		when(tracker.getWall()).thenReturn(new Wall(RobotMap.PEG_DROPOFF_DISTANCE + 10, 1/RobotMap.PEG_DROPOFF_ROTATION_P + 1));
+		when(gyro.getAngle()).thenReturn(1/RobotMap.PEG_DROPOFF_ROTATION_P + 1);
 		when(driveTrain.getDisplacementX()).thenReturn(RobotMap.UNDULATING_AMPLITUDED);
 		when(driveTrain.getDisplacementY()).thenReturn(1/RobotMap.ROBOT_PROPORTINAL_UNDULATING_FACTOR);
+		when(driveTrain.isThere(100)).thenReturn(false);
 		
 		command.execute();
 		assertMotion(new Motion(0, RobotMap.GEAR_DROPOFF_SPEED, -RobotMap.DOCKING_MAX_SPEED));

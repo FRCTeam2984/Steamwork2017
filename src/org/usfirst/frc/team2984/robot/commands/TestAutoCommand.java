@@ -27,8 +27,8 @@ public class TestAutoCommand extends CommandGroup {
 //    	addSequential(new DriveDistance(0, 10));
     	addSequential(new Rotate(10, 1000)); //TODO: Add this command
     	addSequential(new AlignToThePeg());
-//    	addSequential(new OpenGearGrabber());
-//    	addParallel(new KeepGearGrabberOpen());
+    	addSequential(new OpenGearGrabber());
+    	addParallel(new KeepGearGrabberOpen());
 //    	addSequential(new DriveDistance(0, -10));
     }
 }

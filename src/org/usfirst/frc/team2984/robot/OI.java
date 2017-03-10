@@ -5,6 +5,7 @@ import org.usfirst.frc.team2984.robot.commands.Climb;
 import org.usfirst.frc.team2984.robot.commands.GearDelivery;
 import org.usfirst.frc.team2984.robot.commands.OpenGearGrabber;
 import org.usfirst.frc.team2984.robot.commands.Rappel;
+import org.usfirst.frc.team2984.robot.commands.Rotate;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -55,6 +56,7 @@ public class OI {
 	Button driveForward = new JoystickButton(stick, 5);
 	Button alignToPeg = new JoystickButton(stick, 6);
 	Button deliver = new JoystickButton(stick, 8);
+	Button test = new JoystickButton(stick, 9);
 
 	
 	/**
@@ -69,5 +71,6 @@ public class OI {
 		AlignToThePeg alignToPegCommand = new AlignToThePeg();
 		alignToPeg.whileHeld(alignToPegCommand);
 		deliver.whileHeld(new GearDelivery());
+		test.whenPressed(new Rotate(90, 1000));
 	}
 }

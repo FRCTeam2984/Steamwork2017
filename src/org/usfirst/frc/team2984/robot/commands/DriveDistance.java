@@ -12,6 +12,7 @@ public class DriveDistance extends Command {
 	private double distanceForward;
 	private double distanceRight;
 	private DriveTrain driveTrain;
+	private boolean notMoving;
 	
 	private boolean reset;
 	
@@ -24,6 +25,7 @@ public class DriveDistance extends Command {
     	this.distanceRight = distanceRight;
     	this.driveTrain = DriveTrain.getInstance();
     	this.reset = true;
+    	this.notMoving = true;
         requires(this.driveTrain);
     }
 
@@ -35,12 +37,16 @@ public class DriveDistance extends Command {
     	if(this.reset){
         	this.driveTrain.resetOrigin();
         	this.reset = false;
+        	this.notMoving = true;
+    	}
+    	if(this.notMoving){
+    		this.notMoving = !this.driveTrain.isThere(10);
     	}
     	this.driveTrain.moveDistance(this.distanceRight, this.distanceForward);
     }
 
     protected boolean isFinished() {
-        return this.driveTrain.isThere(100);
+        return this.driveTrain.isThere(100) && !this.notMoving;
     }
 
     protected void end() {

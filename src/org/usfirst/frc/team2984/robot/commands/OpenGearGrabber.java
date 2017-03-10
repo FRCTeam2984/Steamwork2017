@@ -27,6 +27,6 @@ public class OpenGearGrabber extends Command {
 	
 	@Override
 	protected boolean isFinished() {
-		return !reset && System.currentTimeMillis() - time > 1;
+		return !reset && System.currentTimeMillis() - time > 1 && this.grabber.isOpen(40);
 	}
 }
