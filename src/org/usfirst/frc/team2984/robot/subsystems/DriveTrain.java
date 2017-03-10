@@ -266,10 +266,10 @@ public class DriveTrain extends Subsystem {
 		this.frontRight.changeControlMode(TalonControlMode.Position);
 		this.backLeft.changeControlMode(TalonControlMode.Position);
 		this.backRight.changeControlMode(TalonControlMode.Position);
-		this.frontLeft.configPeakOutputVoltage(+6.0f, -6.0f);
-		this.frontRight.configPeakOutputVoltage(+6.0f, -6.0f);
-		this.backLeft.configPeakOutputVoltage(+6.0f, -6.0f);
-		this.backRight.configPeakOutputVoltage(+6.0f, -6.0f);
+		this.frontLeft.configPeakOutputVoltage(RobotMap.MAX_SPEED_DITANCE, -RobotMap.MAX_SPEED_DITANCE);
+		this.frontRight.configPeakOutputVoltage(RobotMap.MAX_SPEED_DITANCE, -RobotMap.MAX_SPEED_DITANCE);
+		this.backLeft.configPeakOutputVoltage(RobotMap.MAX_SPEED_DITANCE, -RobotMap.MAX_SPEED_DITANCE);
+		this.backRight.configPeakOutputVoltage(RobotMap.MAX_SPEED_DITANCE, -RobotMap.MAX_SPEED_DITANCE);
 	}
 	
 	private void setupEncoderAndPID(CANTalon talon, boolean reversed, double f, double p, double i, double d){

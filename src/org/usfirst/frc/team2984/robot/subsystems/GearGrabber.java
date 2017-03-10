@@ -36,18 +36,14 @@ public class GearGrabber extends Subsystem {
 	
 	public void close(){
 		this.set(RobotMap.GEAR_GRABBER_CLOSE);
-		SmartDashboard.putString("Enc pos", this.talon.getEncPosition() + "");
-
 	}
 	
 	public void open(){
 		this.set(RobotMap.GEAR_GRABBER_OPEN);
-		SmartDashboard.putString("Enc pos", this.talon.getEncPosition() + "");
 
 	}
 	
 	public void clench(){
-		SmartDashboard.putString("Enc pos", this.talon.getEncPosition() + "");
 		this.set(RobotMap.GEAR_GRABBER_CLOSE - RobotMap.GEAR_GRABBER_DELTA);
 
 	}

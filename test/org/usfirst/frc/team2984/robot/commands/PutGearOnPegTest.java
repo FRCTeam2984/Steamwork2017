@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.usfirst.frc.team2984.robot.RobotMap;
@@ -44,6 +45,7 @@ public class PutGearOnPegTest {
 		assertMotion(new Motion(0, RobotMap.GEAR_DROPOFF_SPEED, 0));
 	}
 	
+	@Ignore //For this test was when we still moved sideways
 	@Test
 	public void testMotionGivenFarAwayAndCenteredAtOneDisplacement() {
 		when(gyro.getAngle()).thenReturn(0D);
@@ -55,6 +57,7 @@ public class PutGearOnPegTest {
 		assertMotion(new Motion(RobotMap.PEG_DROPOFF_OCCILATION_P*RobotMap.UNDULATING_AMPLITUDED, RobotMap.GEAR_DROPOFF_SPEED, 0));
 	}
 	
+	@Ignore //For this test was when we still moved sideways
 	@Test
 	public void testMotionGivenFarAwayAndCenteredAtThreeDisplacement() {
 		when(gyro.getAngle()).thenReturn(0D);
