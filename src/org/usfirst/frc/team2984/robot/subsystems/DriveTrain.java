@@ -151,10 +151,10 @@ public class DriveTrain extends Subsystem {
 		frD *= RobotMap.DISTANCE_P;
 		blD *= RobotMap.DISTANCE_P;
 		brD *= RobotMap.DISTANCE_P;
-		flD = cap(flD, 0.5);
-		frD = cap(frD, 0.5);
-		blD = cap(blD, 0.5);
-		brD = cap(brD, 0.5);
+		flD = cap(flD, RobotMap.MAX_SPEED_DITANCE/12);
+		frD = cap(frD, RobotMap.MAX_SPEED_DITANCE/12);
+		blD = cap(blD, RobotMap.MAX_SPEED_DITANCE/12);
+		brD = cap(brD, RobotMap.MAX_SPEED_DITANCE/12);
 		this.frontLeft.set(flD);
 		this.frontRight.set(frD);
 		this.backRight.set(brD);
@@ -187,24 +187,35 @@ public class DriveTrain extends Subsystem {
 		this.backRight.setEncPosition(0);
 	}
 	
-	public boolean isThere(double epsilon){
+	public boolean isThere(double epsilon, double x, double y){
+		double xTicks = x*this.ticksPerInchForward;
+		double yTicks = y*this.ticksPerInchRight;
+		double flEnc = xTicks + yTicks;
+		double frEnc = -xTicks + yTicks;
+		double blEnc = -xTicks + yTicks;
+		double brEnc = xTicks + yTicks;
+		double flEncDelta = Math.abs(flEnc - this.frontLeft.getEncPosition());
+		double frEncDelta = Math.abs(frEnc - this.frontRight.getEncPosition());
+		double blEncDelta = Math.abs(blEnc - this.backLeft.getEncPosition());
+		double brEncDelta = Math.abs(brEnc - this.backRight.getEncPosition());
 		int fl = this.frontLeft.getEncVelocity();
 		int fr = this.frontRight.getEncVelocity();
-		int bl = this.backRight.getEncVelocity();
-		int br = this.backLeft.getEncVelocity();
+		int bl = this.backLeft.getEncVelocity();
+		int br = this.backRight.getEncVelocity();
 		fl = Math.abs(fl);
 		fr = Math.abs(fr);
 		bl = Math.abs(bl);
 		br = Math.abs(br);
 		double max = getMaximumValue(fl, fr, bl, br);
-		return max < epsilon;
+		double maxDist = getMaximumValue(flEncDelta, frEncDelta, blEncDelta, brEncDelta);
+		return max < epsilon && maxDist < epsilon;
 	}
 	
 	public boolean isThereAtAll(double epsilon){
 		int fl = this.frontLeft.getEncVelocity();
 		int fr = this.frontRight.getEncVelocity();
-		int bl = this.backRight.getEncVelocity();
-		int br = this.backLeft.getEncVelocity();
+		int bl = this.backLeft.getEncVelocity();
+		int br = this.backRight.getEncVelocity();
 		fl = Math.abs(fl);
 		fr = Math.abs(fr);
 		bl = Math.abs(bl);

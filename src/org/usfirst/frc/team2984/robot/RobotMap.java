@@ -66,7 +66,7 @@ public class RobotMap {
 	public static final double DISTANCE_P = 0.0032;
 	public static final double DISTANCE_I = 0.0;
 	public static final double DISTANCE_D = 0.0;
-	public static final float MAX_SPEED_DITANCE = 6;
+	public static final float MAX_SPEED_DITANCE = 6; // 0-12
 	
 	public static final double ROTATION_P = 0.03;
 	public static final double ROTATION_I = 0.0;

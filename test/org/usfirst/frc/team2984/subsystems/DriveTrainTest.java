@@ -94,7 +94,7 @@ public class DriveTrainTest {
 		when(backLeft.getEncVelocity()).thenReturn(1);
 		when(backRight.getEncVelocity()).thenReturn(-1);
 
-		assertTrue(drive.isThere(4));
+		assertTrue(drive.isThere(4, 0, 0));
 	}
 	
 	@Test
@@ -104,7 +104,7 @@ public class DriveTrainTest {
 		when(backLeft.getEncPosition()).thenReturn(-1);
 		when(backRight.getEncPosition()).thenReturn(1);
 
-		assertTrue(drive.isThere(4));
+		assertTrue(drive.isThere(4, 0, 0));
 	}
 	
 	@Test
@@ -114,7 +114,7 @@ public class DriveTrainTest {
 		when(backLeft.getEncPosition()).thenReturn(1);
 		when(backRight.getEncPosition()).thenReturn(1);
 
-		assertTrue(drive.isThere(4));
+		assertTrue(drive.isThere(4, 0, 0));
 	}
 	
 	@Test
@@ -124,7 +124,7 @@ public class DriveTrainTest {
 		when(backLeft.getEncPosition()).thenReturn(-1);
 		when(backRight.getEncPosition()).thenReturn(-1);
 
-		assertTrue(drive.isThere(4));
+		assertTrue(drive.isThere(4, 0, 0));
 	}
 	
 	@Test
@@ -134,7 +134,7 @@ public class DriveTrainTest {
 		when(backLeft.getEncVelocity()).thenReturn(100);
 		when(backRight.getEncVelocity()).thenReturn(-100);
 
-		assertFalse(drive.isThere(4));
+		assertFalse(drive.isThere(4, 0, 0));
 	}
 	
 	@Test
@@ -144,7 +144,7 @@ public class DriveTrainTest {
 		when(backLeft.getEncVelocity()).thenReturn(-100);
 		when(backRight.getEncVelocity()).thenReturn(100);
 
-		assertFalse(drive.isThere(4));
+		assertFalse(drive.isThere(4, 0, 0));
 	}
 	
 	@Test
@@ -154,7 +154,7 @@ public class DriveTrainTest {
 		when(backLeft.getEncVelocity()).thenReturn(100);
 		when(backRight.getEncVelocity()).thenReturn(100);
 
-		assertFalse(drive.isThere(4));
+		assertFalse(drive.isThere(4, 0, 0));
 	}
 	
 	@Test
@@ -164,7 +164,7 @@ public class DriveTrainTest {
 		when(backLeft.getEncVelocity()).thenReturn(-100);
 		when(backRight.getEncVelocity()).thenReturn(-100);
 
-		assertFalse(drive.isThere(4));
+		assertFalse(drive.isThere(4, 0, 0));
 	}
 	
 	@Test
@@ -174,7 +174,7 @@ public class DriveTrainTest {
 		when(backLeft.getEncVelocity()).thenReturn(100);
 		when(backRight.getEncVelocity()).thenReturn(0);
 
-		assertFalse(drive.isThere(4));
+		assertFalse(drive.isThere(4, 0, 0));
 	}
 	
 	@Test
@@ -184,7 +184,17 @@ public class DriveTrainTest {
 		when(backLeft.getEncVelocity()).thenReturn(1);
 		when(backRight.getEncVelocity()).thenReturn(0);
 
-		assertTrue(drive.isThere(4));
+		assertTrue(drive.isThere(4, 0, 0));
+	}
+	
+	@Test
+	public void isDoneReturnsFalseWhileMovingSlowlyAtZeroDisplacement() {
+		when(frontLeft.getEncVelocity()).thenReturn(0);
+		when(frontRight.getEncVelocity()).thenReturn(0);
+		when(backLeft.getEncVelocity()).thenReturn(0);
+		when(backRight.getEncVelocity()).thenReturn(0);
+
+		assertFalse(drive.isThere(4, 0, 10));
 	}
 	
 	@Test

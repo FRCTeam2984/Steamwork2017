@@ -39,7 +39,7 @@ public class PutGearOnPegTest {
 		when(gyro.getAngle()).thenReturn(0D);
 		when(driveTrain.getDisplacementX()).thenReturn(0D);
 		when(driveTrain.getDisplacementY()).thenReturn(0D);
-		when(driveTrain.isThere(100)).thenReturn(false);
+		when(driveTrain.isThereAtAll(100)).thenReturn(false);
 		
 		command.execute();
 		assertMotion(new Motion(0, RobotMap.GEAR_DROPOFF_SPEED, 0));
@@ -51,7 +51,7 @@ public class PutGearOnPegTest {
 		when(gyro.getAngle()).thenReturn(0D);
 		when(driveTrain.getDisplacementX()).thenReturn(0D);
 		when(driveTrain.getDisplacementY()).thenReturn(1/RobotMap.ROBOT_PROPORTINAL_UNDULATING_FACTOR);
-		when(driveTrain.isThere(100)).thenReturn(false);
+		when(driveTrain.isThereAtAll(100)).thenReturn(false);
 
 		command.execute();
 		assertMotion(new Motion(RobotMap.PEG_DROPOFF_OCCILATION_P*RobotMap.UNDULATING_AMPLITUDED, RobotMap.GEAR_DROPOFF_SPEED, 0));
@@ -63,7 +63,7 @@ public class PutGearOnPegTest {
 		when(gyro.getAngle()).thenReturn(0D);
 		when(driveTrain.getDisplacementX()).thenReturn(0D);
 		when(driveTrain.getDisplacementY()).thenReturn(3/RobotMap.ROBOT_PROPORTINAL_UNDULATING_FACTOR);
-		when(driveTrain.isThere(100)).thenReturn(false);
+		when(driveTrain.isThereAtAll(100)).thenReturn(false);
 
 		command.execute();
 		assertMotion(new Motion(-RobotMap.PEG_DROPOFF_OCCILATION_P*RobotMap.UNDULATING_AMPLITUDED, RobotMap.GEAR_DROPOFF_SPEED, 0));
@@ -74,7 +74,7 @@ public class PutGearOnPegTest {
 		when(gyro.getAngle()).thenReturn(0D);
 		when(driveTrain.getDisplacementX()).thenReturn(RobotMap.UNDULATING_AMPLITUDED);
 		when(driveTrain.getDisplacementY()).thenReturn(1/RobotMap.ROBOT_PROPORTINAL_UNDULATING_FACTOR);
-		when(driveTrain.isThere(100)).thenReturn(false);
+		when(driveTrain.isThereAtAll(100)).thenReturn(false);
 		
 		command.execute();
 		assertMotion(new Motion(0, RobotMap.GEAR_DROPOFF_SPEED, 0));
@@ -85,7 +85,7 @@ public class PutGearOnPegTest {
 		when(gyro.getAngle()).thenReturn(0D);
 		when(driveTrain.getDisplacementX()).thenReturn(-RobotMap.UNDULATING_AMPLITUDED);
 		when(driveTrain.getDisplacementY()).thenReturn(3/RobotMap.ROBOT_PROPORTINAL_UNDULATING_FACTOR);
-		when(driveTrain.isThere(100)).thenReturn(false);
+		when(driveTrain.isThereAtAll(100)).thenReturn(false);
 		
 		command.execute();
 		assertMotion(new Motion(0, RobotMap.GEAR_DROPOFF_SPEED, 0));
@@ -96,7 +96,7 @@ public class PutGearOnPegTest {
 		when(gyro.getAngle()).thenReturn(2D);
 		when(driveTrain.getDisplacementX()).thenReturn(RobotMap.UNDULATING_AMPLITUDED);
 		when(driveTrain.getDisplacementY()).thenReturn(1/RobotMap.ROBOT_PROPORTINAL_UNDULATING_FACTOR);
-		when(driveTrain.isThere(100)).thenReturn(false);
+		when(driveTrain.isThereAtAll(100)).thenReturn(false);
 		
 		command.execute();
 		assertMotion(new Motion(0, RobotMap.GEAR_DROPOFF_SPEED, -2*RobotMap.PEG_DROPOFF_ROTATION_P));
@@ -107,7 +107,7 @@ public class PutGearOnPegTest {
 		when(gyro.getAngle()).thenReturn(1/RobotMap.PEG_DROPOFF_ROTATION_P + 1);
 		when(driveTrain.getDisplacementX()).thenReturn(RobotMap.UNDULATING_AMPLITUDED);
 		when(driveTrain.getDisplacementY()).thenReturn(1/RobotMap.ROBOT_PROPORTINAL_UNDULATING_FACTOR);
-		when(driveTrain.isThere(100)).thenReturn(false);
+		when(driveTrain.isThereAtAll(100)).thenReturn(false);
 		
 		command.execute();
 		assertMotion(new Motion(0, RobotMap.GEAR_DROPOFF_SPEED, -RobotMap.DOCKING_MAX_SPEED));
