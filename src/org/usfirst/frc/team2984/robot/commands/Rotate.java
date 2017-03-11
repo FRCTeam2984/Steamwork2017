@@ -22,14 +22,14 @@ public class Rotate extends Command {
 	
 	/**
 	 * rotates to the given angle offset
-	 * @param angle the angle
+	 * @param angle the angle in degrees 
 	 */
     public Rotate(double angle, long maxTime) {
     	super("Rotate");
     	this.angle = angle;
     	this.driveTrain = DriveTrain.getInstance();
     	this.gyro = Gyroscope.getInstance();
-    	this.reset = false;
+    	this.reset = true;
     	this.maxTime = maxTime;
         requires(this.driveTrain);
     }
@@ -42,6 +42,7 @@ public class Rotate extends Command {
     	}
     	double angle = MathUtil.shortestDeltaAngle(this.gyro.getAngle(), this.angle);
     	double power = RobotMap.ROTATION_P * angle;
+    	power = Math.min(Math.max(power, -0.4), 0.4);
     	this.driveTrain.move(new Motion(0, 0, power));
     }
     

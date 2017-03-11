@@ -133,7 +133,6 @@ public class AlignToThePeg extends Command {
 		double yaw = this.getYaw(target, angleOffset);
 		double heading = this.getHeading(yaw, distance);
 		double speed = this.getSpeed(yaw, distance);
-		
 		if (Math.abs(yaw) > RobotMap.DOCKING_YAW_THRESHOLD){
 			this.done = false;
 		} else if (distance > RobotMap.DOCKING_DISTANCE_THRESHOLD){

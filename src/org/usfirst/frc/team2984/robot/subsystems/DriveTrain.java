@@ -135,7 +135,7 @@ public class DriveTrain extends Subsystem {
 	 * @param x in inches how far right
 	 * @param y in inches how far forward
 	 */
-	public void moveDistance(double x, double y){
+	public void moveToDistance(double x, double y){
 		this.switchState(State.SPEED_CONTROL);
 		double xTicks = x*this.ticksPerInchForward;
 		double yTicks = y*this.ticksPerInchRight;
@@ -144,9 +144,9 @@ public class DriveTrain extends Subsystem {
 		double bl = -xTicks + yTicks;
 		double br = xTicks + yTicks;
 		double flD = fl - this.frontLeft.getEncPosition();
-		double frD = fr - this.frontRight.getEncPosition();
+		double frD = fr + this.frontRight.getEncPosition();
 		double blD = bl - this.backLeft.getEncPosition();
-		double brD = br - this.backRight.getEncPosition();
+		double brD = br + this.backRight.getEncPosition();
 		flD *= RobotMap.DISTANCE_P;
 		frD *= RobotMap.DISTANCE_P;
 		blD *= RobotMap.DISTANCE_P;
@@ -155,11 +155,11 @@ public class DriveTrain extends Subsystem {
 		frD = cap(frD, RobotMap.MAX_SPEED_DITANCE/12);
 		blD = cap(blD, RobotMap.MAX_SPEED_DITANCE/12);
 		brD = cap(brD, RobotMap.MAX_SPEED_DITANCE/12);
-		this.frontLeft.set(flD);
-		this.frontRight.set(frD);
-		this.backRight.set(brD);
-		this.backLeft.set(blD);
-		SmartDashboard.putString("WTF", flD + "," + frD + "," + blD + "," + brD);
+		this.frontLeft.set(flD * RobotMap.DRIVE_TRAIN_MAX_SPEED);
+		this.frontRight.set(frD * RobotMap.DRIVE_TRAIN_MAX_SPEED);
+		this.backRight.set(brD * RobotMap.DRIVE_TRAIN_MAX_SPEED);
+		this.backLeft.set(blD * RobotMap.DRIVE_TRAIN_MAX_SPEED);
+		SmartDashboard.putString("WTF", flD + "," + frD + "," + blD + "," + brD + " " + System.currentTimeMillis() );
 	}
 	
 	private double cap(double x, double mag){
@@ -177,7 +177,6 @@ public class DriveTrain extends Subsystem {
 		this.frontRight.set(fr);
 		this.backRight.set(br);
 		this.backLeft.set(bl);
-		SmartDashboard.putString("WTF", this.frontLeft.getEncPosition() + "," + this.frontRight.getEncPosition() + "," + this.backLeft.getEncPosition() + "," + this.backRight.getEncPosition());
 	}
 	
 	public void resetOrigin(){
@@ -195,9 +194,9 @@ public class DriveTrain extends Subsystem {
 		double blEnc = -xTicks + yTicks;
 		double brEnc = xTicks + yTicks;
 		double flEncDelta = Math.abs(flEnc - this.frontLeft.getEncPosition());
-		double frEncDelta = Math.abs(frEnc - this.frontRight.getEncPosition());
+		double frEncDelta = Math.abs(frEnc + this.frontRight.getEncPosition());
 		double blEncDelta = Math.abs(blEnc - this.backLeft.getEncPosition());
-		double brEncDelta = Math.abs(brEnc - this.backRight.getEncPosition());
+		double brEncDelta = Math.abs(brEnc + this.backRight.getEncPosition());
 		int fl = this.frontLeft.getEncVelocity();
 		int fr = this.frontRight.getEncVelocity();
 		int bl = this.backLeft.getEncVelocity();
@@ -288,6 +287,9 @@ public class DriveTrain extends Subsystem {
 		talon.setFeedbackDevice(FeedbackDevice.QuadEncoder); //CRT Mag Encoder Relative if 1 turn
 		talon.reverseSensor(reversed);
 		talon.configEncoderCodesPerRev(1000); //number of revs per turn, 1000
+		talon.enableForwardSoftLimit(false);
+		talon.enableReverseSoftLimit(false);
+		talon.enableLimitSwitch(false, false);
 		
 		//Limit the max current, this case to [+12, -12]
 		talon.configNominalOutputVoltage(+0.0f, -0.0f);

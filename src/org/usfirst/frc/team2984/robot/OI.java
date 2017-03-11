@@ -3,9 +3,11 @@ package org.usfirst.frc.team2984.robot;
 import org.usfirst.frc.team2984.robot.commands.AlignToThePeg;
 import org.usfirst.frc.team2984.robot.commands.Climb;
 import org.usfirst.frc.team2984.robot.commands.GearDelivery;
+import org.usfirst.frc.team2984.robot.commands.IncrementDecrement;
 import org.usfirst.frc.team2984.robot.commands.OpenGearGrabber;
-import org.usfirst.frc.team2984.robot.commands.Rappel;
-import org.usfirst.frc.team2984.robot.commands.Rotate;
+import org.usfirst.frc.team2984.robot.commands.ReallySlowClimb;
+import org.usfirst.frc.team2984.robot.commands.SlowClimb;
+import org.usfirst.frc.team2984.robot.commands.TestAutoCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -49,11 +51,12 @@ public class OI {
 	/**
 	 * the button that will make the robot drive forward for one second
 	 */
-//	Button updatePID = new JoystickButton(stick, 1);
+	Button reallySlowClimb = new JoystickButton(stick, 1);
 	Button climb = new JoystickButton(stick, 2);
-	Button rappel = new JoystickButton(stick, 3);
+	Button slowClimb = new JoystickButton(stick, 3);
 	Button openGearGrabber = new JoystickButton(stick, 4);
-	Button driveForward = new JoystickButton(stick, 5);
+	Button increment = new JoystickButton(stick, 5);
+	Button decrement = new JoystickButton(stick, 7);
 	Button alignToPeg = new JoystickButton(stick, 6);
 	Button deliver = new JoystickButton(stick, 8);
 	Button test = new JoystickButton(stick, 9);
@@ -65,12 +68,15 @@ public class OI {
 	public OI(){
 //		updatePID.whenPressed(new UpdatePIDsForDriveTrain());
 		climb.whileHeld(new Climb());
-		rappel.whileHeld(new Rappel());
+		slowClimb.whileHeld(new SlowClimb());
+		reallySlowClimb.whileHeld(new ReallySlowClimb());
 		openGearGrabber.whileHeld(new OpenGearGrabber());
+		increment.whenPressed(new IncrementDecrement(0.0005));
+		decrement.whenPressed(new IncrementDecrement(-0.0005));
 //		driveForward.whenPressed(new DriveDistance(0, 18));
 		AlignToThePeg alignToPegCommand = new AlignToThePeg();
 		alignToPeg.whileHeld(alignToPegCommand);
 		deliver.whileHeld(new GearDelivery());
-		test.whenPressed(new Rotate(90, 1000));
+		test.whenPressed(new TestAutoCommand());
 	}
 }

@@ -32,7 +32,7 @@ public class GearGrabberTest {
 	public void testClenchDrivesTalon() {
 		grabber.clench();
 		when(talon.getEncPosition()).thenReturn((int) (RobotMap.GEAR_GRABBER_CLOSE));
-		verify(talon).set(0.24); //becase ramping has started
+		verify(talon).set(0.3); //becase ramping has started
 	}
 	
 	@Test
@@ -46,7 +46,7 @@ public class GearGrabberTest {
 	public void testOpenDrivesTalon() {
 		grabber.open();
 		when(talon.getEncPosition()).thenReturn((int) (RobotMap.GEAR_GRABBER_CLOSE));
-		verify(talon).set(-0.5);
+		verify(talon).set(-1);
 	}
 	
 	@Test

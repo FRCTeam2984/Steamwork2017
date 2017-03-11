@@ -27,6 +27,7 @@ public class PutGearOnPeg extends Command {
     	gyro = Gyroscope.getInstance();
     	this.done = false;
     	this.isMoving = false;
+    	this.reset = true;
     	
     	requires(driveTrain);
 
@@ -58,7 +59,7 @@ public class PutGearOnPeg extends Command {
 			this.done = true;
 			return;
 		} else if(!this.isMoving){
-			this.isMoving = !this.driveTrain.isThereAtAll(100);
+			this.isMoving = !this.driveTrain.isThereAtAll(200);
 		}
 //		double deltaY = this.driveTrain.getDisplacementY();
 //		double deltaX = this.driveTrain.getDisplacementX();
@@ -71,12 +72,13 @@ public class PutGearOnPeg extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return this.done || (System.currentTimeMillis() - this.startTime > RobotMap.GEAR_DROPOFF_MAX_TIME);
+        return this.done || (System.currentTimeMillis() - this.startTime) > RobotMap.GEAR_DROPOFF_MAX_TIME;
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	this.done = false;
+    	this.isMoving = false;
     	this.reset = true;
     }
 

@@ -60,7 +60,7 @@ public class GearGrabber extends Subsystem {
 		}
 		int currentPos = talon.getEncPosition();
 		double delta = desiredPos - currentPos;
-		talon.set(Math.min(Math.max(delta*RobotMap.GEAR_GRABBER_P, -0.5), 0.3));
+		talon.set(Math.min(Math.max(delta*RobotMap.GEAR_GRABBER_P, -1), 0.3));
 		if(talon.getOutputCurrent() > RobotMap.OVER_CURRENT_CURRENT && !this.isOver){
 			this.isOver = true;
 			this.overTime = System.currentTimeMillis();
@@ -78,8 +78,8 @@ public class GearGrabber extends Subsystem {
 		
 		//Limit the max current, this case to [+12, -12]
 		talon.configNominalOutputVoltage(+0.0f, -0.0f);
-        talon.configPeakOutputVoltage(+6.0f, -2.0f);
-        talon.setCloseLoopRampRate(3);
+        talon.configPeakOutputVoltage(+12.0f, -2.0f);
+        talon.setCloseLoopRampRate(12);
 	}
 
 	@Override

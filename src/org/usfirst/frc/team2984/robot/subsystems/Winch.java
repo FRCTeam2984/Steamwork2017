@@ -48,4 +48,8 @@ public class Winch extends Subsystem {
 	protected void initDefaultCommand() {
 		setDefaultCommand(new IdleWinch());
 	}
+
+	public void hold(double d) {
+		talon.set(d);
+	}
 }
