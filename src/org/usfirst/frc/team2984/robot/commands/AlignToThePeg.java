@@ -19,6 +19,8 @@ public class AlignToThePeg extends Command {
 	private DriveTrain driveTrain;
 	private Gyroscope gyro;
 	private boolean done;
+	private boolean reset;
+	private long startMovement;
 	
     public AlignToThePeg() {
         // Use requires() here to declare subsystem dependencies
@@ -27,6 +29,7 @@ public class AlignToThePeg extends Command {
     	driveTrain = DriveTrain.getInstance();
     	gyro = Gyroscope.getInstance();
     	this.done = false;
+    	this.reset = true;
     	
     	requires(driveTrain);
     }
@@ -49,6 +52,10 @@ public class AlignToThePeg extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     public void execute() {
+    	if(this.reset){
+    		this.startMovement = System.currentTimeMillis();
+    		this.reset = false;
+    	}
     	this.done = true;
     	VisionTarget target = this.tracker.getTarget();
     	
@@ -71,11 +78,12 @@ public class AlignToThePeg extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return this.done;
+        return this.done || (System.currentTimeMillis() - this.startMovement > 5000);
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	this.reset = true;
     	this.done = false;
     }
 
